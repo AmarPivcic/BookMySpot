@@ -11,5 +11,5 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'angularApp';
-  tekst: string = 'Razvoj softvera I :: Angular App';
+  tekst: string = 'RS I :: Angular App';
 }
