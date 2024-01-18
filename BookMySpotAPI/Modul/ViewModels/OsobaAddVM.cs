@@ -1,13 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BookMySpotAPI.Modul.Models
+﻿namespace BookMySpotAPI.Modul.ViewModels
 {
-    [Table("Osoba")]
-    public class Osoba
+    public class OsobaAddVM
     {
-        [Key]
-        public int OsobaID { get; set; }
         public string? Ime { get; set; }
         public string? Prezime { get; set; }
         public string? Email { get; set; }
