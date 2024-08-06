@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div class="containerForLogin">
+  <div class="form-wrap" style="border-radius: 5px">
+    <div class="tabs">
+      <h3 class="signup-tab">
+        <a
+          class="active"
+          href="#"
+          (click)="switchTab('signup-tab-content', $event)"
+          style="border-top-left-radius: 5px"
+        >Registracija</a>
+      </h3>
+      <h3 class="login-tab">
+        <a
+          href="#"
+          (click)="switchTab('login-tab-content', $event)"
+          style="border-top-right-radius: 5px"
+        >Prijava</a>
+      </h3>
+    </div>
+    <!--.tabs-->
+
+    <div class="tabs-content">
+      <div id="signup-tab-content" class="active">
+        <form class="signup-form">
+          <input
+            type="email"
+            class="input"
+            id="user_email"
+            autocomplete="off"
+            placeholder="E-mail"
+            name="email"
+            [(ngModel)] = "txtEmail"
+          />
+          <input
+            type="text"
+            class="input"
+            id="user_fname"
+            autocomplete="off"
+            placeholder="Ime"
+            name="ime"
+            [(ngModel)] = "txtIme"
+          />
+          <input
+            type="text"
+            class="input"
+            id="user_lname"
+            autocomplete="off"
+            placeholder="Prezime"
+            name="prezime"
+            [(ngModel)] = "txtPrezime"
+          />
+          <input
+            type="text"
+            class="input"
+            id="user_name"
+            autocomplete="off"
+            placeholder="Korisničko ime"
+            name="korisnickoImeRegister"
+            [(ngModel)] = "txtKorisnickoImeRegister"
+          />
+          <input
+            type="password"
+            class="input"
+            id="user_pass_register"
+            autocomplete="off"
+            placeholder="Lozinka"
+            name="lozinkaRegister"
+            [(ngModel)] = "txtLozinkaRegister"
+          />
+          <input
+            readonly
+            class="button"
+            value="Registruj se" (click)="registracija()"
+          />
+        </form>
+        <!--.signup-form-->
+        <div class="help-text">
+          <p>Registracijom prihvatate naše</p>
+          <p>uslove korištenja</p>
+        </div>
+        <!--.help-text-->
+      </div>
+      <!--.signup-tab-content-->
+
+      <div id="login-tab-content">
+        <form class="login-form">
+          <input
+            type="text"
+            class="input"
+            id="user_login"
+            autocomplete="off"
+            placeholder="Korisničko ime"
+            name = "korisnickoIme"
+            [(ngModel)] = "txtKorisnickoIme"
+          />
+          <input
+            type="password"
+            class="input"
+            id="user_pass"
+            autocomplete="off"
+            placeholder="Lozinka"
+            name = "lozinka"
+            [(ngModel)] = "txtLozinka"
+          />
+
+          <input
+            readonly
+            class="button"
+            value="Prijavi se"
+            (click)="prijava()"
+          />
+        </form>
+        <!--.login-form-->
+        <!--.help-text-->
+      </div>
+      <!--.login-tab-content-->
+    </div>
+    <!--.tabs-content-->
+  </div>
+  <!--.form-wrap-->
+</div>
+</body>
+</html>

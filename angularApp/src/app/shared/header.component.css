@@ -1,0 +1,148 @@
+*{
+  color: white;
+}
+.buttonList{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 90vh;
+}
+
+.buttonList2{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.version{
+  color: rgb(55, 55, 55);
+}
+
+.navImg{
+  filter: invert();
+  width: 150px;
+  text-align: center;
+  opacity: 0.5;
+}
+
+.navSlider{
+  background-color: rgb(15, 15, 15);
+}
+
+#slider {
+  height: 4px;
+  background: #ebe3d5;
+  width: 0%;
+  max-width: 100%;
+  border-radius: 10px;
+  position: fixed;
+  top: 50px;
+  z-index: 1;
+}
+
+svg {
+  color: white;
+  cursor: pointer;
+}
+
+.help {
+  color: white;
+  height: 50px;
+}
+
+.burger-wrapper {
+  position: fixed;
+  top: 0;
+  display: flex;
+  height: 100%;
+  z-index: 6;
+}
+
+.burger-menu {
+  width: 280px;
+  height: 100%;
+  background-color: #151515;
+  overflow-x: hidden;
+  transition: 0.5s;
+  position: fixed;
+  top: 0;
+  left: -280px;
+}
+
+.burger-header {
+  background-color: #151515;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.close-btn {
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
+}
+
+.burger-links {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+}
+
+.burger-toggle {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 50px;
+  background-color: #444;
+  cursor: pointer;
+}
+
+.burger-toggle .icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.menubtn {
+  width: 80%;
+  margin-left: 10%;
+  margin-bottom: 5px;
+  height: 40px;
+  color: black;
+  background-color: #ebe3d5;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.svgIcon {
+  position: absolute;
+  left: 10%;
+  top: 25%;
+}
+
+.menuP {
+  position: absolute;
+  text-align: center;
+  color: black;
+}
+
+.header3 {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 15px;
+  font-size: 1.5rem;
+  position: fixed;
+  top: 0;
+  background-color: rgb(15, 15, 15);
+  z-index: 5;
+}

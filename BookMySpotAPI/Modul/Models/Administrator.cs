@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace BookMySpotAPI.Modul.Models
 {
     [Table("Administrator")]
-    public class Administrator: Osoba
+    public class Administrator: KorisnickiNalog
     {
-        [Key]
-        public int AdministratorID { get; set; }
+        [JsonIgnore]
+        public string PIN{ get; set; }
     }
 }

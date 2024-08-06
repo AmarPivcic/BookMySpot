@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BookMySpot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+    <div class="containercard" *ngFor="let kategorija of kategorijeLista">
+      <p class="cardtitle">{{kategorija.naziv}}</p>
+      <p class="cardsubtitle">1 Opcija</p>
+      <img class="cardimg" [src]="kategorija.slika">
+    </div>
+</div>
+
+<input type="file" (change)="onFileUploadChange($event)">
+  <label style="color: white;">
+    Ime kategorije:
+  </label>
+  <input type="text" [(ngModel)]="imeKategorije">
+  <button style="width: 60px" (click)="onSubmit()">Submit</button>
+</body>
+</html>

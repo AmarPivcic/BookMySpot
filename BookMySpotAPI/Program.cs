@@ -1,7 +1,9 @@
 using BookMySpotAPI.Data;
+using BookMySpotAPI.Helper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,11 +20,8 @@ var config = new ConfigurationBuilder()
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(config.GetConnectionString("db1")));
 
-// Add services to the container.
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<Slike>();
+
 
 var app = builder.Build();
 
@@ -34,7 +33,9 @@ if (app.Environment.IsDevelopment())
 };
 
 app.UseDefaultFiles();
+
 app.UseStaticFiles();
+
 
 app.UseCors(
     options => options
@@ -44,10 +45,19 @@ app.UseCors(
         .AllowCredentials()
 ); //This needs to set everything allowed
 
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Slike")),
+    RequestPath = "/Slike"
+});
+
 app.MapControllers();
 
 app.Run();
+
+

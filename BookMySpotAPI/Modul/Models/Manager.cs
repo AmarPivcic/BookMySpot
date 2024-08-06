@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BookMySpotAPI.Modul.Models
 {
     [Table("Manager")]
-    public class Manager :Osoba
+    public class Manager :KorisnickiNalog
     {
-        [Key]
-        public int ManagerID { get; set; }
+        
+        public string? pozicija{ get; set; }
     }
 }

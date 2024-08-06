@@ -16,20 +16,20 @@ namespace BookMySpotAPI.Modul.Controllers
         }
 
         [HttpGet("id")]
-        public ActionResult Get(int id)
+        public async Task <ActionResult> Get(int id)
         {
-            return Ok(_dbContext.KreditneKartice.FirstOrDefault(x => x.KarticaID == id));
+            return Ok(await _dbContext.KreditneKartice.FirstOrDefaultAsync(x => x.KarticaID == id));
         }
 
         [HttpGet("korisnikId")]
-        public ActionResult GetByKorisnik(int korisnikId)
+        public async Task <ActionResult> GetByKorisnik(int korisnikId)
         {
-            var data = _dbContext.KreditneKartice.Include(k=>k.KorisnikID).FirstOrDefault(x=>x.KorisnikID == korisnikId);
+            var data = await _dbContext.KreditneKartice.Include(k=>k.KorisnikID).FirstOrDefaultAsync(x=>x.KorisnikID == korisnikId);
             return Ok(data);
         }
 
         [HttpPost]
-        public ActionResult Add([FromBody] KreditnaKarticaAddVM x)
+        public async Task <ActionResult> Add([FromBody] KreditnaKarticaAddVM x)
         {
             var newKreditnaKartica = new KreditnaKartica
             {
@@ -38,9 +38,9 @@ namespace BookMySpotAPI.Modul.Controllers
                 DatumIsteka = x.DatumIsteka,
                 SigurnosniBroj = x.SigurnosniBroj
             };
-            _dbContext.Add(newKreditnaKartica);
-            _dbContext.SaveChanges();
-            return Get(newKreditnaKartica.KorisnikID);
+            await _dbContext.KreditneKartice.AddAsync(newKreditnaKartica);
+            await _dbContext.SaveChangesAsync();
+            return await Get(newKreditnaKartica.KorisnikID);
         }
     }
 }

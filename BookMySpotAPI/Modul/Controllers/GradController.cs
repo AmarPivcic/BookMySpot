@@ -17,21 +17,21 @@ namespace BookMySpotAPI.Modul.Controllers
         }
 
         [HttpGet("id")]
-        public ActionResult Get(int id)
+        public async Task <ActionResult> Get(int id)
         {
-            return Ok(_dbContext.Gradovi.FirstOrDefault(x => x.GradID==id));
+            return Ok(await _dbContext.Gradovi.FirstOrDefaultAsync(x => x.GradID==id));
         }
 
         [HttpPost]
-        public ActionResult Add([FromBody] GradAddVM x)
+        public async Task <ActionResult> Add([FromBody] GradAddVM x)
         {
             var newGrad = new Grad
             {
                 Naziv = x.Naziv
             };
-            _dbContext.Add(newGrad);
-            _dbContext.SaveChanges();
-            return Get(newGrad.GradID);
+            await _dbContext.Gradovi.AddAsync(newGrad);
+            await _dbContext.SaveChangesAsync();
+            return await Get(newGrad.GradID);
         }
 
     }
