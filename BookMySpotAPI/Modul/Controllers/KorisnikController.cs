@@ -18,14 +18,14 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpGet]
         public async Task <ActionResult> Get(int id)
         {
-            return Ok(await _dbContext.Korisnici.FirstOrDefaultAsync(x=> x.OsobaID == id));
+            return Ok(await _dbContext.Korisnici.FirstOrDefaultAsync(x=> x.osobaID == id));
         }
 
 
         [HttpPost]
         public async Task <ActionResult> PromijeniIme([FromBody] KorisnickiNalogEditVM x)
         {
-            KorisnickiNalog osoba = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.OsobaID == x.OsobaID);
+            KorisnickiNalog osoba = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.osobaID == x.OsobaID);
 
             if(osoba == null)
             {
@@ -33,7 +33,7 @@ namespace BookMySpotAPI.Modul.Controllers
             }
             else
             {
-                osoba.Ime = x.novoIme;
+                osoba.ime = x.novoIme;
                 await _dbContext.SaveChangesAsync();
                 return Ok();
             }
@@ -42,7 +42,7 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpPost]
         public async Task <ActionResult> PromijenPrezime([FromBody] KorisnickiNalogEditVM x)
         {
-            KorisnickiNalog osoba = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.OsobaID == x.OsobaID);
+            KorisnickiNalog osoba = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.osobaID == x.OsobaID);
 
             if (osoba == null)
             {
@@ -50,7 +50,7 @@ namespace BookMySpotAPI.Modul.Controllers
             }
             else
             {
-                osoba.Prezime = x.novoPrezime;
+                osoba.prezime = x.novoPrezime;
                 await _dbContext.SaveChangesAsync();
                 return Ok();
             }
@@ -59,7 +59,7 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpPost]
         public async Task <ActionResult> PromijeniEmail([FromBody] KorisnickiNalogEditVM x)
         {
-            KorisnickiNalog osoba = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.OsobaID == x.OsobaID);
+            KorisnickiNalog osoba = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.osobaID == x.OsobaID);
 
             if (osoba == null)
             {
@@ -67,7 +67,7 @@ namespace BookMySpotAPI.Modul.Controllers
             }
             else
             {
-                osoba.Email = x.noviEmail;
+                osoba.email = x.noviEmail;
                 await _dbContext.SaveChangesAsync();
                 return Ok();
             }
@@ -76,7 +76,7 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpPost]
         public async Task<ActionResult> PromijeniTelefon([FromBody] KorisnickiNalogEditVM x)
         {
-            KorisnickiNalog osoba =await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.OsobaID == x.OsobaID);
+            KorisnickiNalog osoba =await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.osobaID == x.OsobaID);
 
             if (osoba == null)
             {
@@ -84,7 +84,7 @@ namespace BookMySpotAPI.Modul.Controllers
             }
             else
             {
-                osoba.Telefon = x.noviTelefon;
+                osoba.telefon = x.noviTelefon;
                 await _dbContext.SaveChangesAsync();
                 return Ok();
             }
@@ -93,7 +93,7 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpPost]
         public async  Task<ActionResult> PromijeniKorisnickoIme([FromBody] KorisnickiNalogEditVM x)
         {
-            KorisnickiNalog osoba = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.OsobaID == x.OsobaID);
+            KorisnickiNalog osoba = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.osobaID == x.OsobaID);
 
             if (osoba == null)
             {

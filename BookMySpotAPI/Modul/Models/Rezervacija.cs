@@ -8,13 +8,19 @@ namespace BookMySpotAPI.Modul.Models
     {
         [Key]
         public int RezervacijaID { get; set; }
-        public DateTime RezervacijaDatumVrijeme { get; set; }
-        public bool Otkazano = false;
-        public bool Zavrseno = false;
-        public bool KarticnoPlacanje = false;
+        public DateTime datumRezervacije { get; set; }
+        public string rezervacijaPocetak {  get; set; }
+        public string rezervacijaKraj {  get; set; }
+        public bool otkazano = false;
+        public bool zavrseno = false;
         [ForeignKey(nameof(Korisnik))]
-        public int KorisnikID { get; set; }
+        public int korisnikID { get; set; }
+        public Korisnik korisnik { get; set; }
         [ForeignKey(nameof(Usluga))]
-        public int UslugaID { get; set;}
+        public int uslugaID { get; set;}
+        public Usluga usluga { get; set; }
+        [ForeignKey(nameof(UsluzniObjekt))]
+        public int usluzniObjektID { get; set; }
+        public UsluzniObjekt usluzniObjekt { get; set; }
     }
 }

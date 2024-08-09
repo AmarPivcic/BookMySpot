@@ -23,10 +23,10 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
         {
             var korisnik = new Korisnik
             {
-                Ime = "UserIme",
-                Prezime = "UserPrezime",
-                Email = "user@gmail.com",
-                Telefon = "+38763222222",
+                ime = "UserIme",
+                prezime = "UserPrezime",
+                email = "user@gmail.com",
+                telefon = "+38763222222",
                 korisnickoIme = "user",
                 brojRezervacija = 2
             };

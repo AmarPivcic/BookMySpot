@@ -8,13 +8,13 @@ namespace BookMySpotAPI.Modul.Models
     public class KorisnickiNalog
     {
         [Key]
-        public int OsobaID { get; set; }
-        public string? Ime { get; set; }
-        public string? Prezime { get; set; }
-        public string? Email { get; set; }
-        public string? Telefon { get; set; }
+        public int osobaID { get; set; }
+        public string? ime { get; set; }
+        public string? prezime { get; set; }
+        public string? email { get; set; }
+        public string? telefon { get; set; }
         public string? korisnickoIme { get; set; }
-        public byte[]? Slika { get; set; }
+        public string? slika { get; set; }
         [JsonIgnore]
         public string? lozinka { get; set; }
         [JsonIgnore]

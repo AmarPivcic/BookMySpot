@@ -59,11 +59,11 @@ namespace BookMySpotAPI.Autentifikacija.Controllers
         {
             var newKorisnickiNalog = new Korisnik
             {
-                Ime = x.Ime,
-                Prezime = x.Prezime,
-                Email = x.Email,
+                ime = x.ime,
+                prezime = x.prezime,
+                email = x.email,
                 korisnickoIme = x.korisnickoIme,
-                Slika = null
+                slika = null
             };
 
             var hashedPassword = _passwordHasher.HashPassword(newKorisnickiNalog, x.lozinka);
