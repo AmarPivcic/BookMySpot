@@ -24,7 +24,7 @@
               </div>
               <p class="menuP">Početna</p>
             </button>
-            <button (click)="NavigirajIZatvori('/login')" class="menubtn">
+            <button (click)="NavigirajIZatvori('/login')" class="menubtn" *ngIf="loginInfo().isLogiran == false">
               <div class="svgIcon">
                 <svg
                   style="fill: black; margin-right: 10px"
