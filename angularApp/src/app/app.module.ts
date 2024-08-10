@@ -9,6 +9,7 @@ import {HomeComponent} from "./home/home.component";
 import { HeaderComponent } from './shared/header.component';
 import {FormsModule} from "@angular/forms";
 import { MojRacunComponent } from './moj-racun/moj-racun.component';
+import {ONamaComponent} from "./o-nama/o-nama.component";
 
 @NgModule({
 
@@ -24,7 +25,8 @@ import { MojRacunComponent } from './moj-racun/moj-racun.component';
     RouterModule.forRoot([
       {path: 'login', component: LoginComponent},
       {path:'', component: HomeComponent},
-      {path:'mojRacun', component: MojRacunComponent}
+      {path:'mojRacun', component: MojRacunComponent},
+      {path:'oNama', component: ONamaComponent},
     ]),
     HttpClientModule,
     BrowserAnimationsModule,
