@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {MarkdownComponent} from "ngx-markdown";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
+import {ONamaSadrzaj} from "../models/ONamaSadrzaj.model";
+import {HttpClient} from "@angular/common/http";
+import {MojConfig} from "../moj-config";
+import {ONamaComponent} from "../o-nama/o-nama.component";
 
 @Component({
   selector: 'app-o-nama-edit',
@@ -14,6 +18,42 @@ import {RouterLink} from "@angular/router";
   templateUrl: './o-nama-edit.component.html',
   styleUrl: './o-nama-edit.component.css'
 })
-export class ONamaEditComponent {
-  tekst = "";
+export class ONamaEditComponent implements OnInit{
+  tekst: string | null;
+  url = MojConfig.adresa_servera;
+  constructor(private httpClient: HttpClient, private router: Router) {
+    this.tekst = "";
+  }
+
+  ngOnInit(): void {
+    this.httpClient.get<ONamaSadrzaj>(this.url + '/api/ONama').subscribe({
+      next: (response) => {
+        console.log("Uspjesno dobavljen tekst");
+        this.tekst = response.tekst;
+      },
+      error: (error) => {
+        console.log("Neuspjesno dobavljen tekst", error);
+      }
+    })
+  }
+
+  SpasiPromjene() {
+    if (this.tekst !== null) {
+      const payload = { Tekst: this.tekst };
+
+      this.httpClient.post<ONamaSadrzaj>(`${this.url}/api/ONama`, payload, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).subscribe({
+        next: (response) => {
+          console.log("Uspješno poslano");
+          this.router.navigate(['/oNama']);
+        },
+        error: (error) => {
+          console.log("Neuspješno poslano", error);
+        }
+      });
+    }
+  }
 }

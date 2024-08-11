@@ -87,6 +87,15 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             await _dbContext.Kategorije.AddAsync(vozila);
             await _dbContext.SaveChangesAsync();
 
+
+            var oNamaSadrzaj = new ONamaSadrzaj
+            {
+                Tekst = "<center>\n\n## Ovo je centriran naslov\n\nOvo je centriran tekst.\n\n<img src=\"/assets/BookMySpot.png\" alt=\"BookMySpot\" width=\"150\" height=\"100\" />\n\n**Ovo je podebljani centrirani tekst.**\n\n*Ovo je kurzivom centrirani tekst.*\n\n</center>"
+            };
+
+            await _dbContext.SadrzajiONama.AddAsync(oNamaSadrzaj);
+            await _dbContext.SaveChangesAsync();
+
             return Ok();
         }
     }

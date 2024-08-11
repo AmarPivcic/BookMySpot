@@ -1,25 +1,3 @@
-.markdownContainer {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.plainTextarea, .markdownTextarea {
-  color: black;
-  height: 550px;
-  width: 49%;
-  border: 1px solid;
-  overflow-x: scroll;
-}
-
-.tekst{
-  height: 100%;
-  width: 100%;
-  color: black;
-}
-
-
-
 * {
   margin: 0;
   padding: 0;

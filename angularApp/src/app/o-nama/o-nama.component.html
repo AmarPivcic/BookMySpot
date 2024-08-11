@@ -15,14 +15,12 @@
 <div class="about">
   <p class="AboutUs">O Nama</p>
   <div class="aboutText">
-    <img src="/assets/BookMySpot.png" style="height: 110px" />
-    <br />
-    <p style="font-style: italic; font-size: 1.3rem; text-align: center; ">
-      Dobrodošli u BookMySpot!
-    </p>
-    <br />
 
-    <button [routerLink]="['/oNamaEdit']">Uredi</button>
+    <markdown [data]="tekst">
+
+    </markdown>
+
+    <button style="color: black" [routerLink]="['/oNamaEdit']">Uredi</button>
 
   </div>
 </div>

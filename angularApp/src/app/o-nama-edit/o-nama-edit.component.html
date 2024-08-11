@@ -15,13 +15,6 @@
 <div class="about">
   <p class="AboutUs">O Nama</p>
   <div class="aboutText">
-    <img src="/assets/BookMySpot.png" style="height: 110px" />
-    <br />
-    <p style="font-style: italic; font-size: 1.3rem; text-align: center; ">
-      Dobrodošli u BookMySpot!
-    </p>
-    <br />
-
     <div class="markdownContainer">
       <div class="plainTextarea">
         <textarea class="tekst" [(ngModel)]="tekst" id="content" name="content"></textarea>
@@ -30,7 +23,7 @@
         <markdown style="color: black" [data]="tekst"></markdown>
       </div>
     </div>
-    <button [routerLink]="['/oNama']">Spasi promjene</button>
+    <button style="color: black" (click)="SpasiPromjene()">Spasi promjene</button>
   </div>
 </div>
 
