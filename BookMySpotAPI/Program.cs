@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Identity.Web;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -44,7 +46,6 @@ app.UseCors(
         .AllowAnyHeader()
         .AllowCredentials()
 ); //This needs to set everything allowed
-
 
 app.UseHttpsRedirection();
 
