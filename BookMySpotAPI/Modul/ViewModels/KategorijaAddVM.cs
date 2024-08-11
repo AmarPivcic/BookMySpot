@@ -2,7 +2,7 @@
 {
     public class KategorijaAddVM
     {
-        public string? Naziv { get; set; }
-        public IFormFile? Slika { get; set; }
+        public string? naziv { get; set; }
+        public IFormFile? slika { get; set; }
     }
 }

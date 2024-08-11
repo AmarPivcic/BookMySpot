@@ -26,18 +26,18 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpGet]
         public async Task <ActionResult> Get(int id) 
         { 
-            return Ok(await _dbContext.Kategorije.FirstOrDefaultAsync(x=>x.KategorijaID==id));
+            return Ok(await _dbContext.Kategorije.FirstOrDefaultAsync(x=>x.kategorijaID==id));
         }
 
         [HttpPost]
         public async Task<ActionResult> Add([FromForm] KategorijaAddVM x)
         {
             var slike = new Slike(_webHostEnvironment);
-            var slikaKategorije = slike.dodajSliku(x.Slika);
+            var slikaKategorije = slike.dodajSliku(x.slika);
             var newKategorija = new Kategorija
             {
-                Naziv = x.Naziv,
-                Slika = slikaKategorije,
+                naziv = x.naziv,
+                slika = slikaKategorije,
             };
             await _dbContext.Kategorije.AddAsync(newKategorija);
             await _dbContext.SaveChangesAsync();
@@ -47,7 +47,7 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpDelete]
         public async Task <ActionResult> Delete(int id)
         {
-            var data = await _dbContext.Kategorije.FirstOrDefaultAsync(x=>x.KategorijaID==id);
+            var data = await _dbContext.Kategorije.FirstOrDefaultAsync(x=>x.kategorijaID==id);
             if (data == null)
             {
                 return NotFound();

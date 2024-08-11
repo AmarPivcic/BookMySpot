@@ -7,8 +7,9 @@ namespace BookMySpotAPI.Modul.Models
     public class Kategorija
     {
         [Key]
-        public int KategorijaID { get; set; }
-        public string? Naziv { get; set; }
-        public string? Slika { get; set; }
+        public int kategorijaID { get; set; }
+        public string? naziv { get; set; }
+        public string? slika { get; set; }
+
     }
 }

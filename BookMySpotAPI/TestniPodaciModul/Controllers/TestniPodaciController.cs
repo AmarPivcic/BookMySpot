@@ -40,8 +40,8 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
 
             var smjestaj = new Kategorija
             {
-                Naziv = "Smještaj",
-                Slika = "https://localhost:7058/Slike/room.jpg"
+                naziv = "Smještaj",
+                slika = "https://localhost:7058/Slike/room.jpg"
             };
 
             await _dbContext.Kategorije.AddAsync(smjestaj);
@@ -50,8 +50,8 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
 
             var saloniLjepote = new Kategorija
             {
-                Naziv = "Saloni Ljepote",
-                Slika = "https://localhost:7058/Slike/beauty.jpg"
+                naziv = "Saloni Ljepote",
+                slika = "https://localhost:7058/Slike/beauty.jpg"
             };
 
             await _dbContext.Kategorije.AddAsync(saloniLjepote);
@@ -60,8 +60,8 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
 
             var ugostiteljstvo = new Kategorija
             {
-                Naziv = "Ugostiteljstvo",
-                Slika = "https://localhost:7058/Slike/restoran.jpg"
+                naziv = "Ugostiteljstvo",
+                slika = "https://localhost:7058/Slike/restoran.jpg"
             };
 
             await _dbContext.Kategorije.AddAsync(ugostiteljstvo);
@@ -70,8 +70,8 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
 
             var ordinacije = new Kategorija
             {
-                Naziv = "Ordinacije",
-                Slika = "https://localhost:7058/Slike/ordinacija.jpg"
+                naziv = "Ordinacije",
+                slika = "https://localhost:7058/Slike/ordinacija.jpg"
             };
 
             await _dbContext.Kategorije.AddAsync(ordinacije);
@@ -80,8 +80,8 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
 
             var vozila = new Kategorija
             {
-                Naziv = "Vozila",
-                Slika = "https://localhost:7058/Slike/vozila.jpg"
+                naziv = "Vozila",
+                slika = "https://localhost:7058/Slike/vozila.jpg"
             };
 
             await _dbContext.Kategorije.AddAsync(vozila);

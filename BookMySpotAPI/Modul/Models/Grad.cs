@@ -4,7 +4,7 @@ namespace BookMySpotAPI.Modul.Models
     public class Grad
     {
         [Key]
-        public int GradID { get; set; }
-        public string? Naziv { get; set; }
+        public int gradID { get; set; }
+        public string? naziv { get; set; }
     }
 }

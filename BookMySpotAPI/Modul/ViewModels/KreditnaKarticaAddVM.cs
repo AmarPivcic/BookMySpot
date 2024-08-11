@@ -2,9 +2,9 @@
 {
     public class KreditnaKarticaAddVM
     {
-        public string? BrojKartice { get; set; }
-        public string? DatumIsteka { get; set; }
-        public string? SigurnosniBroj { get; set; }
-        public int KorisnikID { get; set; }
+        public string? brojKartice { get; set; }
+        public string? datumIsteka { get; set; }
+        public string? sigurnosniBroj { get; set; }
+        public int korisnikID { get; set; }
     }
 }

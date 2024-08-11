@@ -7,7 +7,7 @@ namespace BookMySpotAPI.Modul.Models
     public class Rezervacija
     {
         [Key]
-        public int RezervacijaID { get; set; }
+        public int rezervacijaID { get; set; }
         public DateTime datumRezervacije { get; set; }
         public string rezervacijaPocetak {  get; set; }
         public string rezervacijaKraj {  get; set; }
@@ -19,8 +19,6 @@ namespace BookMySpotAPI.Modul.Models
         [ForeignKey(nameof(Usluga))]
         public int uslugaID { get; set;}
         public Usluga usluga { get; set; }
-        [ForeignKey(nameof(UsluzniObjekt))]
-        public int usluzniObjektID { get; set; }
-        public UsluzniObjekt usluzniObjekt { get; set; }
+  
     }
 }

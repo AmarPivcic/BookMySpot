@@ -19,7 +19,7 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpGet("id")]
         public async Task <ActionResult> Get(int id)
         {
-            return Ok(await _dbContext.Gradovi.FirstOrDefaultAsync(x => x.GradID==id));
+            return Ok(await _dbContext.Gradovi.FirstOrDefaultAsync(x => x.gradID==id));
         }
 
         [HttpPost]
@@ -27,11 +27,11 @@ namespace BookMySpotAPI.Modul.Controllers
         {
             var newGrad = new Grad
             {
-                Naziv = x.Naziv
+                naziv = x.Naziv
             };
             await _dbContext.Gradovi.AddAsync(newGrad);
             await _dbContext.SaveChangesAsync();
-            return await Get(newGrad.GradID);
+            return await Get(newGrad.gradID);
         }
 
     }

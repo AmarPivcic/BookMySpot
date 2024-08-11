@@ -12,13 +12,16 @@ namespace BookMySpotAPI.Modul.Models
         public string? adresa { get; set; }
         public string? telefon { get; set; }
         [ForeignKey(nameof(Manager))]
-        public int managerID { get; set; }
+        public int osobaID { get; set; }
         public Manager manager { get; set; }
         public string? slika { get; set; }
         [ForeignKey(nameof(Kategorija))]
-        public int KategorijaID { get; set;}
+        public int kategorijaID { get; set;}
         public Kategorija kategorija { get; set; }
         public float prosjecnaOcjena { get; set; }
-        public ICollection<Usluga> usluge { get; set; } = new List<Usluga>();
+        [ForeignKey(nameof (Grad))]
+        public int gradID { get; set; }
+        public Grad grad { get; set; }
+        public ICollection<ManagerUsluzniObjekt> managerUsluzniObjekt { get; set; } = new List<ManagerUsluzniObjekt>();
     }
 }

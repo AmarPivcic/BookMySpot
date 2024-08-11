@@ -6,11 +6,12 @@ namespace BookMySpotAPI.Modul.Models
     public class KreditnaKartica
     {
         [Key]
-        public int KarticaID { get; set; }
-        public string? BrojKartice { get; set; }
-        public string? DatumIsteka { get; set; }
-        public string? SigurnosniBroj { get; set; }
+        public int karticaID { get; set; }
+        public string? brojKartice { get; set; }
+        public string? datumIsteka { get; set; }
+        public string? sigurnosniBroj { get; set; }
         [ForeignKey(nameof(Korisnik))]
-        public int KorisnikID { get; set; }
+        public int korisnikID { get; set; }
+        public Korisnik korisnik { get; set; }
     }
 }
