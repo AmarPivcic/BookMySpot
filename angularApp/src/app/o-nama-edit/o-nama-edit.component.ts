@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import {MarkdownComponent} from "ngx-markdown";
 import {FormsModule} from "@angular/forms";
+import {MarkdownComponent} from "ngx-markdown";
 import {RouterLink} from "@angular/router";
 
 @Component({
-  selector: 'app-o-nama',
+  selector: 'app-o-nama-edit',
   standalone: true,
   imports: [
-    MarkdownComponent,
     FormsModule,
+    MarkdownComponent,
     RouterLink
   ],
-  templateUrl: './o-nama.component.html',
-  styleUrl: './o-nama.component.css'
+  templateUrl: './o-nama-edit.component.html',
+  styleUrl: './o-nama-edit.component.css'
 })
-export class ONamaComponent {
+export class ONamaEditComponent {
   tekst = "";
 }

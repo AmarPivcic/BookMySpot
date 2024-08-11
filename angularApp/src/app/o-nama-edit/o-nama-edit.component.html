@@ -22,12 +22,18 @@
     </p>
     <br />
 
-    <button [routerLink]="['/oNamaEdit']">Uredi</button>
-
+    <div class="markdownContainer">
+      <div class="plainTextarea">
+        <textarea class="tekst" [(ngModel)]="tekst" id="content" name="content"></textarea>
+      </div>
+      <div class="markdownTextarea">
+        <markdown style="color: black" [data]="tekst"></markdown>
+      </div>
+    </div>
+    <button [routerLink]="['/oNama']">Spasi promjene</button>
   </div>
 </div>
 
 </body>
 
 </html>
-
