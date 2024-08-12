@@ -4,6 +4,10 @@
   width: 100%;
 }
 
+.text-right {
+  text-align: right;
+}
+
 .plainTextarea, .markdownTextarea {
   color: black;
   height: 550px;

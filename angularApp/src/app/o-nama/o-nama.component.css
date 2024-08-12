@@ -9,6 +9,14 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.text-right {
+  text-align: right;
+}
+
+.mardownContainerText{
+  color: black;
+}
+
 a {
   text-decoration: none;
 }
