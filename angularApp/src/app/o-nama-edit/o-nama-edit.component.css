@@ -8,7 +8,25 @@
   text-align: right;
 }
 
-.plainTextarea, .markdownTextarea {
+.plainTextarea {
+  color: black;
+  height: 550px;
+  width: 49%;
+  border: 1px solid;
+}
+
+.btnOk{
+  color: white;
+  background-color: #776b5d;
+  padding: 5px;
+  border-radius: 5px;
+  width: 150px;
+  height: fit-content;
+  text-align: center;
+  margin-top: 25px;
+}
+
+.markdownTextarea{
   color: black;
   height: 550px;
   width: 49%;
