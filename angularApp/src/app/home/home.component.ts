@@ -56,4 +56,16 @@ export class HomeComponent implements OnInit{
     }
   }
 
+  onCategoryClick(kategorijaID: number)
+  {
+    const burgerMenu = document.querySelector(".burger-menu");
+    const slider = document.querySelector("#slider");
+    // @ts-ignore
+    burgerMenu.style.left = "-280px";
+    // @ts-ignore
+    slider.style.width="0px"
+    this.router.navigate(['/kategorija', kategorijaID]);
+    window.scrollTo(0,0);
+  }
+
 }

@@ -11,7 +11,7 @@
 
 <body>
 <div class="container">
-    <div class="containercard" *ngFor="let kategorija of kategorijeLista">
+    <div class="containercard" *ngFor="let kategorija of kategorijeLista" (click)="onCategoryClick(kategorija.kategorijaID)">
       <p class="cardtitle">{{kategorija.naziv}}</p>
       <p class="cardsubtitle">1 Opcija</p>
       <img class="cardimg" [src]="kategorija.slika">

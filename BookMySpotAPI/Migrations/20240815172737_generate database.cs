@@ -56,6 +56,50 @@ namespace BookMySpotAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SadrzajiONama",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Tekst = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SadrzajiONama", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsluzniObjekt",
+                columns: table => new
+                {
+                    usluzniObjektID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    nazivObjekta = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    adresa = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    telefon = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    radnoVrijemePocetak = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    radnoVrijemeKraj = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    slika = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    kategorijaID = table.Column<int>(type: "int", nullable: false),
+                    prosjecnaOcjena = table.Column<float>(type: "real", nullable: false),
+                    gradID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsluzniObjekt", x => x.usluzniObjektID);
+                    table.ForeignKey(
+                        name: "FK_UsluzniObjekt_Gradovi_gradID",
+                        column: x => x.gradID,
+                        principalTable: "Gradovi",
+                        principalColumn: "gradID");
+                    table.ForeignKey(
+                        name: "FK_UsluzniObjekt_Kategorija_kategorijaID",
+                        column: x => x.kategorijaID,
+                        principalTable: "Kategorija",
+                        principalColumn: "kategorijaID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Administrator",
                 columns: table => new
                 {
@@ -129,6 +173,28 @@ namespace BookMySpotAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Usluga",
+                columns: table => new
+                {
+                    uslugaID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    naziv = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    trajanje = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    cijena = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    usluzniObjektID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usluga", x => x.uslugaID);
+                    table.ForeignKey(
+                        name: "FK_Usluga_UsluzniObjekt_usluzniObjektID",
+                        column: x => x.usluzniObjektID,
+                        principalTable: "UsluzniObjekt",
+                        principalColumn: "usluzniObjektID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "KreditneKartice",
                 columns: table => new
                 {
@@ -146,43 +212,6 @@ namespace BookMySpotAPI.Migrations
                         name: "FK_KreditneKartice_Korisnik_korisnikID",
                         column: x => x.korisnikID,
                         principalTable: "Korisnik",
-                        principalColumn: "osobaID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UsluzniObjekt",
-                columns: table => new
-                {
-                    usluzniObjektID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    nazivObjekta = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    adresa = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    telefon = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    osobaID = table.Column<int>(type: "int", nullable: false),
-                    managerosobaID = table.Column<int>(type: "int", nullable: false),
-                    slika = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    kategorijaID = table.Column<int>(type: "int", nullable: false),
-                    prosjecnaOcjena = table.Column<float>(type: "real", nullable: false),
-                    gradID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UsluzniObjekt", x => x.usluzniObjektID);
-                    table.ForeignKey(
-                        name: "FK_UsluzniObjekt_Gradovi_gradID",
-                        column: x => x.gradID,
-                        principalTable: "Gradovi",
-                        principalColumn: "gradID");
-                    table.ForeignKey(
-                        name: "FK_UsluzniObjekt_Kategorija_kategorijaID",
-                        column: x => x.kategorijaID,
-                        principalTable: "Kategorija",
-                        principalColumn: "kategorijaID");
-                    table.ForeignKey(
-                        name: "FK_UsluzniObjekt_Manager_managerosobaID",
-                        column: x => x.managerosobaID,
-                        principalTable: "Manager",
                         principalColumn: "osobaID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -207,28 +236,6 @@ namespace BookMySpotAPI.Migrations
                         column: x => x.usluzniObjektID,
                         principalTable: "UsluzniObjekt",
                         principalColumn: "usluzniObjektID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Usluga",
-                columns: table => new
-                {
-                    uslugaID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    naziv = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    trajanje = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    cijena = table.Column<float>(type: "real", nullable: false),
-                    usluzniObjektID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Usluga", x => x.uslugaID);
-                    table.ForeignKey(
-                        name: "FK_Usluga_UsluzniObjekt_usluzniObjektID",
-                        column: x => x.usluzniObjektID,
-                        principalTable: "UsluzniObjekt",
-                        principalColumn: "usluzniObjektID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -299,11 +306,6 @@ namespace BookMySpotAPI.Migrations
                 name: "IX_UsluzniObjekt_kategorijaID",
                 table: "UsluzniObjekt",
                 column: "kategorijaID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsluzniObjekt_managerosobaID",
-                table: "UsluzniObjekt",
-                column: "managerosobaID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -324,10 +326,19 @@ namespace BookMySpotAPI.Migrations
                 name: "Rezervacija");
 
             migrationBuilder.DropTable(
+                name: "SadrzajiONama");
+
+            migrationBuilder.DropTable(
+                name: "Manager");
+
+            migrationBuilder.DropTable(
                 name: "Korisnik");
 
             migrationBuilder.DropTable(
                 name: "Usluga");
+
+            migrationBuilder.DropTable(
+                name: "KorisnickiNalog");
 
             migrationBuilder.DropTable(
                 name: "UsluzniObjekt");
@@ -337,12 +348,6 @@ namespace BookMySpotAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Kategorija");
-
-            migrationBuilder.DropTable(
-                name: "Manager");
-
-            migrationBuilder.DropTable(
-                name: "KorisnickiNalog");
         }
     }
 }

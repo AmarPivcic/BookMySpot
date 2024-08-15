@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookMySpotAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240811160017_generate database")]
+    [Migration("20240815172737_generate database")]
     partial class generatedatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -164,6 +164,23 @@ namespace BookMySpotAPI.Migrations
                     b.ToTable("ManagerUsluzniObjekt");
                 });
 
+            modelBuilder.Entity("BookMySpotAPI.Modul.Models.ONamaSadrzaj", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Tekst")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SadrzajiONama");
+                });
+
             modelBuilder.Entity("BookMySpotAPI.Modul.Models.Rezervacija", b =>
                 {
                     b.Property<int>("rezervacijaID")
@@ -206,8 +223,9 @@ namespace BookMySpotAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("uslugaID"), 1L, 1);
 
-                    b.Property<float>("cijena")
-                        .HasColumnType("real");
+                    b.Property<string>("cijena")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("naziv")
                         .HasColumnType("nvarchar(max)");
@@ -242,17 +260,17 @@ namespace BookMySpotAPI.Migrations
                     b.Property<int>("kategorijaID")
                         .HasColumnType("int");
 
-                    b.Property<int>("managerosobaID")
-                        .HasColumnType("int");
-
                     b.Property<string>("nazivObjekta")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("osobaID")
-                        .HasColumnType("int");
-
                     b.Property<float>("prosjecnaOcjena")
                         .HasColumnType("real");
+
+                    b.Property<string>("radnoVrijemeKraj")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("radnoVrijemePocetak")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("slika")
                         .HasColumnType("nvarchar(max)");
@@ -265,8 +283,6 @@ namespace BookMySpotAPI.Migrations
                     b.HasIndex("gradID");
 
                     b.HasIndex("kategorijaID");
-
-                    b.HasIndex("managerosobaID");
 
                     b.ToTable("UsluzniObjekt");
                 });
@@ -387,17 +403,9 @@ namespace BookMySpotAPI.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("BookMySpotAPI.Modul.Models.Manager", "manager")
-                        .WithMany()
-                        .HasForeignKey("managerosobaID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("grad");
 
                     b.Navigation("kategorija");
-
-                    b.Navigation("manager");
                 });
 
             modelBuilder.Entity("BookMySpotAPI.Modul.Models.Administrator", b =>

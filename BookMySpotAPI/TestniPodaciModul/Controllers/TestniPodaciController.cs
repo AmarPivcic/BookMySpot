@@ -28,7 +28,7 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 email = "user@gmail.com",
                 telefon = "+38763222222",
                 korisnickoIme = "user",
-                brojRezervacija = 2
+                brojRezervacija = 0
             };
 
             var hashedPassword = _passwordHasher.HashPassword(korisnik, "user");
@@ -94,6 +94,95 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             };
 
             await _dbContext.SadrzajiONama.AddAsync(oNamaSadrzaj);
+            await _dbContext.SaveChangesAsync();
+
+            var mostar = new Grad
+            {
+                naziv = "Mostar"
+            };
+
+            await _dbContext.Gradovi.AddAsync(mostar);
+            await _dbContext.SaveChangesAsync();
+
+            var manager = new Manager
+            {
+                ime = "ManagerIme",
+                prezime = "ManagerPrezime",
+                email = "manager@gmail.com",
+                telefon = "+38763135135",
+                korisnickoIme = "manager",
+                pozicija = "Vlasnik"
+            };
+
+            var managerPassword = _passwordHasher.HashPassword(manager, "manager");
+            manager.lozinka = managerPassword;
+
+            var krecho = new UsluzniObjekt
+            {
+                nazivObjekta = "Barbershop Krecho",
+                adresa = "Zalik",
+                telefon = "+38734123123",
+                slika = "https://localhost:7058/Slike/kreco.jpg",
+                kategorijaID = 2,
+                prosjecnaOcjena = 4.8f,
+                gradID = 1,
+                radnoVrijemePocetak = "08:00",
+                radnoVrijemeKraj = "20:00",
+            };
+
+            var managerUsluzniObjekt = new ManagerUsluzniObjekt
+            {
+                manager = manager,
+                usluzniObjekt = krecho
+            };
+
+            await _dbContext.Manageri.AddAsync(manager);
+            await _dbContext.UsluzniObjekti.AddAsync(krecho);
+            await _dbContext.ManagerUsluzniObjekti.AddAsync(managerUsluzniObjekt);
+            await _dbContext.SaveChangesAsync();
+
+            var usluga1 = new Usluga
+            {
+                naziv = "Moderno šišanje (Fade)",
+                trajanje = "30min",
+                cijena = "15KM",
+                usluzniObjektID = 1
+            };
+
+            await _dbContext.Usluge.AddAsync(usluga1);
+            await _dbContext.SaveChangesAsync();
+
+            var usluga2 = new Usluga
+            {
+                naziv = "Klasično šišanje",
+                trajanje = "30min",
+                cijena = "10KM",
+                usluzniObjektID = 1
+            };
+
+            await _dbContext.Usluge.AddAsync(usluga2);
+            await _dbContext.SaveChangesAsync();
+
+            var usluga3 = new Usluga
+            {
+                naziv = "Uređivanje brade",
+                trajanje = "15min",
+                cijena = "5KM",
+                usluzniObjektID = 1
+            };
+
+            await _dbContext.Usluge.AddAsync(usluga3);
+            await _dbContext.SaveChangesAsync();
+
+            var usluga4 = new Usluga
+            {
+                naziv = "Šišanje duge kose",
+                trajanje = "45min",
+                cijena = "15KM",
+                usluzniObjektID = 1
+            };
+
+            await _dbContext.Usluge.AddAsync(usluga4);
             await _dbContext.SaveChangesAsync();
 
             return Ok();

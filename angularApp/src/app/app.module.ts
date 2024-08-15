@@ -12,6 +12,8 @@ import { MojRacunComponent } from './moj-racun/moj-racun.component';
 import {ONamaComponent} from "./o-nama/o-nama.component";
 import {MarkdownModule} from "ngx-markdown";
 import {ONamaEditComponent} from "./o-nama-edit/o-nama-edit.component";
+import { KategorijaComponent } from './kategorija/kategorija.component';
+import { UsluzniObjektComponent } from './usluzni-objekt/usluzni-objekt.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import {ONamaEditComponent} from "./o-nama-edit/o-nama-edit.component";
         LoginComponent,
         HomeComponent,
         HeaderComponent,
-        MojRacunComponent
+        MojRacunComponent,
+        KategorijaComponent,
+        UsluzniObjektComponent
     ],
     bootstrap: [AppComponent],
     imports: [
@@ -31,6 +35,8 @@ import {ONamaEditComponent} from "./o-nama-edit/o-nama-edit.component";
             { path: 'mojRacun', component: MojRacunComponent },
             { path: 'oNama', component: ONamaComponent },
             { path: 'oNamaEdit', component: ONamaEditComponent },
+            { path: 'kategorija/:id', component: KategorijaComponent},
+            { path: 'usluzniObjekt/:id', component: UsluzniObjektComponent}
         ]),
       BrowserAnimationsModule,
       FormsModule

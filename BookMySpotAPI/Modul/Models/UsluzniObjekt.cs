@@ -11,9 +11,8 @@ namespace BookMySpotAPI.Modul.Models
         public string? nazivObjekta { get; set; }
         public string? adresa { get; set; }
         public string? telefon { get; set; }
-        [ForeignKey(nameof(Manager))]
-        public int osobaID { get; set; }
-        public Manager manager { get; set; }
+        public string? radnoVrijemePocetak { get; set; }
+        public string? radnoVrijemeKraj { get; set; }
         public string? slika { get; set; }
         [ForeignKey(nameof(Kategorija))]
         public int kategorijaID { get; set;}
