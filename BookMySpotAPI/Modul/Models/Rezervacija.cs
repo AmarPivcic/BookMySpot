@@ -11,14 +11,17 @@ namespace BookMySpotAPI.Modul.Models
         public DateTime datumRezervacije { get; set; }
         public string rezervacijaPocetak {  get; set; }
         public string rezervacijaKraj {  get; set; }
-        public bool otkazano = false;
-        public bool zavrseno = false;
+        public bool otkazano { get; set; } = false;
+        public bool zavrseno { get; set; } = false;
         [ForeignKey(nameof(Korisnik))]
         public int korisnikID { get; set; }
         public Korisnik korisnik { get; set; }
         [ForeignKey(nameof(Usluga))]
         public int uslugaID { get; set;}
         public Usluga usluga { get; set; }
+        [ForeignKey(nameof(UsluzniObjekt))]
+        public int usluzniObjektID { get; set; }
+        public UsluzniObjekt usluzniObjekt { get; set; }
   
     }
 }

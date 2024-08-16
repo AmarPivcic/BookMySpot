@@ -2,8 +2,8 @@
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 20px;
-    font-size: 1.8rem;
+    margin-top: 70px;
+    font-size: 2rem;
     letter-spacing: 1px;
     color: #ebe3d5;
   }
@@ -14,7 +14,7 @@
   
   /* Slideshow container */
   .slideshow-container {
-    max-width: 1000px;
+    width: 50%;
     position: relative;
     margin: auto;
     margin-top: 20px;
@@ -117,7 +117,7 @@
     border-radius: 5px;
     background-color: #ebe3d5;
     margin-top: 20px;
-    width: 90%;
+    width: 50%;
   }
   
   .Cjenovnik p {
@@ -125,10 +125,11 @@
     color: #151515;
   }
   
-  .Cjenovnik h3 {
+  h3 {
     color: black;
     text-align: center;
     margin-bottom: 10px;
+    font-size: 1.5rem;
   }
   
   .VansezonskeCijene {
@@ -211,14 +212,13 @@
     background-color: #ebe3d5;
     margin-top: 20px;
     margin-bottom: 30px;
-    width: 90%;
+    width: 50%;
     padding: 10px;
   }
   
   .inputiRezervacije,
   input {
     width: 100%;
-    height: 25px;
     display: flex;
     margin-bottom: 10px;
     background-color: #776b5d;
@@ -252,13 +252,15 @@
     border: none;
     border-radius: 5px;
     color: white;
-
+    font-size: 1.2rem;
+    user-select: none;
   }
   
   .datumRezV{
     width: 60%;
-    height: 25px;
     color: white;
+    padding: 5px;
+    font-size: 1.2rem;
   }
   
   #Email {
@@ -283,13 +285,7 @@
   
   label {
     color: black;
-    font-size: 0.9rem;
-  }
-  
-  .rezervacijaSmjestaja h3 {
-    color: black;
-    text-align: center;
-    margin-bottom: 10px;
+    font-size: 1.2rem;
   }
   
   ::placeholder {
@@ -297,13 +293,15 @@
   }
   
   .buttonRezervisi {
-    height: 25px;
+    height: 35px;
     width: 120px;
     background-color: #776b5d;
+    color: white;
     border-radius: 5px;
     border: none;
     letter-spacing: 1px;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
+    cursor:pointer;
   }
   
   .comment {
@@ -348,4 +346,18 @@
     margin-top: 10px;
     margin-bottom: 10px;
   }
+
+  .rezervacijaBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   
+  .starRating{
+    display: flex;
+    justify-content: center;
+  }
+
+  .starRating svg {
+    padding: 5px;
+  }

@@ -193,6 +193,9 @@ namespace BookMySpotAPI.Migrations
                     b.Property<int>("korisnikID")
                         .HasColumnType("int");
 
+                    b.Property<bool>("otkazano")
+                        .HasColumnType("bit");
+
                     b.Property<string>("rezervacijaKraj")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -204,11 +207,19 @@ namespace BookMySpotAPI.Migrations
                     b.Property<int>("uslugaID")
                         .HasColumnType("int");
 
+                    b.Property<int>("usluzniObjektID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("zavrseno")
+                        .HasColumnType("bit");
+
                     b.HasKey("rezervacijaID");
 
                     b.HasIndex("korisnikID");
 
                     b.HasIndex("uslugaID");
+
+                    b.HasIndex("usluzniObjektID");
 
                     b.ToTable("Rezervacija");
                 });
@@ -228,8 +239,8 @@ namespace BookMySpotAPI.Migrations
                     b.Property<string>("naziv")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("trajanje")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("trajanje")
+                        .HasColumnType("int");
 
                     b.Property<int>("usluzniObjektID")
                         .HasColumnType("int");
@@ -371,9 +382,17 @@ namespace BookMySpotAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BookMySpotAPI.Modul.Models.UsluzniObjekt", "usluzniObjekt")
+                        .WithMany()
+                        .HasForeignKey("usluzniObjektID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("korisnik");
 
                     b.Navigation("usluga");
+
+                    b.Navigation("usluzniObjekt");
                 });
 
             modelBuilder.Entity("BookMySpotAPI.Modul.Models.Usluga", b =>

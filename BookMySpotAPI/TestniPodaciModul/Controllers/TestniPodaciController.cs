@@ -144,7 +144,7 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             var usluga1 = new Usluga
             {
                 naziv = "Moderno šišanje (Fade)",
-                trajanje = "30min",
+                trajanje = 30,
                 cijena = "15KM",
                 usluzniObjektID = 1
             };
@@ -155,7 +155,7 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             var usluga2 = new Usluga
             {
                 naziv = "Klasično šišanje",
-                trajanje = "30min",
+                trajanje = 30,
                 cijena = "10KM",
                 usluzniObjektID = 1
             };
@@ -166,7 +166,7 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             var usluga3 = new Usluga
             {
                 naziv = "Uređivanje brade",
-                trajanje = "15min",
+                trajanje = 15,
                 cijena = "5KM",
                 usluzniObjektID = 1
             };
@@ -177,7 +177,7 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             var usluga4 = new Usluga
             {
                 naziv = "Šišanje duge kose",
-                trajanje = "45min",
+                trajanje = 45,
                 cijena = "15KM",
                 usluzniObjektID = 1
             };

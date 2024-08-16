@@ -12,10 +12,24 @@
 <body>
     <div class="titleIRatingHotel">
         <p class="titleHotel">{{usluzniObjekt?.nazivObjekta}}</p>
+        <div class="starRating" >
+          <ng-container *ngFor="let star of getStars(); let i = index">
+            <svg *ngIf="i < filledStars" xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" class="bi bi-star-fill"
+                viewBox="0 0 16 16">
+                <path
+                  d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+              </svg>
+            <svg *ngIf="i >= filledStars" xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" class="bi bi-star"
+            viewBox="0 0 16 16">
+            <path
+              d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+          </svg>
+          </ng-container>
+        </div>
     </div>
     <div class="slideshow-container fade">
         <div>
-          <img [src]="usluzniObjekt?.slika" style="width: 100%" />
+          <img [src]="usluzniObjekt?.slika" style="width: 100%; border-radius: 5px;" />
         </div>
     </div>
 
@@ -40,32 +54,27 @@
     <div class="rezervacijaSmjestaja">
         <h3>Rezervacija</h3>
         
-        <select required style="width: 100%; height: 25px; color: white;">
-          <option disabled selected>Odaberi uslugu</option>
-          <option *ngFor="let usluga of listaUsluga">{{usluga.naziv}} ({{usluga.trajanje}})</option>
+        <select [(ngModel)]="odabranaUsluga" (change)="onDatumUslugaChange()" required class="datumRezV" style="width: 100%;">
+          <option [ngValue]="null" disabled>Odaberi uslugu</option>
+          <option *ngFor="let usluga of listaUsluga" [ngValue]="usluga">{{usluga.naziv}} ({{usluga.trajanje}} min)</option>
         </select>
     
         <div class="datumRez">
-          <label for="birthdaytime">Datum termina:</label>
-          <input type="date" id="datumRezP" name="birthdaytime" />
+          <label for="datumRezervacije">Datum termina:</label>
+          <input [(ngModel)]="odabraniDatum" [min]="minDate" (change)="onDatumUslugaChange()" type="date" id="datumRezP" name="datumRezervacije" />
         </div>
     
         <div class="datumRez">
-          <label for="appt">Vrijeme termina:</label>
-          <select class="datumRezV" required>
-            <option disabled selected></option>
-            <option>07:00 - 08:30</option>
-            <option>08:30 - 10:00</option>
-            <option>11:30 - 13:00</option>
-            <option>13:00 - 14:30</option>
-            <option>16:30 - 18:00</option>
-            <option>19:30 - 21:00</option>
+          <label for="appt">Vrijeme početka termina:</label>
+          <select [(ngModel)]="odabranoVrijeme" class="datumRezV" required>
+            <option [ngValue]="null" disabled>Odaberi vrijeme</option>
+            <option *ngFor="let termin of dostupniTermini" [ngValue]="termin">{{termin}}</option>
           </select>
         </div>
 
-        <div>
-          <button *ngIf="loginInfo().isLogiran == true" class="buttonRezervisi">Rezerviši</button>
-          <p *ngIf="loginInfo().isLogiran == false">Morate biti prijavljeni kako bi ste izvršili rezervaciju.</p>
+        <div class="rezervacijaBox">
+          <button *ngIf="loginInfo().isLogiran == true" class="buttonRezervisi" (click)="rezervisiTermin()">Rezerviši</button>
+          <p *ngIf="loginInfo().isLogiran == false" style="margin-bottom: 5px;">Morate biti prijavljeni kako bi ste izvršili rezervaciju.</p>
           <button *ngIf="loginInfo().isLogiran == false" class="buttonRezervisi" (click)="prijava()">Prijava</button>
         </div>
       </div>

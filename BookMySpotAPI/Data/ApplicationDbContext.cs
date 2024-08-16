@@ -38,7 +38,7 @@ namespace BookMySpotAPI.Data
                 .HasOne(mb => mb.manager)
                 .WithMany(m => m.managerUsluzniObjekt)
                 .HasForeignKey(mb => mb.osobaID)
-                .OnDelete(DeleteBehavior.NoAction);  //rješavanje problema sa kaskadnim brisanjem (kada se briše uslužni manager)
+                .OnDelete(DeleteBehavior.NoAction);  //rješavanje problema sa kaskadnim brisanjem (kada se briše manager)
 
             modelBuilder.Entity<ManagerUsluzniObjekt>()
                 .HasOne(mb => mb.usluzniObjekt)
@@ -50,12 +50,18 @@ namespace BookMySpotAPI.Data
                 .HasOne(u => u.grad)
                 .WithMany()
                 .HasForeignKey(u => u.gradID)
-                .OnDelete(DeleteBehavior.NoAction);  //rješavanje problema sa kaskadnim brisanjem (kada se briše uslužni grad)
+                .OnDelete(DeleteBehavior.NoAction);  //rješavanje problema sa kaskadnim brisanjem (kada se briše grad)
 
-            modelBuilder.Entity<UsluzniObjekt>()  //rješavanje problema sa kaskadnim brisanjem (kada se briše uslužni kategorija)
+            modelBuilder.Entity<UsluzniObjekt>()  //rješavanje problema sa kaskadnim brisanjem (kada se briše kategorija)
                 .HasOne(u => u.kategorija)
                 .WithMany()
                 .HasForeignKey(u => u.kategorijaID)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Rezervacija>()  //rješavanje problema sa kaskadnim brisanjem (kada se briše rezervacija)
+                .HasOne(r => r.usluzniObjekt)
+                .WithMany()
+                .HasForeignKey(r => r.usluzniObjektID)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

@@ -9,7 +9,7 @@ namespace BookMySpotAPI.Modul.Models
         [Key]
         public int uslugaID { get; set; }
         public string? naziv { get; set; }
-        public string? trajanje { get; set; }
+        public int trajanje { get; set; }
         public string cijena { get; set; }
         [ForeignKey(nameof(UsluzniObjekt))]
         public int usluzniObjektID { get; set; }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BookMySpotAPI.Migrations
 {
-    public partial class generatedatabase : Migration
+    public partial class Generatedatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -179,7 +179,7 @@ namespace BookMySpotAPI.Migrations
                     uslugaID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     naziv = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    trajanje = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    trajanje = table.Column<int>(type: "int", nullable: false),
                     cijena = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     usluzniObjektID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -247,8 +247,11 @@ namespace BookMySpotAPI.Migrations
                     datumRezervacije = table.Column<DateTime>(type: "datetime2", nullable: false),
                     rezervacijaPocetak = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     rezervacijaKraj = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    otkazano = table.Column<bool>(type: "bit", nullable: false),
+                    zavrseno = table.Column<bool>(type: "bit", nullable: false),
                     korisnikID = table.Column<int>(type: "int", nullable: false),
-                    uslugaID = table.Column<int>(type: "int", nullable: false)
+                    uslugaID = table.Column<int>(type: "int", nullable: false),
+                    usluzniObjektID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -265,6 +268,11 @@ namespace BookMySpotAPI.Migrations
                         principalTable: "Usluga",
                         principalColumn: "uslugaID",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Rezervacija_UsluzniObjekt_usluzniObjektID",
+                        column: x => x.usluzniObjektID,
+                        principalTable: "UsluzniObjekt",
+                        principalColumn: "usluzniObjektID");
                 });
 
             migrationBuilder.CreateIndex(
@@ -291,6 +299,11 @@ namespace BookMySpotAPI.Migrations
                 name: "IX_Rezervacija_uslugaID",
                 table: "Rezervacija",
                 column: "uslugaID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rezervacija_usluzniObjektID",
+                table: "Rezervacija",
+                column: "usluzniObjektID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usluga_usluzniObjektID",
