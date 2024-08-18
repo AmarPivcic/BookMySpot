@@ -1,1 +1,83 @@
-<p>pitanja-admin-lista works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="about">
+  <p style="margin-top: 70px" class="AboutUs">Pitanja i odgovori</p>
+  <div class="aboutText">
+    <div>
+
+      <button [routerLink]="['/pitanjaOdgovori']">Odgovorena pitanja</button>
+      <button [routerLink]="['/pitanjaOdgovori/neodgovorenaPitanja']">Pristigla pitanja <span class="brojUDugmetu" *ngIf="brojPristiglihPitanja !== 0">{{brojPristiglihPitanja}}</span></button>
+      <button [routerLink]="['/pitanjaOdgovori/pitanjaAdminLista']">Sva pitanja</button>
+    </div>
+
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Pitanje</th>
+        <th>Odgovor</th>
+        <th>Datum Kreiranja</th>
+        <th>Osoba Id</th>
+        <th>Ime</th>
+        <th>Prezime</th>
+        <th>Brisanje</th>
+        <th>Uređivanje</th>
+        <th>Email</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of pitanja">
+        <td>{{ item.id }}</td>
+        <td>{{ item.pitanje }}</td>
+        <td>{{ item.odgovor }}</td>
+        <td>{{ item.datumKreiranja | date:'dd.MM.yyyy, HH:mm'}}</td>
+        <td>{{ item.osobaID }}</td>
+        <td>{{ item.ime }}</td>
+        <td>{{ item.prezime }}</td>
+        <td>{{ item.email }}</td>
+        <td><button (click)="ObrisiPitanje(item.id)">Obriši</button></td>
+        <td><button (click)="editPitanje(item.id)">Edituj</button></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 20px; text-align: center;">
+      <button (click)="previousPage()" style="margin-right: 10px;">Prethodna</button>
+      <span style="color: black">Stranica {{ currentPage }} od {{ totalPages }}</span>
+      <button (click)="nextPage()" style="margin-left: 10px;">Sljedeća</button>
+    </div>
+
+    <div class="containerGlavni" *ngIf="isModalVisible">
+      <button class="close-btn" (click)="toggleModal()">X</button>
+      <div style="color: black" class="question">
+        <input style="color: black" type="text" [(ngModel)]="parPitanjeOdgovor!.pitanje">
+
+      </div>
+      <div style="color: black" class="answer">
+        <input style="color: black" type="text" [(ngModel)]="parPitanjeOdgovor!.odgovor">
+      </div>
+      <button (click)="UpdatePitanjeOdgovor(parPitanjeOdgovor?.id,
+      parPitanjeOdgovor?.pitanje,
+      parPitanjeOdgovor?.odgovor)">Posalji</button>
+    </div>
+
+  </div>
+</div>
+
+</body>
+
+</html>
+
+
