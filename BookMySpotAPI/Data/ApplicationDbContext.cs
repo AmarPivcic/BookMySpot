@@ -19,6 +19,7 @@ namespace BookMySpotAPI.Data
         public DbSet<AutentifikacijaToken> AutentifikacijaTokeni { get; set; }
         public DbSet<ManagerUsluzniObjekt> ManagerUsluzniObjekti { get; set; }
         public DbSet<ONamaSadrzaj> SadrzajiONama { get; set; }
+        public DbSet<PitanjeOdgovor> PitanjaOdgovori { get; set; }
 
         public ApplicationDbContext(
             DbContextOptions options) : base(options)
