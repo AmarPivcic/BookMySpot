@@ -14,6 +14,9 @@ import {MarkdownModule} from "ngx-markdown";
 import {ONamaEditComponent} from "./o-nama-edit/o-nama-edit.component";
 import { KategorijaComponent } from './kategorija/kategorija.component';
 import { UsluzniObjektComponent } from './usluzni-objekt/usluzni-objekt.component';
+import {PitanjaOdgovoriListaComponent} from "./pitanja-odgovori-lista/pitanja-odgovori-lista.component";
+import {NeodgovorenaPitanjaListaComponent} from "./neodgovorena-pitanja-lista/neodgovorena-pitanja-lista.component";
+import {PitanjaAdminListaComponent} from "./pitanja-admin-lista/pitanja-admin-lista.component";
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { UsluzniObjektComponent } from './usluzni-objekt/usluzni-objekt.componen
             { path: 'oNama', component: ONamaComponent },
             { path: 'oNamaEdit', component: ONamaEditComponent },
             { path: 'kategorija/:id', component: KategorijaComponent},
-            { path: 'usluzniObjekt/:id', component: UsluzniObjektComponent}
+            { path: 'usluzniObjekt/:id', component: UsluzniObjektComponent},
+            { path: 'pitanjaOdgovori', component: PitanjaOdgovoriListaComponent },
+            { path: 'pitanjaOdgovori/neodgovorenaPitanja', component: NeodgovorenaPitanjaListaComponent },
+            { path: 'pitanjaOdgovori/pitanjaAdminLista', component: PitanjaAdminListaComponent },
         ]),
       BrowserAnimationsModule,
       FormsModule

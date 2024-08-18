@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="about">
+  <p style="margin-top: 70px" class="AboutUs">Pitanja i odgovori</p>
+  <div class="aboutText">
+
+    <div>
+      <div>
+        <button (click)="expandAll()">Proširi sve</button>
+        <button (click)="unexpandAll()">Zatvori sve</button>
+        <button [routerLink]="['/pitanjaOdgovori']">Odgovorena pitanja</button>
+        <button [routerLink]="['/pitanjaOdgovori/neodgovorenaPitanja']">Pristigla pitanja <span class="brojUDugmetu" *ngIf="brojPristiglihPitanja !== 0">{{brojPristiglihPitanja}}</span></button>
+        <button [routerLink]="['/pitanjaOdgovori/pitanjaAdminLista']">Sva pitanja</button>
+      </div>
+
+      <input style="color: black" (input)="Pretraga($event)">
+
+      <div *ngFor="let item of faqItems" class="containerGlavni">
+        <div class="question" [ngClass]="{'expanded': item.isExpanded}" (click)="toggle(item)">
+          {{ item.pitanje }}
+          <div class="relative-time">
+            {{ item.relativeTime }}
+          </div>
+        </div>
+        <div class="answer" *ngIf="item.isExpanded">
+          {{ item.odgovor }}
+        </div>
+      </div>
+
+      <div *ngIf="loginInfo().isLogiran == true">
+        <label style="color: black" for="postaviPitanje">Postavi pitanje: </label>
+        <input style="color: black" [(ngModel)]="novoPitanje" id="postaviPitanje" type="text">
+        <button (click)="PostaviPitanje()">Pošalji</button>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+</body>
+
+</html>
