@@ -24,10 +24,7 @@ export class MojRacunComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    // @ts-ignore
-    if (this.loginInfo().autentifikacijaToken.korisnickiNalog.isKorisnik) {
-      this.getKorisnik();
-    }
+    this.getKorisnik();
   }
 
   getImagePath(): string {
