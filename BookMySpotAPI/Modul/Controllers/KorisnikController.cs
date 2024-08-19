@@ -4,6 +4,8 @@ using BookMySpotAPI.Data;
 using BookMySpotAPI.Modul.Models;
 using BookMySpotAPI.Modul.ViewModels;
 using BookMySpotAPI.Helper;
+using Microsoft.AspNetCore.Identity;
+using static BookMySpotAPI.Autentifikacija.Helper.MyAuthTokenExtension;
 namespace BookMySpotAPI.Modul.Controllers
 {
     [ApiController]
@@ -12,11 +14,13 @@ namespace BookMySpotAPI.Modul.Controllers
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly PasswordHasher _passwordHasher;
 
         public KorisnikController(ApplicationDbContext dbContext, IWebHostEnvironment webHostEnvironment)
         {
             _dbContext = dbContext;
             _webHostEnvironment = webHostEnvironment;
+            _passwordHasher = new PasswordHasher();
         }
 
         [HttpGet]
@@ -72,6 +76,31 @@ namespace BookMySpotAPI.Modul.Controllers
 
             return Ok();
         }
+
+        [HttpPut]
+        public async Task<ActionResult> EditLozinkuZaKorisnickiNalog([FromBody] StaraNovaLozinkaRequestVM zahtjev)
+        {
+            var logiranaOsoba = await _dbContext.KorisnickiNalog
+                .FirstOrDefaultAsync(k => k.korisnickoIme != null && k.korisnickoIme == zahtjev.korisnickoIme);
+
+            if (logiranaOsoba == null)
+            {
+                return NotFound("Korisnik nije pronađen.");
+            }
+
+            if (_passwordHasher.VerifyHashedPassword(logiranaOsoba, logiranaOsoba.lozinka, zahtjev.staraLozinka) != PasswordVerificationResult.Success)
+            {
+                return BadRequest("Stara lozinka nije ispravna.");
+            }
+
+            var hashedPassword = _passwordHasher.HashPassword(logiranaOsoba, zahtjev.novaLozinka);
+            logiranaOsoba.lozinka = hashedPassword;
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
 
 
         [HttpPost]

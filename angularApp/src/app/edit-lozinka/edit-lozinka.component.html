@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<p class="myAccountTitle">Uredi račun</p>
+<div class="settingsContainer">
+  <div class="input-container">
+    <label for="fnameInput" class="small-label">Stara lozinka</label>
+    <input
+      type="text"
+      id="fnameInput"
+      class="accountInput"
+      [(ngModel)]="izmjenaLozinke.staraLozinka"
+    />
+  </div>
+  <div class="input-container">
+    <label for="lnameInput" class="small-label">Nova lozinka</label>
+    <input
+      type="text"
+      id="lnameInput"
+      class="accountInput"
+    />
+  </div>
+  <div class="input-container">
+    <label for="usernameInput" class="small-label">Ponovo unesite novu lozinku</label>
+    <input
+      type="text"
+      id="usernameInput"
+      class="accountInput"
+      [(ngModel)]="izmjenaLozinke.novaLozinka"
+    />
+  </div>
+  <div class="input-container lastField">
+  </div>
+  <div class="dugmad">
+    <button (click)="SpremiNovuLozinku()" class="savecancel">Spremi</button>
+    <button [routerLink]="['/mojRacun/mojRacunEdit']" class="savecancel">Odustani</button>
+  </div>
+</div>
+</body>
+</html>
