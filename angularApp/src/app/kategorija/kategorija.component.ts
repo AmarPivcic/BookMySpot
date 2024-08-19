@@ -23,6 +23,15 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
     this.getListaUsluzniObjekt();
   }
 
+  getStars(): number[] {
+    const totalStars = 5;
+    return Array(totalStars).fill(0);
+  }
+
+  filledStars(prosjecnaOcjena: number): number {
+    return Math.round(prosjecnaOcjena);
+  }
+
   getListaUsluzniObjekt()
   {
     this.httpKlijent.get<UsluzniObjekt[]>(MojConfig.adresa_servera + "/UsluzniObjekt/GetByKategorijaID?id="+this.kategorijaID,MojConfig.http_opcije()).subscribe(x=>{

@@ -14,13 +14,13 @@ export interface AutentifikacijaToken {
 
 export interface korisnickiNalog {
   osobaID: number;
-  Ime: string;
-  Prezime: string;
-  Email: string;
-  Telefon: string;
-  Adresa: string;
+  ime: string;
+  prezime: string;
+  email: string;
+  telefon: string;
+  adresa: string;
   korisnickoIme: string;
-  Slika: string;
+  slika: string;
   lozinka: string;
   isKorisnik: boolean;
   isAdministrator: boolean;

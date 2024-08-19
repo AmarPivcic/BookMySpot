@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookMySpotAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240818165207_Pitanja i odgovori")]
-    partial class Pitanjaiodgovori
+    [Migration("20240819160225_Generate database")]
+    partial class Generatedatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -209,6 +209,35 @@ namespace BookMySpotAPI.Migrations
                     b.ToTable("PitanjaOdgovori");
                 });
 
+            modelBuilder.Entity("BookMySpotAPI.Modul.Models.Recenzija", b =>
+                {
+                    b.Property<int>("recenzijaID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("recenzijaID"), 1L, 1);
+
+                    b.Property<int>("KorisnickiNalogId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("recenzijaOcjena")
+                        .HasColumnType("int");
+
+                    b.Property<string>("recenzijaTekst")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("usluzniObjektID")
+                        .HasColumnType("int");
+
+                    b.HasKey("recenzijaID");
+
+                    b.HasIndex("KorisnickiNalogId");
+
+                    b.HasIndex("usluzniObjektID");
+
+                    b.ToTable("Recenzija");
+                });
+
             modelBuilder.Entity("BookMySpotAPI.Modul.Models.Rezervacija", b =>
                 {
                     b.Property<int>("rezervacijaID")
@@ -301,9 +330,6 @@ namespace BookMySpotAPI.Migrations
 
                     b.Property<string>("nazivObjekta")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("prosjecnaOcjena")
-                        .HasColumnType("real");
 
                     b.Property<string>("radnoVrijemeKraj")
                         .HasColumnType("nvarchar(max)");
@@ -407,6 +433,25 @@ namespace BookMySpotAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("korisnickiNalog");
+                });
+
+            modelBuilder.Entity("BookMySpotAPI.Modul.Models.Recenzija", b =>
+                {
+                    b.HasOne("BookMySpotAPI.Modul.Models.KorisnickiNalog", "korisnickiNalog")
+                        .WithMany()
+                        .HasForeignKey("KorisnickiNalogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookMySpotAPI.Modul.Models.UsluzniObjekt", "usluzniObjekt")
+                        .WithMany()
+                        .HasForeignKey("usluzniObjektID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("korisnickiNalog");
+
+                    b.Navigation("usluzniObjekt");
                 });
 
             modelBuilder.Entity("BookMySpotAPI.Modul.Models.Rezervacija", b =>

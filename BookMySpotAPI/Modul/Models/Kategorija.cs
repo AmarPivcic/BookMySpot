@@ -10,6 +10,7 @@ namespace BookMySpotAPI.Modul.Models
         public int kategorijaID { get; set; }
         public string? naziv { get; set; }
         public string? slika { get; set; }
-
+        [NotMapped]
+        public int brojOpcija { get; set; }
     }
 }

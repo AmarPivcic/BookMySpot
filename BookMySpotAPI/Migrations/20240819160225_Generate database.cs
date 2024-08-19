@@ -81,7 +81,6 @@ namespace BookMySpotAPI.Migrations
                     radnoVrijemeKraj = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     slika = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     kategorijaID = table.Column<int>(type: "int", nullable: false),
-                    prosjecnaOcjena = table.Column<float>(type: "real", nullable: false),
                     gradID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -170,6 +169,56 @@ namespace BookMySpotAPI.Migrations
                         column: x => x.osobaID,
                         principalTable: "KorisnickiNalog",
                         principalColumn: "osobaID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PitanjaOdgovori",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    KorisnickiNalogId = table.Column<int>(type: "int", nullable: false),
+                    Pitanje = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Odgovor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DatumKreiranja = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PitanjaOdgovori", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PitanjaOdgovori_KorisnickiNalog_KorisnickiNalogId",
+                        column: x => x.KorisnickiNalogId,
+                        principalTable: "KorisnickiNalog",
+                        principalColumn: "osobaID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Recenzija",
+                columns: table => new
+                {
+                    recenzijaID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    recenzijaOcjena = table.Column<int>(type: "int", nullable: false),
+                    recenzijaTekst = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    usluzniObjektID = table.Column<int>(type: "int", nullable: false),
+                    KorisnickiNalogId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Recenzija", x => x.recenzijaID);
+                    table.ForeignKey(
+                        name: "FK_Recenzija_KorisnickiNalog_KorisnickiNalogId",
+                        column: x => x.KorisnickiNalogId,
+                        principalTable: "KorisnickiNalog",
+                        principalColumn: "osobaID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Recenzija_UsluzniObjekt_usluzniObjektID",
+                        column: x => x.usluzniObjektID,
+                        principalTable: "UsluzniObjekt",
+                        principalColumn: "usluzniObjektID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -291,6 +340,21 @@ namespace BookMySpotAPI.Migrations
                 column: "usluzniObjektID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PitanjaOdgovori_KorisnickiNalogId",
+                table: "PitanjaOdgovori",
+                column: "KorisnickiNalogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recenzija_KorisnickiNalogId",
+                table: "Recenzija",
+                column: "KorisnickiNalogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recenzija_usluzniObjektID",
+                table: "Recenzija",
+                column: "usluzniObjektID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Rezervacija_korisnikID",
                 table: "Rezervacija",
                 column: "korisnikID");
@@ -334,6 +398,12 @@ namespace BookMySpotAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "ManagerUsluzniObjekt");
+
+            migrationBuilder.DropTable(
+                name: "PitanjaOdgovori");
+
+            migrationBuilder.DropTable(
+                name: "Recenzija");
 
             migrationBuilder.DropTable(
                 name: "Rezervacija");

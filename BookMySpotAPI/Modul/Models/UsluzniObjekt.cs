@@ -17,10 +17,11 @@ namespace BookMySpotAPI.Modul.Models
         [ForeignKey(nameof(Kategorija))]
         public int kategorijaID { get; set;}
         public Kategorija kategorija { get; set; }
-        public float prosjecnaOcjena { get; set; }
         [ForeignKey(nameof (Grad))]
         public int gradID { get; set; }
         public Grad grad { get; set; }
         public ICollection<ManagerUsluzniObjekt> managerUsluzniObjekt { get; set; } = new List<ManagerUsluzniObjekt>();
+        [NotMapped]
+        public double? prosjecnaOcjena { get; set;}
     }
 }

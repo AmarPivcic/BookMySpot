@@ -335,16 +335,17 @@
   }
   
   .buttonPosalji {
-    height: 25px;
-    width: 120px;
     background-color: #ebe3d5;
     border-radius: 5px;
     border: none;
     color: #151515;
     letter-spacing: 1px;
-    font-size: 0.9rem;
     margin-top: 10px;
     margin-bottom: 10px;
+    height: 35px;
+    width: 120px;
+    font-size: 1.2rem;
+    cursor:pointer;
   }
 
   .rezervacijaBox{
@@ -360,4 +361,15 @@
 
   .starRating svg {
     padding: 5px;
+  }
+
+  .uslugaSelect{
+      margin-bottom: 10px;
+      background-color: #b0a695;
+      border: none;
+      border-radius: 5px;
+      width: 60%;
+      color: white;
+      padding: 5px;
+      font-size: 1.2rem;
   }

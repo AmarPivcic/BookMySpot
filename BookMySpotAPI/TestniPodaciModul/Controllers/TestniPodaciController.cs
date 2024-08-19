@@ -124,7 +124,6 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 telefon = "+38734123123",
                 slika = "https://localhost:7058/Slike/kreco.jpg",
                 kategorijaID = 2,
-                prosjecnaOcjena = 4.8f,
                 gradID = 1,
                 radnoVrijemePocetak = "08:00",
                 radnoVrijemeKraj = "20:00",
@@ -183,6 +182,39 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             };
 
             await _dbContext.Usluge.AddAsync(usluga4);
+            await _dbContext.SaveChangesAsync();
+
+            var recenzija = new Recenzija
+            {
+                recenzijaOcjena = 5,
+                recenzijaTekst = "Ovo je recenzija 1",
+                usluzniObjektID = 1,
+                KorisnickiNalogId = manager.osobaID
+            };
+
+            await _dbContext.Recenzije.AddAsync(recenzija);
+            await _dbContext.SaveChangesAsync();
+
+            var recenzija2 = new Recenzija
+            {
+                recenzijaOcjena = 4,
+                recenzijaTekst = "Ovo je recenzija 2",
+                usluzniObjektID = 1,
+                KorisnickiNalogId = korisnik.osobaID
+            };
+
+            await _dbContext.Recenzije.AddAsync(recenzija2);
+            await _dbContext.SaveChangesAsync();
+
+            var recenzija3 = new Recenzija
+            {
+                recenzijaOcjena = 5,
+                recenzijaTekst = "Ovo je recenzija 3",
+                usluzniObjektID = 1,
+                KorisnickiNalogId = korisnik.osobaID
+            };
+
+            await _dbContext.Recenzije.AddAsync(recenzija3);
             await _dbContext.SaveChangesAsync();
 
             return Ok();

@@ -4,9 +4,10 @@ import { ActivatedRoute, Router} from '@angular/router';
 import { UsluzniObjekt } from '../models/usluzniObjekt.model';
 import { MojConfig } from '../moj-config';
 import { Usluga } from '../models/usluga.model';
-import { LoginInformacije } from '../_helpers/login-informacije';
+import { korisnickiNalog, LoginInformacije } from '../_helpers/login-informacije';
 import { AutentifikacijaHelper } from '../_helpers/autentifikacija-helper';
 import { HeaderComponent } from '../shared/header.component';
+import { Recenzija } from '../models/recenzija.model';
 
 @Component({
   selector: 'app-usluzni-objekt',
@@ -23,7 +24,12 @@ export class UsluzniObjektComponent implements OnInit {
   odabranoVrijeme: string | null = null;
   dostupniTermini: string[] = [];
   minDate: string = '';
-  prosjecnaOcjena: any
+  prosjecnaOcjena: any;
+  listaRecenzija: Recenzija[] | null = null;
+  defaultSlika: any = "../../assets/user.png";
+  odabranaOcjena: number | null = null;
+  tekstRecenzije: string = "";
+  logiraniKorisnik: any;
 
 constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, private router: Router, private menu: HeaderComponent) 
 {}
@@ -32,6 +38,8 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
     this.usluzniObjektID=Number(this.route.snapshot.paramMap.get('id'));
     this.getUsluzniObjekt(this.usluzniObjektID);
     this.getListaUsluga(this.usluzniObjektID);
+    this.getListaRecenzija(this.usluzniObjektID);
+    this.getPodaci();
     const danas = new Date();
     this.minDate = danas.toISOString().split('T')[0];
   }
@@ -45,8 +53,17 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
     return Math.round(this.prosjecnaOcjena);
   }
 
+  getImagePath(putanja: string): string {
+    return putanja ? putanja : this.defaultSlika;
+  }
+
   loginInfo():LoginInformacije {
     return AutentifikacijaHelper.getLoginInfo();
+  }
+
+  getPodaci()
+  {
+    this.logiraniKorisnik=this.loginInfo().autentifikacijaToken?.korisnickiNalog;
   }
 
   getUsluzniObjekt(id: number) {
@@ -60,7 +77,13 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
   {
     this.httpKlijent.get<Usluga[]>(MojConfig.adresa_servera+ "/Usluga/GetByObjektID?id="+id, MojConfig.http_opcije()).subscribe(x=>{
       this.listaUsluga=x;
-      console.log(this.listaUsluga);
+    })
+  }
+
+  getListaRecenzija(id:number)
+  {
+    this.httpKlijent.get<Recenzija[]>(MojConfig.adresa_servera+ "/Recenzija/GetByUsluzniObjektID?id="+id, MojConfig.http_opcije()).subscribe(x=>{
+      this.listaRecenzija = x;
     })
   }
 
@@ -119,6 +142,37 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
 
     else{
       alert("Morate odabrati datum rezervacije, uslugu i početno vrijeme rezervacije!");
+    }
+  }
+
+  posaljiRecenziju() {
+    if(this.odabranaOcjena && this.tekstRecenzije)
+    {
+      let parametri: any= 
+      {
+        recenzijaOcjena: this.odabranaOcjena,
+        recenzijaTekst: this.tekstRecenzije,
+        osobaID: this.loginInfo().autentifikacijaToken?.osobaID,
+        usluzniObjektID: this.usluzniObjektID
+      };
+
+      this.httpKlijent.post(MojConfig.adresa_servera+"/Recenzija/Add", parametri, MojConfig.http_opcije()).subscribe({
+        next: (response) => {
+          alert("Recenzija uspješno dodana!");
+          console.log(response);
+          this.getListaRecenzija(this.usluzniObjektID);
+        },
+        error: (error) => {
+          alert("Greška pri dodavanju recenzije!");
+          console.log(error);
+        }
+      });
+      this.odabranaOcjena = null;
+      this.tekstRecenzije = "";
+    }
+
+    else{
+      alert("Morate odabrati ocjenu i unijeti tekst recenzije!");
     }
   }
 }

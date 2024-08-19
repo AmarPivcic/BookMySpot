@@ -60,7 +60,13 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpGet]
         public async Task <ActionResult<List<Kategorija>>> GetListaKategorija()
         {
-            var listaKategorija = await _dbContext.Kategorije.ToListAsync();
+            var listaKategorija = await _dbContext.Kategorije.Select(k => new Kategorija
+            {
+                kategorijaID = k.kategorijaID,
+                naziv = k.naziv,
+                slika = k.slika,
+                brojOpcija = _dbContext.UsluzniObjekti.Count(u => u.kategorijaID == k.kategorijaID)
+            }).ToListAsync();
             return Ok(listaKategorija);
         }
     }
