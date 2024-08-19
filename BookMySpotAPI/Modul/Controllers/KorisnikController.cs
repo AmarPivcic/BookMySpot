@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using BookMySpotAPI.Data;
 using BookMySpotAPI.Modul.Models;
 using BookMySpotAPI.Modul.ViewModels;
+using BookMySpotAPI.Helper;
 namespace BookMySpotAPI.Modul.Controllers
 {
     [ApiController]
@@ -10,9 +11,12 @@ namespace BookMySpotAPI.Modul.Controllers
     public class KorisnikController :ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
-        public KorisnikController(ApplicationDbContext dbContext)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public KorisnikController(ApplicationDbContext dbContext, IWebHostEnvironment webHostEnvironment)
         {
             _dbContext = dbContext;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -42,7 +46,7 @@ namespace BookMySpotAPI.Modul.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<ActionResult> EditKorisnickiRacun([FromRoute] int id, [FromBody] KorisnikInformacijeRequestVM request)
+        public async Task<ActionResult> EditKorisnickiRacun([FromRoute] int id, [FromForm] KorisnikInformacijeRequestVM request)
         {
             var korisnikIzBaze = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(x => x.osobaID == id);
 
@@ -51,12 +55,18 @@ namespace BookMySpotAPI.Modul.Controllers
                 return NotFound();
             }
 
+            if(request.slika != null)
+            {
+                var slike = new Slike(_webHostEnvironment);
+                var slikaKorisnika = slike.dodajSliku(request.slika);
+                korisnikIzBaze.slika = slikaKorisnika;
+            }
+
             korisnikIzBaze.ime = request.ime;
             korisnikIzBaze.prezime = request.prezime;
             korisnikIzBaze.email = request.email;
             korisnikIzBaze.telefon = request.telefon;
             korisnikIzBaze.korisnickoIme = request.korisnickoIme;
-            korisnikIzBaze.slika = request?.slika ?? null;
 
             await _dbContext.SaveChangesAsync();
 

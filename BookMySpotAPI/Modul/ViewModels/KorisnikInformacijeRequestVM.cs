@@ -7,6 +7,6 @@
         public string? email { get; set; }
         public string? telefon { get; set; }
         public string? korisnickoIme { get; set; }
-        public string? slika { get; set; }
+        public IFormFile? slika { get; set; }
     }
 }

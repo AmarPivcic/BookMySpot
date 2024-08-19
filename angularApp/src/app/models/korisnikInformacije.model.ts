@@ -4,5 +4,5 @@ export interface KorisnikInformacije{
   email: string;
   telefon: string;
   korisnickoIme: string;
-  slika: string | null;
+  slika: File | null;
 }

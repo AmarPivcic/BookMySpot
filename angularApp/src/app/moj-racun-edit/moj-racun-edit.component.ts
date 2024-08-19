@@ -19,9 +19,12 @@ import {NgIf} from "@angular/common";
   templateUrl: './moj-racun-edit.component.html',
   styleUrl: './moj-racun-edit.component.css'
 })
-export class MojRacunEditComponent implements OnInit{
+
+export class MojRacunEditComponent implements OnInit {
   korisnikInformacije: KorisnikInformacije;
   url = MojConfig.adresa_servera;
+  selectedFile?: File;
+
   constructor(private httpClient: HttpClient, private router: Router) {
     this.korisnikInformacije = {
       ime: "",
@@ -29,11 +32,12 @@ export class MojRacunEditComponent implements OnInit{
       email: "",
       telefon: "",
       korisnickoIme: "",
-      slika: ""
+      slika: null
     };
   }
+
   ngOnInit(): void {
-    this.httpClient.get<KorisnikInformacije>(this.url + "/Korisnik/Get?id="+this.loginInfo().autentifikacijaToken?.korisnickiNalog.osobaID).subscribe({
+    this.httpClient.get<KorisnikInformacije>(this.url + "/Korisnik/Get?id=" + this.loginInfo().autentifikacijaToken?.korisnickiNalog.osobaID).subscribe({
       next: (response) => {
         this.korisnikInformacije = response;
         console.log("Uspjesno dobavljen korisnik!");
@@ -41,16 +45,26 @@ export class MojRacunEditComponent implements OnInit{
       error: (error) => {
         console.log("Nije dobavljen korisnik!", error);
       }
-    })
+    });
   }
 
   loginInfo(): LoginInformacije {
     return AutentifikacijaHelper.getLoginInfo();
   }
 
-
   SpasiPromjene() {
-    this.httpClient.put<KorisnikInformacije>(this.url + "/Korisnik/EditKorisnickiRacun/"+this.loginInfo().autentifikacijaToken?.korisnickiNalog.osobaID, this.korisnikInformacije).subscribe({
+    const formData = new FormData();
+    formData.append('ime', this.korisnikInformacije.ime);
+    formData.append('prezime', this.korisnikInformacije.prezime);
+    formData.append('email', this.korisnikInformacije.email);
+    formData.append('telefon', this.korisnikInformacije.telefon);
+    formData.append('korisnickoIme', this.korisnikInformacije.korisnickoIme);
+
+    if (this.selectedFile) {
+      formData.append('slika', this.selectedFile);
+    }
+
+    this.httpClient.put(this.url + "/Korisnik/EditKorisnickiRacun/" + this.loginInfo().autentifikacijaToken?.korisnickiNalog.osobaID, formData).subscribe({
       next: (response) => {
         console.log("Uspjesno editovan korisnik!");
         this.router.navigate(['/mojRacun']);
@@ -58,6 +72,14 @@ export class MojRacunEditComponent implements OnInit{
       error: (error) => {
         console.log("Neuspjesno editovan korisnik!", error);
       }
-    })
+    });
+  }
+
+  getImagePath() {
+    return this.korisnikInformacije?.slika ? this.korisnikInformacije.slika : "../../assets/user.png";
+  }
+
+  onFileUploadChange(event: any) {
+    this.selectedFile = event.target.files[0];
   }
 }
