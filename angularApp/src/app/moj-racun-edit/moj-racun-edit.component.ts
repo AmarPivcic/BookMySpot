@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {KorisnikInformacije} from "../models/korisnikInformacije.model";
 import {HttpClient} from "@angular/common/http";
 import {LoginInformacije} from "../_helpers/login-informacije";
@@ -22,7 +22,7 @@ import {NgIf} from "@angular/common";
 export class MojRacunEditComponent implements OnInit{
   korisnikInformacije: KorisnikInformacije;
   url = MojConfig.adresa_servera;
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private router: Router) {
     this.korisnikInformacije = {
       ime: "",
       prezime: "",
@@ -49,5 +49,15 @@ export class MojRacunEditComponent implements OnInit{
   }
 
 
-
+  SpasiPromjene() {
+    this.httpClient.put<KorisnikInformacije>(this.url + "/Korisnik/EditKorisnickiRacun/"+this.loginInfo().autentifikacijaToken?.korisnickiNalog.osobaID, this.korisnikInformacije).subscribe({
+      next: (response) => {
+        console.log("Uspjesno editovan korisnik!");
+        this.router.navigate(['/mojRacun']);
+      },
+      error: (error) => {
+        console.log("Neuspjesno editovan korisnik!", error);
+      }
+    })
+  }
 }

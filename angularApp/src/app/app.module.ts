@@ -38,7 +38,7 @@ import {MojRacunEditComponent} from "./moj-racun-edit/moj-racun-edit.component";
             { path: '', component: HomeComponent },
             { path: 'mojRacun', component: MojRacunComponent },
             { path: 'oNama', component: ONamaComponent },
-            { path: 'oNamaEdit', component: ONamaEditComponent },
+            { path: 'oNama/oNamaEdit', component: ONamaEditComponent },
             { path: 'kategorija/:id', component: KategorijaComponent},
             { path: 'usluzniObjekt/:id', component: UsluzniObjektComponent},
             { path: 'pitanjaOdgovori', component: PitanjaOdgovoriListaComponent },

@@ -40,6 +40,29 @@ namespace BookMySpotAPI.Modul.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> EditKorisnickiRacun([FromRoute] int id, [FromBody] KorisnikInformacijeRequestVM request)
+        {
+            var korisnikIzBaze = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(x => x.osobaID == id);
+
+            if (korisnikIzBaze == null)
+            {
+                return NotFound();
+            }
+
+            korisnikIzBaze.ime = request.ime;
+            korisnikIzBaze.prezime = request.prezime;
+            korisnikIzBaze.email = request.email;
+            korisnikIzBaze.telefon = request.telefon;
+            korisnikIzBaze.korisnickoIme = request.korisnickoIme;
+            korisnikIzBaze.slika = request?.slika ?? null;
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
 
         [HttpPost]
         public async Task <ActionResult> PromijeniIme([FromBody] KorisnickiNalogEditVM x)

@@ -23,7 +23,11 @@
         <markdown style="color: black" [data]="tekst"></markdown>
       </div>
     </div>
-    <button class="btnOk" (click)="SpasiPromjene()">Spasi promjene</button>
+
+    <div>
+      <button style="margin-right: 10px" class="btnOk" (click)="SpasiPromjene()">Spasi promjene</button>
+      <button class="btnOk" [routerLink]="['/oNama']">Odustani</button>
+    </div>
   </div>
 </div>
 
