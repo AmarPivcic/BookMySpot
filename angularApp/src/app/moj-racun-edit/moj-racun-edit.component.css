@@ -281,6 +281,15 @@ svg {
   right: 0px;
 }
 
+.passwordBtn{
+  background-color: #b0a695;
+  border: none;
+  border-radius: 10px;
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
+}
+
 .savecancel {
   background-color: #ebe3d5;
   height: 30px;

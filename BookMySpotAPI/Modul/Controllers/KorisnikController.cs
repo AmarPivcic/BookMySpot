@@ -18,7 +18,26 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpGet]
         public async Task <ActionResult> Get(int id)
         {
-            return Ok(await _dbContext.Korisnici.FirstOrDefaultAsync(x=> x.osobaID == id));
+            var korisnikIzBaze = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(x => x.osobaID == id);
+
+            if(korisnikIzBaze != null)
+            {
+                var korisnikResponse = new KorisnikInformacijeResponseVM
+                {
+                    korisnickoIme = korisnikIzBaze.korisnickoIme,
+                    email = korisnikIzBaze.email,
+                    ime = korisnikIzBaze.ime,
+                    prezime = korisnikIzBaze.prezime,
+                    slika = korisnikIzBaze.slika,
+                    telefon = korisnikIzBaze.telefon
+                };
+
+                return Ok(korisnikResponse);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
 
