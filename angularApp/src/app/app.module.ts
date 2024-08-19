@@ -17,6 +17,7 @@ import { UsluzniObjektComponent } from './usluzni-objekt/usluzni-objekt.componen
 import {PitanjaOdgovoriListaComponent} from "./pitanja-odgovori-lista/pitanja-odgovori-lista.component";
 import {NeodgovorenaPitanjaListaComponent} from "./neodgovorena-pitanja-lista/neodgovorena-pitanja-lista.component";
 import {PitanjaAdminListaComponent} from "./pitanja-admin-lista/pitanja-admin-lista.component";
+import {MojRacunEditComponent} from "./moj-racun-edit/moj-racun-edit.component";
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import {PitanjaAdminListaComponent} from "./pitanja-admin-lista/pitanja-admin-li
             { path: 'pitanjaOdgovori', component: PitanjaOdgovoriListaComponent },
             { path: 'pitanjaOdgovori/neodgovorenaPitanja', component: NeodgovorenaPitanjaListaComponent },
             { path: 'pitanjaOdgovori/pitanjaAdminLista', component: PitanjaAdminListaComponent },
+            { path: 'mojRacun/mojRacunEdit', component: MojRacunEditComponent },
         ]),
       BrowserAnimationsModule,
       FormsModule

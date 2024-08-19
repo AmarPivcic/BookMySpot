@@ -14,7 +14,7 @@
   <div class="settingsContainer">
     <img [src]="getImagePath()" class="userImage" />
     <p class="userName">{{racunPodaci?.ime}} {{racunPodaci?.prezime}}</p>
-    <button class="userButton">
+    <button class="userButton" [routerLink]="['/mojRacun/mojRacunEdit']">
         <div class="userSvgIcon">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="bi bi-pencil"
             viewBox="0 0 16 16">
