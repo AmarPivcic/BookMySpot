@@ -29,7 +29,7 @@ namespace BookMySpotAPI.Autentifikacija.Controllers
         public ActionResult<LoginInformacije> Login([FromBody] LoginVM x)
         {
             KorisnickiNalog logiranaOsoba = _dbContext.KorisnickiNalog
-            .FirstOrDefault(k => k.korisnickoIme != null && k.korisnickoIme == x.korisnickoIme);
+            .FirstOrDefault(k => k.korisnickoIme != null && k.korisnickoIme == x.korisnickoIme && k.obrisan == false);
 
             if (logiranaOsoba == null ||
                 _passwordHasher.VerifyHashedPassword(logiranaOsoba, logiranaOsoba.lozinka, x.lozinka) != PasswordVerificationResult.Success)

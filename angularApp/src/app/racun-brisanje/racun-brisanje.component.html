@@ -19,6 +19,7 @@
       [type]="showOldPassword ? 'text' : 'password'"
       id="fnameInput"
       class="accountInput"
+      [(ngModel)]="obrisiRacun.lozinka"
     />
     <span (click)="showOldPassword = !showOldPassword" class="toggle-password">
       {{ showOldPassword ? 'Sakrij' : 'Prikaži' }}
@@ -27,7 +28,7 @@
   <div class="input-container lastField">
   </div>
   <div class="dugmad">
-    <button class="savecancel">Spremi</button>
+    <button (click)="ObrisiKorisnickiRacun()" class="savecancel">Obriši račun</button>
     <button [routerLink]="['/mojRacun']" class="savecancel">Odustani</button>
   </div>
 </div>

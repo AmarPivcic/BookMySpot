@@ -6,6 +6,8 @@ using BookMySpotAPI.Modul.ViewModels;
 using BookMySpotAPI.Helper;
 using Microsoft.AspNetCore.Identity;
 using static BookMySpotAPI.Autentifikacija.Helper.MyAuthTokenExtension;
+using BookMySpotAPI.Autentifikacija.Controllers;
+using BookMySpotAPI.Autentifikacija.Models;
 namespace BookMySpotAPI.Modul.Controllers
 {
     [ApiController]
@@ -101,7 +103,27 @@ namespace BookMySpotAPI.Modul.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        public async Task<ActionResult> ObrisiKorisnickiRacun([FromBody] ObrisiLozinkuRequestVM zahtjev)
+        {
+            var logiranaOsoba = await _dbContext.KorisnickiNalog
+                .FirstOrDefaultAsync(k => k.korisnickoIme != null && k.korisnickoIme == zahtjev.korisnickoIme);
 
+            if (logiranaOsoba == null)
+            {
+                return NotFound("Korisnik nije pronađen.");
+            }
+
+            if (_passwordHasher.VerifyHashedPassword(logiranaOsoba, logiranaOsoba.lozinka, zahtjev.lozinka) != PasswordVerificationResult.Success)
+            {
+                return BadRequest("Lozinka nije ispravna.");
+            }
+
+            logiranaOsoba.obrisan = true;
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
 
         [HttpPost]
         public async Task <ActionResult> PromijeniIme([FromBody] KorisnickiNalogEditVM x)

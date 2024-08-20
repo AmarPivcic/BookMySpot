@@ -25,6 +25,8 @@ namespace BookMySpotAPI.Modul.Models
         public Korisnik korisnik => this as Korisnik;
         public bool isKorisnik => korisnik != null;
         public bool isAdministrator => administrator != null;
-        public bool isManager => manager != null;  
+        public bool isManager => manager != null;
+        public bool obrisan { get; set; } = false;
+        public bool suspendovan { get; set; } = false;
     }
 }
