@@ -9,6 +9,12 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.toggle-password {
+  cursor: pointer;
+  color: white;
+  text-align: right;
+}
+
 a {
   text-decoration: none;
 }
@@ -236,12 +242,6 @@ svg {
   flex-direction: column;
   margin-left: 10px;
   margin-top: 15px;
-}
-
-.toggle-password {
-  cursor: pointer;
-  color: white;
-  text-align: right;
 }
 
 .accountInput {

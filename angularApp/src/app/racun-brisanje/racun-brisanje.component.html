@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<p class="myAccountTitle">Uredi račun</p>
+<div class="settingsContainer">
+  <div class="input-container">
+    <p>Ukoliko želite obrisati vaš korisnički račun, morate ukucati vašu lozinku. Nakon brisanja računa, više nećete imati pristup istom, te ukoliko opet želite pristupiti web aplikaciji, morat ćete napraviti novi korisnički račun.</p>
+    <label style="margin-top: 10px" for="fnameInput" class="small-label">Lozinka</label>
+    <input
+      [type]="showOldPassword ? 'text' : 'password'"
+      id="fnameInput"
+      class="accountInput"
+    />
+    <span (click)="showOldPassword = !showOldPassword" class="toggle-password">
+      {{ showOldPassword ? 'Sakrij' : 'Prikaži' }}
+    </span>
+  </div>
+  <div class="input-container lastField">
+  </div>
+  <div class="dugmad">
+    <button class="savecancel">Spremi</button>
+    <button [routerLink]="['/mojRacun']" class="savecancel">Odustani</button>
+  </div>
+</div>
+</body>
+</html>
+

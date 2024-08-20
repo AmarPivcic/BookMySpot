@@ -19,6 +19,7 @@ import {NeodgovorenaPitanjaListaComponent} from "./neodgovorena-pitanja-lista/ne
 import {PitanjaAdminListaComponent} from "./pitanja-admin-lista/pitanja-admin-lista.component";
 import {MojRacunEditComponent} from "./moj-racun-edit/moj-racun-edit.component";
 import {EditLozinkaComponent} from "./edit-lozinka/edit-lozinka.component";
+import {RacunBrisanjeComponent} from "./racun-brisanje/racun-brisanje.component";
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import {EditLozinkaComponent} from "./edit-lozinka/edit-lozinka.component";
             { path: 'pitanjaOdgovori/pitanjaAdminLista', component: PitanjaAdminListaComponent },
             { path: 'mojRacun/mojRacunEdit', component: MojRacunEditComponent },
             { path: 'mojRacun/mojRacunEdit/editLozinka', component: EditLozinkaComponent },
+            { path: 'mojRacun/racunBrisanje', component: RacunBrisanjeComponent },
         ]),
       BrowserAnimationsModule,
       FormsModule
