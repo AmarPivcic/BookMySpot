@@ -10,6 +10,7 @@ export interface UsluzniObjekt{
     radnoVrijemeKraj: string;
     slika: string;
     kategorija: Kategorija;
-    prosjecnaOcjena: number; 
+    prosjecnaOcjena: number;
     grad: Grad;
+    isSmjestaj: boolean;
   }

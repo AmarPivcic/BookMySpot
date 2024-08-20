@@ -30,8 +30,10 @@ export class UsluzniObjektComponent implements OnInit {
   odabranaOcjena: number | null = null;
   tekstRecenzije: string = "";
   logiraniKorisnik: any;
+  datumPocetka: string | null = null;
+  datumKraja: string | null = null;
 
-constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, private router: Router, private menu: HeaderComponent) 
+constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, private router: Router, private menu: HeaderComponent)
 {}
 
   ngOnInit(): void {
@@ -42,6 +44,18 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
     this.getPodaci();
     const danas = new Date();
     this.minDate = danas.toISOString().split('T')[0];
+
+    if (this.datumPocetka) {
+      this.datumKraja = this.datumPocetka;
+    }
+  }
+
+  onDatumPocetkaChange() {
+    if (this.datumPocetka) {
+      const datumPocetkaDate = new Date(this.datumPocetka);
+      datumPocetkaDate.setDate(datumPocetkaDate.getDate() + 1);
+      this.datumKraja = datumPocetkaDate.toISOString().split('T')[0];
+    }
   }
 
   getStars(): number[] {
@@ -124,7 +138,7 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
         uslugaID: this.odabranaUsluga.uslugaID,
         usluzniObjektID: this.usluzniObjektID,
       };
-      
+
       this.httpKlijent.post(MojConfig.adresa_servera+"/Rezervacija/Add", parametri, MojConfig.http_opcije()).subscribe({
         next: (response) => {
           alert("Uspješna rezervacija!");
@@ -148,7 +162,7 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
   posaljiRecenziju() {
     if(this.odabranaOcjena && this.tekstRecenzije)
     {
-      let parametri: any= 
+      let parametri: any=
       {
         recenzijaOcjena: this.odabranaOcjena,
         recenzijaTekst: this.tekstRecenzije,
@@ -173,6 +187,57 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
 
     else{
       alert("Morate odabrati ocjenu i unijeti tekst recenzije!");
+    }
+  }
+
+  onSmjestajUsluga() {
+    if (this.odabranaUsluga) {
+      this.httpKlijent.get<Date>(MojConfig.adresa_servera + `/Rezervacija/VratiNajudaljenijiDatum?uslugaId=${this.odabranaUsluga.uslugaID}`, MojConfig.http_opcije())
+        .subscribe({
+          next: (response: Date) => {
+            if (response) {
+              let najdaljiDatum = new Date(response);
+              najdaljiDatum.setDate(najdaljiDatum.getDate() + 2);
+              this.minDate = najdaljiDatum.toISOString().split('T')[0];
+            } else {
+              this.minDate = new Date().toISOString().split('T')[0];
+            }
+          },
+          error: (error) => {
+            console.error("Greška pri dohvaćanju najudaljenijeg datuma:", error);
+            this.minDate = new Date().toISOString().split('T')[0];
+          }
+        });
+    }
+  }
+
+  rezervisiTerminSmjestaja() {
+    if (this.odabranaUsluga && this.datumPocetka && this.datumKraja) {
+      let rezervacijaPodaci: any = {
+        rezervacijaPocetak: this.datumPocetka,
+        rezervacijaKraj: this.datumKraja,
+        osobaID: this.loginInfo().autentifikacijaToken?.osobaID,
+        uslugaID: this.odabranaUsluga.uslugaID,
+        usluzniObjektID: this.usluzniObjektID
+      };
+
+      this.httpKlijent.post(MojConfig.adresa_servera + "/Rezervacija/RezervisiSmjestaj", rezervacijaPodaci, MojConfig.http_opcije()).subscribe({
+        next: (response) => {
+          alert("Uspješna rezervacija!");
+          console.log(response);
+
+          // Resetiraj inpute i datume
+          this.odabranaUsluga = null;
+          this.datumPocetka = null;
+          this.datumKraja = null;
+        },
+        error: (error) => {
+          alert("Greška pri pravljenju rezervacije!");
+          console.log(error);
+        }
+      });
+    } else {
+      alert("Molimo unesite sve potrebne podatke za rezervaciju.");
     }
   }
 }

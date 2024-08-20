@@ -181,6 +181,131 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 usluzniObjektID = 1
             };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            var managerSmjestaja = new Manager
+            {
+                ime = "ManagerSmjestaj",
+                prezime = "ManagerP",
+                email = "manager@gmail.com",
+                telefon = "+38763135135",
+                korisnickoIme = "managerSmjestaja",
+                pozicija = "Vlasnik"
+            };
+
+            var managerSmjestajaPassword = _passwordHasher.HashPassword(manager, "manager");
+            managerSmjestaja.lozinka = managerSmjestajaPassword;
+
+            var vilaBojcic = new UsluzniObjekt
+            {
+                nazivObjekta = "Vila Bojčić",
+                adresa = "Zalik",
+                telefon = "+38734123123",
+                slika = "https://localhost:7058/Slike/restoran.jpg",
+                kategorijaID = 1,
+                gradID = 1,
+                radnoVrijemePocetak = "08:00",
+                radnoVrijemeKraj = "00:00",
+                isSmjestaj = true
+            };
+
+            var managerSmjestajUsluzniObjekt = new ManagerUsluzniObjekt
+            {
+                manager = managerSmjestaja,
+                usluzniObjekt = vilaBojcic
+            };
+
+            await _dbContext.Manageri.AddAsync(managerSmjestaja);
+            await _dbContext.UsluzniObjekti.AddAsync(vilaBojcic);
+            await _dbContext.ManagerUsluzniObjekti.AddAsync(managerSmjestajUsluzniObjekt);
+            await _dbContext.SaveChangesAsync();
+
+            var uslugaSmjestaja1 = new Usluga
+            {
+                naziv = "Apartman (veći)",
+                cijena = "35KM",
+                usluzniObjektID = 2
+            };
+
+            await _dbContext.Usluge.AddAsync(uslugaSmjestaja1);
+            await _dbContext.SaveChangesAsync();
+
+            var uslugaSmjestaja2 = new Usluga
+            {
+                naziv = "Apartman (manji)",
+                cijena = "30KM",
+                usluzniObjektID = 2
+            };
+
+            await _dbContext.Usluge.AddAsync(uslugaSmjestaja2);
+            await _dbContext.SaveChangesAsync();
+
+            var uslugaSmjestaja3 = new Usluga
+            {
+                naziv = "Dvokrevetna soba",
+                cijena = "25KM",
+                usluzniObjektID = 2
+            };
+
+            await _dbContext.Usluge.AddAsync(uslugaSmjestaja3);
+            await _dbContext.SaveChangesAsync();
+
+            var uslugaSmjestaja4 = new Usluga
+            {
+                naziv = "Jednokrevetna soba",
+                cijena = "20KM",
+                usluzniObjektID = 2
+            };
+
+            await _dbContext.Usluge.AddAsync(uslugaSmjestaja4);
+            await _dbContext.SaveChangesAsync();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             await _dbContext.Usluge.AddAsync(usluga4);
             await _dbContext.SaveChangesAsync();
 

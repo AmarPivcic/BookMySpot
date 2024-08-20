@@ -101,6 +101,42 @@ namespace BookMySpotAPI.Modul.Controllers
             return Ok(novaRezervacija);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> RezervisiSmjestaj([FromBody] RezervacijaSmjestajRequestVM request)
+        {
+            Korisnik korisnik = _dbContext.Korisnici.FirstOrDefault(k => k.osobaID == request.osobaID);
+
+            var novaRezervacija = new Rezervacija
+            {
+                datumRezervacije = DateTime.Now,
+                rezervacijaPocetak = request.rezervacijaPocetak,
+                rezervacijaKraj = request.rezervacijaKraj,
+                korisnikID = request.osobaID,
+                uslugaID = request.uslugaID,
+                usluzniObjektID = request.usluzniObjektID
+            };
+            korisnik.brojRezervacija++;
+            _dbContext.Korisnici.Update(korisnik);
+            await _dbContext.Rezervacije.AddAsync(novaRezervacija);
+            await _dbContext.SaveChangesAsync();
+            return Ok(novaRezervacija);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<DateTime?>> VratiNajudaljenijiDatum(int uslugaId)
+        {
+            var rezervacijeSaUslugaId = await _dbContext.Rezervacije
+                .Where(r => r.uslugaID == uslugaId)
+                .ToListAsync();
+
+            var najdaljiDatumRezervacijaKraj = rezervacijeSaUslugaId
+                .Select(r => DateTime.TryParse(r.rezervacijaKraj, out DateTime datumKraj) ? datumKraj : (DateTime?)null)
+                .Where(datumKraj => datumKraj > DateTime.Now)
+                .Max();
+
+            return Ok(najdaljiDatumRezervacijaKraj);
+        }
+
         [HttpGet]
         public async Task<ActionResult<List<Rezervacija>>> GetListaTrenutnihKorisnik (int id)
         {

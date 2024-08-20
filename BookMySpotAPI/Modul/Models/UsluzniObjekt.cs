@@ -23,5 +23,6 @@ namespace BookMySpotAPI.Modul.Models
         public ICollection<ManagerUsluzniObjekt> managerUsluzniObjekt { get; set; } = new List<ManagerUsluzniObjekt>();
         [NotMapped]
         public double? prosjecnaOcjena { get; set;}
+        public bool isSmjestaj { get; set; } = false;
     }
 }

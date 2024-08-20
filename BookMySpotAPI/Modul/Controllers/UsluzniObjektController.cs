@@ -37,7 +37,9 @@ namespace BookMySpotAPI.Modul.Controllers
                 kategorija = u.kategorija,
                 gradID = u.gradID,
                 grad = u.grad,
-                prosjecnaOcjena = _dbContext.Recenzije.Where(r => r.usluzniObjektID == u.usluzniObjektID).Average(r => (double?)r.recenzijaOcjena)
+                prosjecnaOcjena = _dbContext.Recenzije.Where(r => r.usluzniObjektID == u.usluzniObjektID).Average(r => (double?)r.recenzijaOcjena),
+                isSmjestaj = u.isSmjestaj
+          
             }).FirstOrDefaultAsync();
 
             return Ok(returnUsluzniObjekt);
@@ -63,7 +65,8 @@ namespace BookMySpotAPI.Modul.Controllers
                 kategorija = u.kategorija,
                 gradID = u.gradID,
                 grad = u.grad,
-                prosjecnaOcjena = _dbContext.Recenzije.Where(r => r.usluzniObjektID == u.usluzniObjektID).Average(r => (double?)r.recenzijaOcjena)
+                prosjecnaOcjena = _dbContext.Recenzije.Where(r => r.usluzniObjektID == u.usluzniObjektID).Average(r => (double?)r.recenzijaOcjena),
+                isSmjestaj = u.isSmjestaj
             }).ToListAsync();
 
             return Ok(listaObjekata);
