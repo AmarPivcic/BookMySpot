@@ -120,7 +120,7 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
         datumRezervacije: this.odabraniDatum,
         rezervacijaPocetak: this.odabranoVrijeme,
         trajanje: this.odabranaUsluga.trajanje,
-        korisnikID: this.loginInfo().autentifikacijaToken?.osobaID,
+        osobaID: this.loginInfo().autentifikacijaToken?.osobaID,
         uslugaID: this.odabranaUsluga.uslugaID,
         usluzniObjektID: this.usluzniObjektID,
       };

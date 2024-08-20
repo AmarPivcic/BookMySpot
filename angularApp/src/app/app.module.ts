@@ -20,6 +20,7 @@ import {PitanjaAdminListaComponent} from "./pitanja-admin-lista/pitanja-admin-li
 import {MojRacunEditComponent} from "./moj-racun-edit/moj-racun-edit.component";
 import {EditLozinkaComponent} from "./edit-lozinka/edit-lozinka.component";
 import {RacunBrisanjeComponent} from "./racun-brisanje/racun-brisanje.component";
+import { HistorijaRezervacijaComponent } from './historija-rezervacija/historija-rezervacija.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {RacunBrisanjeComponent} from "./racun-brisanje/racun-brisanje.component"
         HeaderComponent,
         MojRacunComponent,
         KategorijaComponent,
-        UsluzniObjektComponent
+        UsluzniObjektComponent,
+        HistorijaRezervacijaComponent
     ],
     bootstrap: [AppComponent],
     imports: [
@@ -49,6 +51,7 @@ import {RacunBrisanjeComponent} from "./racun-brisanje/racun-brisanje.component"
             { path: 'mojRacun/mojRacunEdit', component: MojRacunEditComponent },
             { path: 'mojRacun/mojRacunEdit/editLozinka', component: EditLozinkaComponent },
             { path: 'mojRacun/racunBrisanje', component: RacunBrisanjeComponent },
+            { path: 'historijaRezervacija', component: HistorijaRezervacijaComponent}
         ]),
       BrowserAnimationsModule,
       FormsModule

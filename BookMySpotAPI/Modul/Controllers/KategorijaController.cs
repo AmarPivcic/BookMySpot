@@ -24,9 +24,13 @@ namespace BookMySpotAPI.Modul.Controllers
         }
 
         [HttpGet]
-        public async Task <ActionResult> Get(int id) 
+        public async Task <ActionResult<Kategorija>> Get(int id) 
         { 
-            return Ok(await _dbContext.Kategorije.FirstOrDefaultAsync(x=>x.kategorijaID==id));
+            var kategorija = await _dbContext.Kategorije.FindAsync(id);
+            if (kategorija == null)
+                return NotFound("Kategorija nije pronađena!");
+
+            return Ok(kategorija);
         }
 
         [HttpPost]

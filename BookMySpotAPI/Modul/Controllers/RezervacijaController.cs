@@ -28,6 +28,9 @@ namespace BookMySpotAPI.Modul.Controllers
             TimeSpan trajanjeUsluge = TimeSpan.FromMinutes(trajanje);
             TimeSpan trenutnoVrijeme = DateTime.Now.TimeOfDay;
 
+            if (usluzniObjekt == null)
+                return NotFound("Uslužni objekt nije pronađen!");
+
             var dostupniTermini = new List<string>();
             TimeSpan trenutniTimeSlot;
 
@@ -78,14 +81,14 @@ namespace BookMySpotAPI.Modul.Controllers
         public async Task<ActionResult> Add([FromBody] RezervacijaAddVM x)
         {
             string rezervacijaKrajCalc = TimeSpan.Parse(x.rezervacijaPocetak).Add(TimeSpan.FromMinutes(x.trajanje)).ToString(@"hh\:mm");
-            Korisnik korisnik = _dbContext.Korisnici.FirstOrDefault(k => k.osobaID == x.korisnikID);
+            Korisnik korisnik = _dbContext.Korisnici.FirstOrDefault(k => k.osobaID == x.osobaID);
 
             var novaRezervacija = new Rezervacija
             {
                 datumRezervacije = x.datumRezervacije,
                 rezervacijaPocetak = x.rezervacijaPocetak,
                 rezervacijaKraj = rezervacijaKrajCalc,
-                korisnikID = x.korisnikID,
+                korisnikID = x.osobaID,
                 uslugaID = x.uslugaID,
                 usluzniObjektID = x.usluzniObjektID
             };
@@ -96,6 +99,59 @@ namespace BookMySpotAPI.Modul.Controllers
             await _dbContext.SaveChangesAsync();
 
             return Ok(novaRezervacija);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Rezervacija>>> GetListaTrenutnihKorisnik (int id)
+        {
+            var korisnik = await _dbContext.Korisnici.FindAsync(id);
+            if (korisnik == null)
+                return NotFound("Korisnik nije pronađen!");
+
+            var listaRezervacijaRefresh = await _dbContext.Rezervacije.Where(r => r.korisnikID == korisnik.osobaID).ToListAsync();
+
+            foreach (var rezervacija in listaRezervacijaRefresh)
+            {
+                if (rezervacija.datumRezervacije <= DateTime.Today && TimeSpan.Parse(rezervacija.rezervacijaPocetak) <= DateTime.Now.TimeOfDay && rezervacija.otkazano == false)
+                    { 
+                        rezervacija.zavrseno = true;
+                        _dbContext.Rezervacije.Update(rezervacija);
+                        _dbContext.SaveChanges();
+                    }
+            }
+
+            var listaRezervacija = await _dbContext.Rezervacije.Where( r => r.korisnikID == korisnik.osobaID && r.otkazano==false && r.zavrseno==false)
+                .Include(r => r.usluzniObjekt).Include(r => r.usluga).OrderBy(r => r.datumRezervacije).ThenBy(r => r.rezervacijaPocetak).ToListAsync();
+            return Ok(listaRezervacija);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Rezervacija>>> GetListaPrethodnihKorisnik (int id)
+        {
+            var korisnik = await _dbContext.Korisnici.FindAsync(id);
+            if (korisnik == null)
+                return NotFound("Korisnik nije pronađen!");
+
+            var listaRezervacija = await _dbContext.Rezervacije.Where(r => r.korisnikID == korisnik.osobaID && (r.otkazano==true || r.zavrseno==true))
+                .Include(r => r.usluzniObjekt).Include(r => r.usluga).OrderByDescending(r => r.datumRezervacije).ThenByDescending(r => r.rezervacijaPocetak).ToListAsync();
+            return Ok(listaRezervacija);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Rezervacija>> OtkaziRezervaciju(int id)
+        {
+            var rezervacija = await _dbContext.Rezervacije.FindAsync(id);
+
+            if (rezervacija == null)
+            {
+                return NotFound("Ova rezervacija ne postoji!");
+            }
+
+            rezervacija.otkazano=true;
+            _dbContext.Update(rezervacija);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(rezervacija);
         }
     }
 }

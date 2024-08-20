@@ -20,7 +20,12 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Recenzija>>> GetByUsluzniObjektID(int id)
         {
-            var listaRecenzija = await _dbContext.Recenzije.Where(r => r.usluzniObjektID == id).Include(r => r.korisnickiNalog).ToListAsync();
+            var usluzniObjekt = await _dbContext.UsluzniObjekti.FindAsync(id);
+
+            if (usluzniObjekt == null)
+                return NotFound("Uslužni objekt nije pronađen!");
+
+            var listaRecenzija = await _dbContext.Recenzije.Where(r => r.usluzniObjektID == usluzniObjekt.usluzniObjektID).Include(r => r.korisnickiNalog).ToListAsync();
             return Ok(listaRecenzija);
         }
 

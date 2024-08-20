@@ -48,7 +48,9 @@ namespace BookMySpotAPI.Migrations
                     telefon = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     korisnickoIme = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     slika = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    lozinka = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    lozinka = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    obrisan = table.Column<bool>(type: "bit", nullable: false),
+                    suspendovan = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -306,9 +308,9 @@ namespace BookMySpotAPI.Migrations
                 {
                     table.PrimaryKey("PK_Rezervacija", x => x.rezervacijaID);
                     table.ForeignKey(
-                        name: "FK_Rezervacija_Korisnik_korisnikID",
+                        name: "FK_Rezervacija_KorisnickiNalog_korisnikID",
                         column: x => x.korisnikID,
-                        principalTable: "Korisnik",
+                        principalTable: "KorisnickiNalog",
                         principalColumn: "osobaID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -412,10 +414,10 @@ namespace BookMySpotAPI.Migrations
                 name: "SadrzajiONama");
 
             migrationBuilder.DropTable(
-                name: "Manager");
+                name: "Korisnik");
 
             migrationBuilder.DropTable(
-                name: "Korisnik");
+                name: "Manager");
 
             migrationBuilder.DropTable(
                 name: "Usluga");

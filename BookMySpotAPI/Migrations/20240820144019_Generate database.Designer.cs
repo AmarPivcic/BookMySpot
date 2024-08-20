@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookMySpotAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240820085410_Brisanje i suspendovanje")]
-    partial class Brisanjeisuspendovanje
+    [Migration("20240820144019_Generate database")]
+    partial class Generatedatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -462,7 +462,7 @@ namespace BookMySpotAPI.Migrations
 
             modelBuilder.Entity("BookMySpotAPI.Modul.Models.Rezervacija", b =>
                 {
-                    b.HasOne("BookMySpotAPI.Modul.Models.Korisnik", "korisnik")
+                    b.HasOne("BookMySpotAPI.Modul.Models.KorisnickiNalog", "korisnik")
                         .WithMany()
                         .HasForeignKey("korisnikID")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -17,9 +17,14 @@ namespace BookMySpotAPI.Modul.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Get (int id)
+        public async Task<ActionResult<UsluzniObjekt>> Get (int id)
         {
-            var usluzniObjekt = await _dbContext.UsluzniObjekti.Where(u => u.usluzniObjektID == id).Include(u => u.grad).Include(u => u.kategorija).Select(u => new UsluzniObjekt
+            var usluzniObjekt = await _dbContext.UsluzniObjekti.FindAsync(id);
+
+            if (usluzniObjekt == null)
+                return NotFound("Uslužni objekt nije pronađen!");
+
+            var returnUsluzniObjekt = await _dbContext.UsluzniObjekti.Where(u => u.usluzniObjektID == usluzniObjekt.usluzniObjektID).Include(u => u.grad).Include(u => u.kategorija).Select(u => new UsluzniObjekt
             {
                 usluzniObjektID = u.usluzniObjektID,
                 nazivObjekta = u.nazivObjekta,
@@ -35,13 +40,17 @@ namespace BookMySpotAPI.Modul.Controllers
                 prosjecnaOcjena = _dbContext.Recenzije.Where(r => r.usluzniObjektID == u.usluzniObjektID).Average(r => (double?)r.recenzijaOcjena)
             }).FirstOrDefaultAsync();
 
-            return Ok(usluzniObjekt);
+            return Ok(returnUsluzniObjekt);
         }
 
         [HttpGet]
         public async Task<ActionResult<List<UsluzniObjekt>>> GetByKategorijaID(int id)
         {
-            var listaObjekata = await _dbContext.UsluzniObjekti.Where(u => u.kategorijaID == id).Include(u => u.grad).Include(u => u.kategorija).Select(u => new UsluzniObjekt
+            var kategorija = await _dbContext.Kategorije.FindAsync(id);
+            if (kategorija == null)
+                return NotFound("Kategorija nije pronađena!");
+
+            var listaObjekata = await _dbContext.UsluzniObjekti.Where(u => u.kategorijaID == kategorija.kategorijaID).Include(u => u.grad).Include(u => u.kategorija).Select(u => new UsluzniObjekt
             {
                 usluzniObjektID = u.usluzniObjektID,
                 nazivObjekta = u.nazivObjekta,

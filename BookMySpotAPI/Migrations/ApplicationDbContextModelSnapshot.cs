@@ -460,7 +460,7 @@ namespace BookMySpotAPI.Migrations
 
             modelBuilder.Entity("BookMySpotAPI.Modul.Models.Rezervacija", b =>
                 {
-                    b.HasOne("BookMySpotAPI.Modul.Models.Korisnik", "korisnik")
+                    b.HasOne("BookMySpotAPI.Modul.Models.KorisnickiNalog", "korisnik")
                         .WithMany()
                         .HasForeignKey("korisnikID")
                         .OnDelete(DeleteBehavior.Cascade)

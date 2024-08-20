@@ -1,4 +1,5 @@
 ﻿using BookMySpotAPI.Data;
+using BookMySpotAPI.Modul.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,9 +16,13 @@ namespace BookMySpotAPI.Modul.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetByObjektID(int id)
+        public async Task<ActionResult<List<Usluga>>> GetByObjektID(int id)
         {
-            var listaUsluga = _dbContext.Usluge.Where(x => x.usluzniObjektID == id).Include(u => u.usluzniObjekt).ToList();
+            var usluzniObjekt = await _dbContext.UsluzniObjekti.FindAsync(id);
+            if (usluzniObjekt == null)
+                return NotFound("Uslužni objekt nije pronađen!");
+
+            var listaUsluga = _dbContext.Usluge.Where(x => x.usluzniObjektID == usluzniObjekt.usluzniObjektID).Include(u => u.usluzniObjekt).ToList();
             return Ok(listaUsluga);
         }
     }
