@@ -20,6 +20,9 @@ import {IzmjenaLozinke} from "../models/izmjenaLozinke.model";
 export class EditLozinkaComponent implements OnInit{
   url = MojConfig.adresa_servera;
   izmjenaLozinke: IzmjenaLozinke;
+  showOldPassword = false;
+  showNewPassword = false;
+  showRepeatPassword = false;
   constructor(private httpClient: HttpClient, private router: Router) {
     this.izmjenaLozinke = {
       korisnickoIme: "",
@@ -39,6 +42,11 @@ export class EditLozinkaComponent implements OnInit{
   SpremiNovuLozinku() {
     if (this.izmjenaLozinke.novaLozinka !== (document.getElementById('lnameInput') as HTMLInputElement).value) {
       alert('Nova lozinka i ponovljena lozinka se ne podudaraju.');
+      return;
+    }
+
+    if (this.izmjenaLozinke.novaLozinka === (document.getElementById('fnameInput') as HTMLInputElement).value) {
+      alert('Nova lozinka ne smije biti ista kao stara lozinka');
       return;
     }
 

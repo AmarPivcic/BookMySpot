@@ -15,28 +15,37 @@
   <div class="input-container">
     <label for="fnameInput" class="small-label">Stara lozinka</label>
     <input
-      type="text"
+      [type]="showOldPassword ? 'text' : 'password'"
       id="fnameInput"
       class="accountInput"
       [(ngModel)]="izmjenaLozinke.staraLozinka"
     />
+    <span (click)="showOldPassword = !showOldPassword" class="toggle-password">
+      {{ showOldPassword ? 'Sakrij' : 'Prikaži' }}
+    </span>
   </div>
   <div class="input-container">
     <label for="lnameInput" class="small-label">Nova lozinka</label>
     <input
-      type="text"
+      [type]="showNewPassword ? 'text' : 'password'"
       id="lnameInput"
       class="accountInput"
     />
+    <span (click)="showNewPassword = !showNewPassword" class="toggle-password">
+      {{ showNewPassword ? 'Sakrij' : 'Prikaži' }}
+    </span>
   </div>
   <div class="input-container">
     <label for="usernameInput" class="small-label">Ponovo unesite novu lozinku</label>
     <input
-      type="text"
+      [type]="showRepeatPassword ? 'text' : 'password'"
       id="usernameInput"
       class="accountInput"
       [(ngModel)]="izmjenaLozinke.novaLozinka"
     />
+    <span (click)="showRepeatPassword = !showRepeatPassword" class="toggle-password">
+      {{ showRepeatPassword ? 'Sakrij' : 'Prikaži' }}
+    </span>
   </div>
   <div class="input-container lastField">
   </div>

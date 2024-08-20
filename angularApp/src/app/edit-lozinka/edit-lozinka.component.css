@@ -238,6 +238,11 @@ svg {
   margin-top: 15px;
 }
 
+.toggle-password {
+  cursor: pointer;
+  color: black;
+}
+
 .accountInput {
   border: none;
   padding: 10px;
