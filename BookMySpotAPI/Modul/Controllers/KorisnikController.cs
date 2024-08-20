@@ -78,6 +78,33 @@ namespace BookMySpotAPI.Modul.Controllers
 
             return Ok();
         }
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> NoviUserName([FromRoute] int id, [FromQuery] string newUserName)
+        {
+            var korisnikIzBaze = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(x => x.osobaID == id);
+
+            if (korisnikIzBaze == null)
+            {
+                return NotFound();
+            }
+
+            if (!string.IsNullOrEmpty(newUserName))
+            {
+                var korisnikSaIstimKorisnickimImenom = await _dbContext.KorisnickiNalog
+                    .FirstOrDefaultAsync(x => x.korisnickoIme == newUserName && x.osobaID != id);
+
+                if (korisnikSaIstimKorisnickimImenom != null)
+                {
+                    return Conflict("Korisničko ime već postoji.");
+                }
+
+                korisnikIzBaze.korisnickoIme = newUserName;
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return Ok();
+        }
 
         [HttpPut]
         public async Task<ActionResult> EditLozinkuZaKorisnickiNalog([FromBody] StaraNovaLozinkaRequestVM zahtjev)
