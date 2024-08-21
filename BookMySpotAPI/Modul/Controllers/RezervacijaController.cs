@@ -113,7 +113,8 @@ namespace BookMySpotAPI.Modul.Controllers
                 rezervacijaKraj = request.rezervacijaKraj,
                 korisnikID = request.osobaID,
                 uslugaID = request.uslugaID,
-                usluzniObjektID = request.usluzniObjektID
+                usluzniObjektID = request.usluzniObjektID,
+                karticnoPlacanje = request.karticnoPlacanje
             };
             korisnik.brojRezervacija++;
             _dbContext.Korisnici.Update(korisnik);

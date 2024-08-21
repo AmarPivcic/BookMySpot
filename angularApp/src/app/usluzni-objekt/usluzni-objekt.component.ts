@@ -32,8 +32,10 @@ export class UsluzniObjektComponent implements OnInit {
   logiraniKorisnik: any;
   datumPocetka: string | null = null;
   datumKraja: string | null = null;
+  karticnoPlacanje: boolean = false;
 
-constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, private router: Router, private menu: HeaderComponent)
+
+  constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, private router: Router, private menu: HeaderComponent)
 {}
 
   ngOnInit(): void {
@@ -127,6 +129,7 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
   }
 
   rezervisiTermin() {
+    console.log(this.karticnoPlacanje);
 
     if(this.odabraniDatum && this.odabranaUsluga && this.odabranoVrijeme)
     {
@@ -137,6 +140,7 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
         osobaID: this.loginInfo().autentifikacijaToken?.osobaID,
         uslugaID: this.odabranaUsluga.uslugaID,
         usluzniObjektID: this.usluzniObjektID,
+        karticnoPlacanje: this.karticnoPlacanje
       };
 
       this.httpKlijent.post(MojConfig.adresa_servera+"/Rezervacija/Add", parametri, MojConfig.http_opcije()).subscribe({
@@ -218,7 +222,8 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
         rezervacijaKraj: this.datumKraja,
         osobaID: this.loginInfo().autentifikacijaToken?.osobaID,
         uslugaID: this.odabranaUsluga.uslugaID,
-        usluzniObjektID: this.usluzniObjektID
+        usluzniObjektID: this.usluzniObjektID,
+        karticnoPlacanje: this.karticnoPlacanje
       };
 
       this.httpKlijent.post(MojConfig.adresa_servera + "/Rezervacija/RezervisiSmjestaj", rezervacijaPodaci, MojConfig.http_opcije()).subscribe({
@@ -226,10 +231,14 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
           alert("Uspješna rezervacija!");
           console.log(response);
 
-          // Resetiraj inpute i datume
           this.odabranaUsluga = null;
           this.datumPocetka = null;
           this.datumKraja = null;
+          this.karticnoPlacanje = false;
+
+          if (rezervacijaPodaci.karticnoPlacanje) {
+            window.location.href = 'https://www.paypal.com/signin';
+          }
         },
         error: (error) => {
           alert("Greška pri pravljenju rezervacije!");
@@ -240,4 +249,6 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
       alert("Molimo unesite sve potrebne podatke za rezervaciju.");
     }
   }
+
+
 }

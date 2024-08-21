@@ -93,22 +93,28 @@
 
       <div class="datumRez">
         <label for="datumPocetkaRezervacije">Datum useljenja:</label>
-        <input [(ngModel)]="datumPocetka" (ngModelChange)="onDatumPocetkaChange()" type="date" id="datumRezP" name="datumPocetkaRezervacije" [min]="minDate"/>
+        <input [(ngModel)]="datumPocetka" (ngModelChange)="onDatumPocetkaChange()" type="date" id="datumRezP" name="datumPocetkaRezervacije" [min]="minDate" [disabled]="!odabranaUsluga"/>
       </div>
 
       <div class="datumRez">
         <label for="datumKrajaRezervacije">Datum iseljenja:</label>
-        <input [(ngModel)]="datumKraja" type="date" id="datumRezP" name="datumKrajaRezervacije" [min]="datumPocetka"/>
+        <input [(ngModel)]="datumKraja" type="date" id="datumRezP" name="datumKrajaRezervacije" [min]="datumPocetka" [disabled]="!datumPocetka"/>
+      </div>
+
+      <div class="datumRez">
+        <label for="karticnoPlacanjeCheckbox">Kartično plaćanje:</label>
+        <input [(ngModel)]="karticnoPlacanje" type="checkbox" id="karticnoPlacanjeCheckbox" name="karticnoPlacanjeCheckbox" [disabled]="!datumKraja">
       </div>
 
       <div class="rezervacijaBox">
         <button *ngIf="loginInfo().isLogiran == true" class="buttonRezervisi" (click)="rezervisiTerminSmjestaja()">Rezerviši</button>
-        <p *ngIf="loginInfo().isLogiran == false" style="margin-bottom: 5px;">Morate biti prijavljeni kako bi ste izvršili rezervaciju.</p>
+        <p *ngIf="loginInfo().isLogiran == false" style="margin-bottom: 5px;">Morate biti prijavljeni kako biste izvršili rezervaciju.</p>
         <button *ngIf="loginInfo().isLogiran == false" class="buttonRezervisi" (click)="prijava()">Prijava</button>
       </div>
     </div>
 
-      <div class="rezervacijaSmjestaja">
+
+    <div class="rezervacijaSmjestaja">
         <h3>Komentari i ocjene</h3>
         <div class="comment" *ngFor="let recenzija of listaRecenzija">
           <div class="profilePicAndName">
