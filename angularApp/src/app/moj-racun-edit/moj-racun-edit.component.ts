@@ -7,6 +7,8 @@ import {AutentifikacijaHelper} from "../_helpers/autentifikacija-helper";
 import {MojConfig} from "../moj-config";
 import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-moj-racun-edit',
@@ -70,7 +72,11 @@ export class MojRacunEditComponent implements OnInit {
         this.router.navigate(['/mojRacun']);
       },
       error: (error) => {
-        console.log("Neuspjesno editovan korisnik!", error);
+        if (error.status === 409) {
+          alert("Korisničko ime već postoji. Molimo izaberite drugo korisničko ime.");
+        } else {
+          console.log("Neuspješno editovan korisnik!", error);
+        }
       }
     });
   }

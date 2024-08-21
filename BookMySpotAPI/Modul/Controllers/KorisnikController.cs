@@ -61,7 +61,22 @@ namespace BookMySpotAPI.Modul.Controllers
                 return NotFound();
             }
 
-            if(request.slika != null)
+            // Provjera korisničkog imena
+            if (!string.IsNullOrEmpty(request.korisnickoIme))
+            {
+                var korisnikSaIstimKorisnickimImenom = await _dbContext.KorisnickiNalog
+                    .FirstOrDefaultAsync(x => x.korisnickoIme == request.korisnickoIme && x.osobaID != id);
+
+                if (korisnikSaIstimKorisnickimImenom != null)
+                {
+                    return Conflict("Korisničko ime već postoji.");
+                }
+
+                korisnikIzBaze.korisnickoIme = request.korisnickoIme;
+            }
+
+            // Ažuriranje drugih podataka
+            if (request.slika != null)
             {
                 var slike = new Slike(_webHostEnvironment);
                 var slikaKorisnika = slike.dodajSliku(request.slika);
@@ -72,36 +87,8 @@ namespace BookMySpotAPI.Modul.Controllers
             korisnikIzBaze.prezime = request.prezime;
             korisnikIzBaze.email = request.email;
             korisnikIzBaze.telefon = request.telefon;
-            korisnikIzBaze.korisnickoIme = request.korisnickoIme;
 
             await _dbContext.SaveChangesAsync();
-
-            return Ok();
-        }
-        [HttpPut]
-        [Route("{id:int}")]
-        public async Task<ActionResult> NoviUserName([FromRoute] int id, [FromQuery] string newUserName)
-        {
-            var korisnikIzBaze = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(x => x.osobaID == id);
-
-            if (korisnikIzBaze == null)
-            {
-                return NotFound();
-            }
-
-            if (!string.IsNullOrEmpty(newUserName))
-            {
-                var korisnikSaIstimKorisnickimImenom = await _dbContext.KorisnickiNalog
-                    .FirstOrDefaultAsync(x => x.korisnickoIme == newUserName && x.osobaID != id);
-
-                if (korisnikSaIstimKorisnickimImenom != null)
-                {
-                    return Conflict("Korisničko ime već postoji.");
-                }
-
-                korisnikIzBaze.korisnickoIme = newUserName;
-                await _dbContext.SaveChangesAsync();
-            }
 
             return Ok();
         }
