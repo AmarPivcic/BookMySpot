@@ -40,7 +40,7 @@ export class UsluzniObjektComponent implements OnInit {
 {}
 
   ngOnInit(): void {
-    this.usluzniObjektID=Number(this.route.snapshot.paramMap.get('id'));
+    this.usluzniObjektID=Number(this.route.snapshot.paramMap.get('usluzniObjektId'));
     this.getUsluzniObjekt(this.usluzniObjektID);
     this.getListaUsluga(this.usluzniObjektID);
     this.getListaRecenzija(this.usluzniObjektID);

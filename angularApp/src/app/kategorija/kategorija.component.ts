@@ -19,7 +19,7 @@ export class KategorijaComponent implements OnInit {
 constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    this.kategorijaID=Number(this.route.snapshot.paramMap.get('id'));
+    this.kategorijaID=Number(this.route.snapshot.paramMap.get('kategorijaId'));
     this.getListaUsluzniObjekt();
   }
 
@@ -46,7 +46,7 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
       burgerMenu.style.left = "-280px";
       // @ts-ignore
       slider.style.width="0px"
-      this.router.navigate(['/usluzniObjekt', usluzniObjektID]);
+      this.router.navigate(['/kategorija',this.kategorijaID, 'usluzniObjekt', usluzniObjektID]);
       window.scrollTo(0,0);
   }
 
