@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BookMySpotAPI.Migrations
 {
-    public partial class Generatedatabase : Migration
+    public partial class generatedatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -83,7 +83,8 @@ namespace BookMySpotAPI.Migrations
                     radnoVrijemeKraj = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     slika = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     kategorijaID = table.Column<int>(type: "int", nullable: false),
-                    gradID = table.Column<int>(type: "int", nullable: false)
+                    gradID = table.Column<int>(type: "int", nullable: false),
+                    isSmjestaj = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -230,7 +231,7 @@ namespace BookMySpotAPI.Migrations
                     uslugaID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     naziv = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    trajanje = table.Column<int>(type: "int", nullable: false),
+                    trajanje = table.Column<int>(type: "int", nullable: true),
                     cijena = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     usluzniObjektID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -302,7 +303,8 @@ namespace BookMySpotAPI.Migrations
                     zavrseno = table.Column<bool>(type: "bit", nullable: false),
                     korisnikID = table.Column<int>(type: "int", nullable: false),
                     uslugaID = table.Column<int>(type: "int", nullable: false),
-                    usluzniObjektID = table.Column<int>(type: "int", nullable: false)
+                    usluzniObjektID = table.Column<int>(type: "int", nullable: false),
+                    karticnoPlacanje = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

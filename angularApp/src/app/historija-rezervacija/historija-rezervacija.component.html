@@ -10,6 +10,41 @@
 </head>
 
 <body>
+    <div *ngIf="ponoviRezervacijuBool" class="blur" id="blur">
+        <div class="popup">
+          <p class="popuptext" *ngIf="isSmjestaj==false">
+            Odaberite datum i vrijeme nove rezervacije
+          </p>
+          <p class="popuptext" *ngIf="isSmjestaj">
+            Odaberite datum useljenja i datum iseljenja nove rezervacije
+          </p>
+          <div class="datumRez" *ngIf="isSmjestaj==false">
+            <label for="datumRezervacije" >Datum termina:</label>
+            <input [(ngModel)]="odabraniDatum" [min]="minDate" (change)="onDatumChange()" type="date" id="datumRezP" name="datumRezervacije" />
+          </div>
+
+          <div class="datumRez" *ngIf="isSmjestaj==true">
+            <label for="datumRezervacije" >Datum useljenja:</label>
+            <input [(ngModel)]="datumPocetka" (ngModelChange)="onDatumPocetkaChange()" type="date" id="datumRezP" name="datumPocetkaRezervacije" [min]="minDate"/>
+          </div>
+
+          <div class="datumRez" *ngIf="isSmjestaj==true">
+            <label for="datumRezervacije" >Datum iseljenja:</label>
+            <input [(ngModel)]="datumKraja" type="date" id="datumRezP" name="datumKrajaRezervacije" [min]="datumPocetka" [disabled]="!datumPocetka"/>
+          </div>
+  
+          <div class="datumRez" *ngIf="isSmjestaj==false">
+            <label for="appt">Vrijeme početka termina:</label>
+            <select [(ngModel)] = "odabranoVrijeme" class="datumRezV" required>
+              <option [ngValue]="null" disabled>Odaberi vrijeme</option>
+              <option *ngFor="let termin of dostupniTermini" [ngValue]="termin">{{termin}}</option>
+            </select>
+          </div>
+          <button *ngIf="isSmjestaj==false" (click)="rezervisiTermin()" class="btnok">Rezerviraj</button>
+          <button *ngIf="isSmjestaj==true" (click)="rezervisiTerminSmjestaja()" class="btnok">Rezerviraj</button>
+          <button (click)="ugasiPopup()" class="btnok">Odustani</button>
+        </div>
+      </div>
     <p class="title">Historija</p>
 
     <div class="filter">
@@ -45,15 +80,25 @@
                             <path
                                 d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
                         </svg>
-                        <p class="reservation2">Datum: {{formatirajDatum(rezervacija.datumRezervacije) | date:'dd.MM.yyyy.'}}</p>
+                        <p class="reservation2" *ngIf="!rezervacija.usluzniObjekt.isSmjestaj">Datum: {{formatirajDatum(rezervacija.datumRezervacije) | date:'dd.MM.yyyy.'}}</p>
+                        <p class="reservation2" *ngIf="rezervacija.usluzniObjekt.isSmjestaj">Datum useljenja: {{formatirajDatum(rezervacija.rezervacijaPocetak) | date:'dd.MM.yyyy.'}}</p>
+
                     </div>
                     <div class="datum">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        <svg *ngIf="!rezervacija.usluzniObjekt.isSmjestaj" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-clock" viewBox="0 0 16 16">
                             <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
                             <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
                         </svg>
-                        <p class="reservation2">Vrijeme: {{rezervacija.rezervacijaPocetak}} - {{rezervacija.rezervacijaKraj}}</p>
+                        <svg *ngIf="rezervacija.usluzniObjekt.isSmjestaj" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            class="bi bi-calendar3" viewBox="0 0 16 16">
+                            <path
+                                d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
+                            <path
+                                d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                        </svg>
+                        <p class="reservation2" *ngIf="!rezervacija.usluzniObjekt.isSmjestaj">Vrijeme: {{rezervacija.rezervacijaPocetak}} - {{rezervacija.rezervacijaKraj}}</p>
+                        <p class="reservation2" *ngIf="rezervacija.usluzniObjekt.isSmjestaj" >Datum iseljenja: {{rezervacija.rezervacijaKraj | date:'dd.MM.yyyy.'}}</p>
                     </div>
                 </div>
                 <div>
@@ -69,7 +114,7 @@
                     <button (click)="otkaziRezervaciju(rezervacija.rezervacijaID)" class="btnOtkazi" *ngIf="rezervacija.otkazano == false && rezervacija.zavrseno == false">Otkaži rezervaciju</button>
                     <button class="btnZavrsena" *ngIf="rezervacija.zavrseno == true">Završena</button>
                     <button class="btnOtkazana" *ngIf="rezervacija.otkazano == true">Otkazana</button>
-                    <button class="btnOtkazi" *ngIf="rezervacija.otkazano == true || rezervacija.zavrseno == true">Ponovi rezervaciju</button>
+                    <button (click)="ponoviRezervaciju(rezervacija)" class="btnOtkazi" *ngIf="rezervacija.otkazano == true || rezervacija.zavrseno == true">Ponovi rezervaciju</button>
                 </div>
             </div>
         </div>

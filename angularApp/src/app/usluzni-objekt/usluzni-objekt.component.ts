@@ -4,10 +4,11 @@ import { ActivatedRoute, Router} from '@angular/router';
 import { UsluzniObjekt } from '../models/usluzniObjekt.model';
 import { MojConfig } from '../moj-config';
 import { Usluga } from '../models/usluga.model';
-import { korisnickiNalog, LoginInformacije } from '../_helpers/login-informacije';
+import { LoginInformacije } from '../_helpers/login-informacije';
 import { AutentifikacijaHelper } from '../_helpers/autentifikacija-helper';
-import { HeaderComponent } from '../shared/header.component';
+import { HeaderComponent } from '../shared/header/header.component';
 import { Recenzija } from '../models/recenzija.model';
+import { TerminFunckijeService } from '../shared/termin-manager/termin-funckije.service';
 
 @Component({
   selector: 'app-usluzni-objekt',
@@ -35,7 +36,7 @@ export class UsluzniObjektComponent implements OnInit {
   karticnoPlacanje: boolean = false;
 
 
-  constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, private router: Router, private menu: HeaderComponent)
+  constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, private router: Router, private menu: HeaderComponent, private terminFunkcije: TerminFunckijeService)
 {}
 
   ngOnInit(): void {
@@ -59,6 +60,8 @@ export class UsluzniObjektComponent implements OnInit {
       this.datumKraja = datumPocetkaDate.toISOString().split('T')[0];
     }
   }
+
+
 
   getStars(): number[] {
     const totalStars = 5;
@@ -108,23 +111,13 @@ export class UsluzniObjektComponent implements OnInit {
     this.menu.NavigirajIZatvori("/login");
   }
 
-  getListaDostupnihTermina(objektID: number,datum: string, trajanje: number)
-  {
-    let params = new HttpParams()
-      .set('usluzniObjektID', objektID)
-      .set('odabraniDatum', datum)
-      .set('trajanje', trajanje);
-
-    this.httpKlijent.get<string[]>(MojConfig.adresa_servera+"/Rezervacija/GetListaSlobodnihTermina", {params}).subscribe(x =>{
-      this.dostupniTermini=x;
-    });
-  }
-
   onDatumUslugaChange()
   {
     if(this.odabraniDatum && this.odabranaUsluga)
     {
-      this.getListaDostupnihTermina(this.usluzniObjektID, this.odabraniDatum, this.odabranaUsluga.trajanje)
+       this.terminFunkcije.getListaDostupnihTermina(this.usluzniObjektID,this.odabraniDatum, this.odabranaUsluga.trajanje).subscribe(x=>{
+        this.dostupniTermini=x;
+       });
     }
   }
 
@@ -133,26 +126,7 @@ export class UsluzniObjektComponent implements OnInit {
 
     if(this.odabraniDatum && this.odabranaUsluga && this.odabranoVrijeme)
     {
-      let parametri: any = {
-        datumRezervacije: this.odabraniDatum,
-        rezervacijaPocetak: this.odabranoVrijeme,
-        trajanje: this.odabranaUsluga.trajanje,
-        osobaID: this.loginInfo().autentifikacijaToken?.osobaID,
-        uslugaID: this.odabranaUsluga.uslugaID,
-        usluzniObjektID: this.usluzniObjektID,
-        karticnoPlacanje: this.karticnoPlacanje
-      };
-
-      this.httpKlijent.post(MojConfig.adresa_servera+"/Rezervacija/Add", parametri, MojConfig.http_opcije()).subscribe({
-        next: (response) => {
-          alert("Uspješna rezervacija!");
-          console.log(response);
-        },
-        error: (error) => {
-          alert("Greška pri pravljenju rezervacije!");
-          console.log(error);
-        }
-      });
+      this.terminFunkcije.rezervisiTermin(this.odabraniDatum, this.odabranoVrijeme, this.odabranaUsluga, this.karticnoPlacanje, this.logiraniKorisnik.osobaID);
       this.odabraniDatum=null;
       this.odabranoVrijeme=null;
       this.odabranaUsluga=null;
@@ -196,59 +170,37 @@ export class UsluzniObjektComponent implements OnInit {
 
   onSmjestajUsluga() {
     if (this.odabranaUsluga) {
-      this.httpKlijent.get<Date>(MojConfig.adresa_servera + `/Rezervacija/VratiNajudaljenijiDatum?uslugaId=${this.odabranaUsluga.uslugaID}`, MojConfig.http_opcije())
-        .subscribe({
-          next: (response: Date) => {
-            if (response) {
-              let najdaljiDatum = new Date(response);
-              najdaljiDatum.setDate(najdaljiDatum.getDate() + 2);
-              this.minDate = najdaljiDatum.toISOString().split('T')[0];
-            } else {
-              this.minDate = new Date().toISOString().split('T')[0];
-            }
-          },
-          error: (error) => {
-            console.error("Greška pri dohvaćanju najudaljenijeg datuma:", error);
+      this.terminFunkcije.getNajdaljiDatum(this.odabranaUsluga).subscribe({
+        next: (response: Date) => {
+          if (response) {
+            let najdaljiDatum = new Date(response);
+            najdaljiDatum.setDate(najdaljiDatum.getDate() + 2);
+            this.minDate = najdaljiDatum.toISOString().split('T')[0];
+            console.log(this.minDate);
+          } else {
             this.minDate = new Date().toISOString().split('T')[0];
           }
-        });
+        },
+        error: (error) => {
+          console.error("Greška pri dohvaćanju najudaljenijeg datuma:", error);
+          this.minDate = new Date().toISOString().split('T')[0];
+        }
+      });
     }
   }
 
   rezervisiTerminSmjestaja() {
     if (this.odabranaUsluga && this.datumPocetka && this.datumKraja) {
-      let rezervacijaPodaci: any = {
-        rezervacijaPocetak: this.datumPocetka,
-        rezervacijaKraj: this.datumKraja,
-        osobaID: this.loginInfo().autentifikacijaToken?.osobaID,
-        uslugaID: this.odabranaUsluga.uslugaID,
-        usluzniObjektID: this.usluzniObjektID,
-        karticnoPlacanje: this.karticnoPlacanje
-      };
-
-      this.httpKlijent.post(MojConfig.adresa_servera + "/Rezervacija/RezervisiSmjestaj", rezervacijaPodaci, MojConfig.http_opcije()).subscribe({
-        next: (response) => {
-          alert("Uspješna rezervacija!");
-          console.log(response);
-
-          this.odabranaUsluga = null;
-          this.datumPocetka = null;
-          this.datumKraja = null;
-          this.karticnoPlacanje = false;
-
-          if (rezervacijaPodaci.karticnoPlacanje) {
-            window.location.href = 'https://www.paypal.com/signin';
-          }
-        },
-        error: (error) => {
-          alert("Greška pri pravljenju rezervacije!");
-          console.log(error);
-        }
-      });
-    } else {
+      this.terminFunkcije.rezervisiTerminSmjestaja(this.datumPocetka, this.datumKraja, this.logiraniKorisnik.osobaID, this.odabranaUsluga, this.karticnoPlacanje)
+      this.odabranaUsluga = null;
+      this.datumPocetka = null;
+      this.datumKraja = null;
+      this.karticnoPlacanje = false;
+    } 
+    
+    else {
       alert("Molimo unesite sve potrebne podatke za rezervaciju.");
     }
   }
-
 
 }

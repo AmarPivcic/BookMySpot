@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookMySpotAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240820173952_Smjestaj5")]
-    partial class Smjestaj5
+    [Migration("20240822110642_generate database")]
+    partial class generatedatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -255,6 +255,9 @@ namespace BookMySpotAPI.Migrations
                     b.Property<DateTime>("datumRezervacije")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("karticnoPlacanje")
+                        .HasColumnType("bit");
+
                     b.Property<int>("korisnikID")
                         .HasColumnType("int");
 
@@ -300,12 +303,6 @@ namespace BookMySpotAPI.Migrations
                     b.Property<string>("cijena")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("datumIseljenja")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("datumUseljenja")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("naziv")
                         .HasColumnType("nvarchar(max)");

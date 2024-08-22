@@ -20,7 +20,7 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpGet]
         public async Task<ActionResult> GetListaSlobodnihTermina(int usluzniObjektID, DateTime odabraniDatum, int trajanje)
         {
-            var trenutneRezervacije = await _dbContext.Rezervacije.Where(r => r.usluzniObjektID == usluzniObjektID && r.datumRezervacije == odabraniDatum).ToListAsync();
+            var trenutneRezervacije = await _dbContext.Rezervacije.Where(r => r.usluzniObjektID == usluzniObjektID && r.datumRezervacije == odabraniDatum && r.otkazano == false).ToListAsync();
             UsluzniObjekt usluzniObjekt = await _dbContext.UsluzniObjekti.FirstOrDefaultAsync(u => u.usluzniObjektID == usluzniObjektID);
             TimeSpan radnoVrijemePocetak = TimeSpan.Parse(usluzniObjekt.radnoVrijemePocetak);
             TimeSpan radnoVrijemeKraj = TimeSpan.Parse(usluzniObjekt.radnoVrijemeKraj);
@@ -127,7 +127,7 @@ namespace BookMySpotAPI.Modul.Controllers
         public async Task<ActionResult<DateTime?>> VratiNajudaljenijiDatum(int uslugaId)
         {
             var rezervacijeSaUslugaId = await _dbContext.Rezervacije
-                .Where(r => r.uslugaID == uslugaId)
+                .Where(r => r.uslugaID == uslugaId && r.otkazano == false)
                 .ToListAsync();
 
             var najdaljiDatumRezervacijaKraj = rezervacijeSaUslugaId

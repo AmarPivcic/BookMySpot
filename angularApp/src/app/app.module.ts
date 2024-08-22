@@ -6,7 +6,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AppComponent} from "./app.component";
 import {LoginComponent} from "./login/login.component";
 import {HomeComponent} from "./home/home.component";
-import { HeaderComponent } from './shared/header.component';
+import { HeaderComponent } from './shared/header/header.component';
 import {FormsModule} from "@angular/forms";
 import { MojRacunComponent } from './moj-racun/moj-racun.component';
 import {ONamaComponent} from "./o-nama/o-nama.component";

@@ -4,7 +4,7 @@ import { MojConfig } from '../moj-config';
 import { HttpClient } from "@angular/common/http";
 import {Router} from "@angular/router";
 import { LoginInformacije } from '../_helpers/login-informacije';
-import { HeaderComponent } from '../shared/header.component';
+import { HeaderComponent } from '../shared/header/header.component';
 
 @Component({
   selector: 'app-moj-racun',

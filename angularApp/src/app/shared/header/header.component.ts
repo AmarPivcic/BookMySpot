@@ -1,6 +1,6 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { AutentifikacijaHelper } from '../_helpers/autentifikacija-helper';
-import { LoginInformacije } from '../_helpers/login-informacije';
+import { AutentifikacijaHelper } from '../../_helpers/autentifikacija-helper';
+import { LoginInformacije } from '../../_helpers/login-informacije';
 import { Router } from '@angular/router';
 
 @Component({

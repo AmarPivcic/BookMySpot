@@ -54,20 +54,40 @@
       </div>
     </div>
 
-      <div *ngIf="usluzniObjekt?.isSmjestaj == false" class="rezervacijaSmjestaja">
+      <div class="rezervacijaSmjestaja">
         <h3>Rezervacija</h3>
 
-        <select [(ngModel)]="odabranaUsluga" (change)="onDatumUslugaChange()" required class="datumRezV" style="width: 100%;">
+        <select *ngIf="usluzniObjekt?.isSmjestaj == false" [(ngModel)]="odabranaUsluga" (change)="onDatumUslugaChange()" required class="datumRezV" style="width: 100%;">
           <option [ngValue]="null" disabled>Odaberi uslugu</option>
           <option *ngFor="let usluga of listaUsluga" [ngValue]="usluga">{{usluga.naziv}} ({{usluga.trajanje}} min)</option>
         </select>
 
-        <div class="datumRez">
+        <select *ngIf="usluzniObjekt?.isSmjestaj == true" [(ngModel)]="odabranaUsluga" (change)="onSmjestajUsluga()" required class="datumRezV" style="width: 100%;">
+          <option [ngValue]="null" disabled>Odaberi uslugu</option>
+          <option *ngFor="let usluga of listaUsluga" [ngValue]="usluga">{{usluga.naziv}}</option>
+        </select>
+
+        <div *ngIf="usluzniObjekt?.isSmjestaj == false" class="datumRez">
           <label for="datumRezervacije">Datum termina:</label>
           <input [(ngModel)]="odabraniDatum" [min]="minDate" (change)="onDatumUslugaChange()" type="date" id="datumRezP" name="datumRezervacije" />
         </div>
 
-        <div class="datumRez">
+        <div  *ngIf="usluzniObjekt?.isSmjestaj == true"  class="datumRez">
+          <label for="datumPocetkaRezervacije">Datum useljenja:</label>
+          <input [(ngModel)]="datumPocetka" (ngModelChange)="onDatumPocetkaChange()" type="date" id="datumRezP" name="datumPocetkaRezervacije" [min]="minDate" [disabled]="!odabranaUsluga"/>
+        </div>
+  
+        <div  *ngIf="usluzniObjekt?.isSmjestaj == true"  class="datumRez">
+          <label for="datumKrajaRezervacije">Datum iseljenja:</label>
+          <input [(ngModel)]="datumKraja" type="date" id="datumRezP" name="datumKrajaRezervacije" [min]="datumPocetka" [disabled]="!datumPocetka"/>
+        </div>
+
+        <div *ngIf="usluzniObjekt?.isSmjestaj == true" class="datumRez">
+          <label for="karticnoPlacanjeCheckbox">Kartično plaćanje:</label>
+          <input [(ngModel)]="karticnoPlacanje" type="checkbox" id="karticnoPlacanjeCheckbox" name="karticnoPlacanjeCheckbox" [disabled]="!datumKraja">
+        </div>
+
+        <div class="datumRez" *ngIf="usluzniObjekt?.isSmjestaj == false">
           <label for="appt">Vrijeme početka termina:</label>
           <select [(ngModel)] = "odabranoVrijeme" class="datumRezV" required>
             <option [ngValue]="null" disabled>Odaberi vrijeme</option>
@@ -76,42 +96,12 @@
         </div>
 
         <div class="rezervacijaBox">
-          <button *ngIf="loginInfo().isLogiran == true" class="buttonRezervisi" (click)="rezervisiTermin()">Rezerviši</button>
+          <button *ngIf="loginInfo().isLogiran == true && usluzniObjekt?.isSmjestaj == false" class="buttonRezervisi" (click)="rezervisiTermin()">Rezerviši</button>
+          <button *ngIf="loginInfo().isLogiran == true && usluzniObjekt?.isSmjestaj == true" class="buttonRezervisi" (click)="rezervisiTerminSmjestaja()">Rezerviši</button>
           <p *ngIf="loginInfo().isLogiran == false" style="margin-bottom: 5px;">Morate biti prijavljeni kako bi ste izvršili rezervaciju.</p>
           <button *ngIf="loginInfo().isLogiran == false" class="buttonRezervisi" (click)="prijava()">Prijava</button>
         </div>
       </div>
-
-
-    <div *ngIf="usluzniObjekt?.isSmjestaj == true" class="rezervacijaSmjestaja">
-      <h3>Rezervacija</h3>
-
-      <select [(ngModel)]="odabranaUsluga" (change)="onSmjestajUsluga()" required class="datumRezV" style="width: 100%;">
-        <option [ngValue]="null" disabled>Odaberi uslugu</option>
-        <option *ngFor="let usluga of listaUsluga" [ngValue]="usluga">{{usluga.naziv}}</option>
-      </select>
-
-      <div class="datumRez">
-        <label for="datumPocetkaRezervacije">Datum useljenja:</label>
-        <input [(ngModel)]="datumPocetka" (ngModelChange)="onDatumPocetkaChange()" type="date" id="datumRezP" name="datumPocetkaRezervacije" [min]="minDate" [disabled]="!odabranaUsluga"/>
-      </div>
-
-      <div class="datumRez">
-        <label for="datumKrajaRezervacije">Datum iseljenja:</label>
-        <input [(ngModel)]="datumKraja" type="date" id="datumRezP" name="datumKrajaRezervacije" [min]="datumPocetka" [disabled]="!datumPocetka"/>
-      </div>
-
-      <div class="datumRez">
-        <label for="karticnoPlacanjeCheckbox">Kartično plaćanje:</label>
-        <input [(ngModel)]="karticnoPlacanje" type="checkbox" id="karticnoPlacanjeCheckbox" name="karticnoPlacanjeCheckbox" [disabled]="!datumKraja">
-      </div>
-
-      <div class="rezervacijaBox">
-        <button *ngIf="loginInfo().isLogiran == true" class="buttonRezervisi" (click)="rezervisiTerminSmjestaja()">Rezerviši</button>
-        <p *ngIf="loginInfo().isLogiran == false" style="margin-bottom: 5px;">Morate biti prijavljeni kako biste izvršili rezervaciju.</p>
-        <button *ngIf="loginInfo().isLogiran == false" class="buttonRezervisi" (click)="prijava()">Prijava</button>
-      </div>
-    </div>
 
 
     <div class="rezervacijaSmjestaja">

@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import { LoginInformacije } from '../_helpers/login-informacije';
 import { MojConfig } from '../moj-config';
 import { AutentifikacijaHelper } from '../_helpers/autentifikacija-helper';
-import { HeaderComponent } from '../shared/header.component';
+import { HeaderComponent } from '../shared/header/header.component';
 
 
 @Component({
