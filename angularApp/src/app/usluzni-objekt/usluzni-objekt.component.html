@@ -72,19 +72,66 @@
           <input [(ngModel)]="odabraniDatum" [min]="minDate" (change)="onDatumUslugaChange()" type="date" id="datumRezP" name="datumRezervacije" />
         </div>
 
-        <div  *ngIf="usluzniObjekt?.isSmjestaj == true"  class="datumRez">
-          <label for="datumPocetkaRezervacije">Datum useljenja:</label>
-          <input [(ngModel)]="datumPocetka" (ngModelChange)="onDatumPocetkaChange()" type="date" id="datumRezP" name="datumPocetkaRezervacije" [min]="minDate" [disabled]="!odabranaUsluga"/>
+        <div *ngIf="usluzniObjekt?.isSmjestaj == true" class="dates-container">
+          <!-- Godina, mjesec i dan useljenja -->
+          <div class="move-in-row">
+            <div class="date-select">
+              <label for="godina">Godina useljenja:</label>
+              <select id="godina" [(ngModel)]="selectedGodina" (change)="onGodinaChange()" [disabled]="!odabranaUsluga">
+                <option *ngFor="let godina of godine" [value]="godina">{{ godina }}</option>
+              </select>
+            </div>
+
+            <div class="date-select">
+              <label for="mjesec">Mjesec useljenja:</label>
+              <select id="mjesec" [(ngModel)]="selectedMjesec" (change)="onMjesecChange()" [disabled]="!odabranaUsluga">
+                <option *ngFor="let mjesec of mjeseci" [value]="mjesec">{{ mjesec }}</option>
+              </select>
+            </div>
+
+            <div class="date-select">
+              <label for="dan">Dan useljenja:</label>
+              <select id="dan" [(ngModel)]="selectedDan" [disabled]="!odabranaUsluga">
+                <option *ngFor="let dan of dani" [value]="dan">{{ dan }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Godina, mjesec i dan iseljenja -->
+          <div class="move-out-row">
+            <div class="date-select">
+              <label for="godinaIseljenja">Godina iseljenja:</label>
+              <select id="godinaIseljenja" [(ngModel)]="selectedGodinaIseljenja" [disabled]="!odabranaUsluga" (change)="onGodinaIseljenjaChange()">
+                <option *ngFor="let godina of godineIseljenja" [value]="godina">{{ godina }}</option>
+              </select>
+            </div>
+
+            <div class="date-select">
+              <label for="mjesecIseljenja">Mjesec iseljenja:</label>
+              <select id="mjesecIseljenja" [(ngModel)]="selectedMjesecIseljenja" [disabled]="!odabranaUsluga" (change)="onMjesecIseljenjaChange()">
+                <option *ngFor="let mjesec of mjeseciIseljenja" [value]="mjesec">{{ mjesec }}</option>
+              </select>
+            </div>
+
+            <div class="date-select">
+              <label for="danIseljenja">Dan iseljenja:</label>
+              <select id="danIseljenja" [(ngModel)]="selectedDanIseljenja" [disabled]="!odabranaUsluga">
+                <option *ngFor="let dan of daniIseljenja" [value]="dan">{{ dan }}</option>
+              </select>
+            </div>
+          </div>
         </div>
-  
-        <div  *ngIf="usluzniObjekt?.isSmjestaj == true"  class="datumRez">
-          <label for="datumKrajaRezervacije">Datum iseljenja:</label>
-          <input [(ngModel)]="datumKraja" type="date" id="datumRezP" name="datumKrajaRezervacije" [min]="datumPocetka" [disabled]="!datumPocetka"/>
-        </div>
+
+
+
+
+
+
+
 
         <div *ngIf="usluzniObjekt?.isSmjestaj == true" class="datumRez">
           <label for="karticnoPlacanjeCheckbox">Kartično plaćanje:</label>
-          <input [(ngModel)]="karticnoPlacanje" type="checkbox" id="karticnoPlacanjeCheckbox" name="karticnoPlacanjeCheckbox" [disabled]="!datumKraja">
+          <input [(ngModel)]="karticnoPlacanje" type="checkbox" id="karticnoPlacanjeCheckbox" name="karticnoPlacanjeCheckbox">
         </div>
 
         <div class="datumRez" *ngIf="usluzniObjekt?.isSmjestaj == false">

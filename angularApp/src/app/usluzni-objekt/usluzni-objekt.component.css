@@ -7,11 +7,11 @@
     letter-spacing: 1px;
     color: #ebe3d5;
   }
-  
+
   .titleIRatingHotel {
     text-align: center;
   }
-  
+
   /* Slideshow container */
   .slideshow-container {
     width: 50%;
@@ -19,9 +19,9 @@
     margin: auto;
     margin-top: 20px;
   }
-  
+
   /* Make the images invisible by default */
-  
+
   /* forward & Back buttons */
   .Back,
   .forward {
@@ -38,19 +38,19 @@
     border-radius: 0 5px 5px 0;
     user-select: none;
   }
-  
+
   /* Place the "forward button" to the right */
   .forward {
     right: 0;
     border-radius: 4px 0 0 4px;
   }
-  
+
   /*when the user hovers,add a black background with some little opacity */
   .Back:hover,
   .forward:hover {
     background-color: #b0a69556;
   }
-  
+
   /* Content */
   .info {
     color: #f2f2f3;
@@ -59,7 +59,7 @@
     position: absolute;
     top: 0;
   }
-  
+
   /* The circles or bullets indicators */
   .dots {
     cursor: pointer;
@@ -72,13 +72,13 @@
     display: inline-block;
     transition: background-color 0.5s ease;
   }
-  
+
   .enable,
   .dots:hover {
     background: linear-gradient(92.18deg, #b0a695 -25.78%, #776b5d 123.02%);
     opacity: 1;
   }
-  
+
   /* Faint animation */
   .fade {
     -webkit-animation-name: fade;
@@ -86,27 +86,27 @@
     animation-name: fade;
     animation-duration: 1.4s;
   }
-  
+
   @-webkit-keyframes fade {
     from {
       opacity: 0.5;
     }
-  
+
     to {
       opacity: 2;
     }
   }
-  
+
   @keyframes fade {
     from {
       opacity: 0.5;
     }
-  
+
     to {
       opacity: 2;
     }
   }
-  
+
   .Cjenovnik {
     display: flex;
     flex-direction: column;
@@ -119,19 +119,19 @@
     margin-top: 20px;
     width: 50%;
   }
-  
+
   .Cjenovnik p {
     font-size: 1rem;
     color: #151515;
   }
-  
+
   h3 {
     color: black;
     text-align: center;
     margin-bottom: 10px;
     font-size: 1.5rem;
   }
-  
+
   .VansezonskeCijene {
     border-bottom: dashed;
     color: black;
@@ -139,18 +139,18 @@
     width: 100%;
     padding: 10px;
   }
-  
+
   .SezonskeCijene {
     color: black;
     margin-bottom: 10px;
     width: 100%;
     padding: 10px;
   }
-  
+
   .VansezonskeCijene table {
     margin-bottom: 10px;
   }
-  
+
   .tabelaVanSezonske,
   .tabelaSezonske {
     text-align: center;
@@ -162,16 +162,16 @@
   th {
     color: black;
   }
-  
+
   .tabelaSezonske {
     width: 100%;
   }
-  
+
   .divZaZapocniRezervaciju {
     display: flex;
     justify-content: center;
   }
-  
+
   .dugmicZapocni {
     margin-top: 20px;
     width: 100%;
@@ -184,23 +184,23 @@
     color: black;
     letter-spacing: 1px;
   }
-  
+
   .cijenovnikTabela{
     width: 100%;
     text-align: center;
     padding: 10px;
     color: black;
   }
-  
+
   .cijenovnikTabela td, th
   {
     color: black;
   }
-  
+
   .cijenovnikTabela thead th{
     color: black;
   }
-  
+
   .rezervacijaSmjestaja {
     display: flex;
     flex-direction: column;
@@ -215,7 +215,7 @@
     width: 50%;
     padding: 10px;
   }
-  
+
   .inputiRezervacije,
   input {
     width: 100%;
@@ -225,18 +225,18 @@
     border: none;
     border-radius: 5px;
   }
-  
+
   input {
     padding: 5px;
   }
-  
+
   select {
     margin-bottom: 10px;
     background-color: #776b5d;
     border: none;
     border-radius: 5px;
   }
-  
+
   .datumRez {
     width: 100%;
     display: flex;
@@ -244,7 +244,19 @@
     align-items: center;
     margin-bottom: 10px;
   }
-  
+
+.move-in-row,
+.move-out-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.date-select {
+  display: flex;
+  flex: 1;
+  width: 200px;
+}
+
   #datumRezP {
     width: 60%;
     margin-bottom: 0;
@@ -255,43 +267,43 @@
     font-size: 1.2rem;
     user-select: none;
   }
-  
+
   .datumRezV{
     width: 60%;
     color: white;
     padding: 5px;
     font-size: 1.2rem;
   }
-  
+
   #Email {
     width: 100%;
   }
-  
+
   select:required:invalid {
     color: white;
   }
-  
+
   option[value=""][disabled] {
     display: none;
   }
-  
+
   option {
     color: white;
   }
-  
+
   .datumRez option{
    text-align: center;
   }
-  
+
   label {
     color: black;
     font-size: 1.2rem;
   }
-  
+
   ::placeholder {
     color: white;
   }
-  
+
   .buttonRezervisi {
     height: 35px;
     width: 120px;
@@ -303,7 +315,7 @@
     font-size: 1.2rem;
     cursor:pointer;
   }
-  
+
   .comment {
     background-color: #776b5d;
     width: 100%;
@@ -311,29 +323,29 @@
     margin-bottom: 10px;
     padding: 5px;
   }
-  
+
   .komentarOsobe {
     margin-top: 10px;
   }
-  
+
   .profilePicAndName {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
   }
-  
+
   #mesidzboks {
     width: 100%;
     color: #151515;
     padding: 5px;
     border-radius: 5px;
   }
-  
+
   .divZaPosalji {
     display: flex;
     justify-content: center;
   }
-  
+
   .buttonPosalji {
     background-color: #ebe3d5;
     border-radius: 5px;
@@ -353,7 +365,7 @@
     flex-direction: column;
     align-items: center;
   }
-  
+
   .starRating{
     display: flex;
     justify-content: center;

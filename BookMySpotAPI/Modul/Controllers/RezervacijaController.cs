@@ -139,6 +139,94 @@ namespace BookMySpotAPI.Modul.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetGodine()
+        {
+            var trenutnaGodina = DateTime.Now.Year;
+            var iducaGodina = trenutnaGodina + 1;
+
+            var godine = new List<int>
+            {
+                trenutnaGodina,
+                iducaGodina
+            };
+
+            return Ok(godine);
+        }
+
+        [HttpGet]
+        public IActionResult GetMjeseci(int godina)
+        {
+            var trenutnaGodina = DateTime.Now.Year;
+            var mjeseci = new List<int>();
+
+            if (godina == trenutnaGodina)
+            {
+                mjeseci.AddRange(new[] { 8, 9, 10, 11, 12 });
+            }
+            else
+            {
+                mjeseci.AddRange(Enumerable.Range(1, 12));
+            }
+
+            return Ok(mjeseci);
+        }
+
+        [HttpGet]
+        public IActionResult GetDani(int godina, int mjesec, int uslugaId)
+        {
+            if (mjesec < 1 || mjesec > 12)
+            {
+                return BadRequest("Nevalidan mjesec");
+            }
+
+            var trenutniDatum = DateTime.Now;
+            var brojDana = DateTime.DaysInMonth(godina, mjesec);
+            var dani = Enumerable.Range(1, brojDana).ToList();
+
+            if (godina == trenutniDatum.Year && mjesec == trenutniDatum.Month)
+            {
+                dani = dani.Where(dan => dan >= trenutniDatum.Day).ToList();
+            }
+
+            var rezervacije = _dbContext.Rezervacije
+                .Where(r => r.uslugaID == uslugaId && !r.otkazano && !r.zavrseno)
+                .ToList();
+
+            var zauzetiDani = new HashSet<int>();
+
+            foreach (var rezervacija in rezervacije)
+            {
+                var pocetak = DateTime.Parse(rezervacija.rezervacijaPocetak);
+                var kraj = DateTime.Parse(rezervacija.rezervacijaKraj);
+
+                if (pocetak.Year == godina || kraj.Year == godina || (pocetak.Year < godina && kraj.Year > godina))
+                {
+                    var pocetakMeseca = new DateTime(godina, mjesec, 1);
+                    var krajMeseca = pocetakMeseca.AddMonths(1).AddDays(-1);
+
+                    var rezervacijaPocetak = pocetak > pocetakMeseca ? pocetak : pocetakMeseca;
+                    var rezervacijaKraj = kraj < krajMeseca ? kraj : krajMeseca;
+
+                    if (rezervacijaPocetak <= rezervacijaKraj)
+                    {
+                        var daniRezervacije = Enumerable.Range(1, brojDana)
+                            .Where(dan => new DateTime(godina, mjesec, dan) >= rezervacijaPocetak && new DateTime(godina, mjesec, dan) <= rezervacijaKraj)
+                            .ToList();
+
+                        foreach (var dan in daniRezervacije)
+                        {
+                            zauzetiDani.Add(dan);
+                        }
+                    }
+                }
+            }
+
+            dani = dani.Where(dan => !zauzetiDani.Contains(dan)).ToList();
+
+            return Ok(dani);
+        }
+
+        [HttpGet]
         public async Task<ActionResult<List<Rezervacija>>> GetListaTrenutnihKorisnik (int id)
         {
             var korisnik = await _dbContext.Korisnici.FindAsync(id);
