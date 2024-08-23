@@ -9,6 +9,7 @@ import { AutentifikacijaHelper } from '../_helpers/autentifikacija-helper';
 import { HeaderComponent } from '../shared/header/header.component';
 import { Recenzija } from '../models/recenzija.model';
 import { TerminFunckijeService } from '../shared/termin-manager/termin-funckije.service';
+import {compareSegments} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker";
 
 @Component({
   selector: 'app-usluzni-objekt',
@@ -54,7 +55,6 @@ export class UsluzniObjektComponent implements OnInit {
 
   constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, private router: Router, private menu: HeaderComponent, private terminFunkcije: TerminFunckijeService)
 {
-  this.loadGodine();
 }
 
   ngOnInit(): void {
@@ -69,13 +69,11 @@ export class UsluzniObjektComponent implements OnInit {
     if (this.datumPocetka) {
       this.datumKraja = this.datumPocetka;
     }
-    this.loadGodineIseljenja();
   }
 
   loadGodineIseljenja() {
     this.httpKlijent.get<number[]>('https://localhost:7058/Rezervacija/GetGodine').subscribe(godineIseljenja => {
       this.godineIseljenja = godineIseljenja;
-      this.selectedGodinaIseljenja = godineIseljenja.length > 0 ? godineIseljenja[0] : undefined;
       this.onGodinaIseljenjaChange();
     });
   }
@@ -84,8 +82,6 @@ export class UsluzniObjektComponent implements OnInit {
     this.httpKlijent.get<number[]>('https://localhost:7058/Rezervacija/GetGodine').subscribe(godine => {
       this.godine = godine;
       this.godineIseljenja = godine;
-      this.selectedGodina = godine[0];
-      this.selectedGodinaIseljenja = godine[0];
       this.onGodinaChange();
       this.onGodinaIseljenjaChange();
     });
@@ -123,7 +119,7 @@ export class UsluzniObjektComponent implements OnInit {
 
   onMjesecIseljenjaChange() {
     if (this.selectedGodinaIseljenja !== undefined && this.selectedMjesecIseljenja !== undefined) {
-      this.httpKlijent.get<number[]>(`https://localhost:7058/Rezervacija/GetDani?godina=${this.selectedGodinaIseljenja}&mjesec=${this.selectedMjesecIseljenja}`).subscribe(daniIseljenja => {
+      this.httpKlijent.get<number[]>(`https://localhost:7058/Rezervacija/GetDani?godina=${this.selectedGodinaIseljenja}&mjesec=${this.selectedMjesecIseljenja}&uslugaId=${this.odabranaUsluga?.uslugaID}`).subscribe(daniIseljenja => {
         this.daniIseljenja = daniIseljenja;
         console.log('Dani iseljenja:', daniIseljenja);
         this.selectedDanIseljenja = daniIseljenja.length > 0 ? daniIseljenja[0] : undefined;
@@ -240,6 +236,8 @@ export class UsluzniObjektComponent implements OnInit {
   }
 
   onSmjestajUsluga() {
+    this.loadGodine();
+    this.loadGodineIseljenja();
     this.loadDani();
   }
 
@@ -262,8 +260,25 @@ export class UsluzniObjektComponent implements OnInit {
       this.selectedGodina && this.selectedMjesec && this.selectedDan &&
       this.selectedGodinaIseljenja && this.selectedMjesecIseljenja && this.selectedDanIseljenja) {
 
+      for (let i = Number(this.selectedDan!) + 1; i <= Number(this.selectedDanIseljenja!); i++) {
+        console.log("Provjeravam dan: " , i);
+        if (!this.dani.includes(Number(i))) {
+          console.log("Nedostaje dan:", i);
+          alert("Dani između odabranog intervala su već rezervisani. Molimo izaberite drugi period.");
+          return;
+        }
+      }
+
       const datumPocetka = `${this.selectedGodina}/${this.selectedMjesec.toString().padStart(2, '0')}/${this.selectedDan.toString().padStart(2, '0')}`;
       const datumKraja = `${this.selectedGodinaIseljenja}/${this.selectedMjesecIseljenja.toString().padStart(2, '0')}/${this.selectedDanIseljenja.toString().padStart(2, '0')}`;
+
+      const datumPocetkaDate = new Date(this.selectedGodina, this.selectedMjesec - 1, this.selectedDan);
+      const datumKrajaDate = new Date(this.selectedGodinaIseljenja, this.selectedMjesecIseljenja - 1, this.selectedDanIseljenja);
+
+      if (datumKrajaDate < datumPocetkaDate) {
+        alert("Datum iseljenja ne može biti raniji od datuma useljenja.");
+        return;
+      }
 
       this.obaviRezervaciju(
         datumPocetka,

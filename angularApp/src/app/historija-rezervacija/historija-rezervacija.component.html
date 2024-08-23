@@ -32,7 +32,7 @@
             <label for="datumRezervacije" >Datum iseljenja:</label>
             <input [(ngModel)]="datumKraja" type="date" id="datumRezP" name="datumKrajaRezervacije" [min]="datumPocetka" [disabled]="!datumPocetka"/>
           </div>
-  
+
           <div class="datumRez" *ngIf="isSmjestaj==false">
             <label for="appt">Vrijeme početka termina:</label>
             <select [(ngModel)] = "odabranoVrijeme" class="datumRezV" required>
@@ -44,7 +44,7 @@
           <button *ngIf="isSmjestaj==true" (click)="rezervisiTerminSmjestaja()" class="btnok">Rezerviraj</button>
           <button (click)="ugasiPopup()" class="btnok">Odustani</button>
         </div>
-      </div>
+    </div>
     <p class="title">Historija</p>
 
     <div class="filter">
