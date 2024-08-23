@@ -12,25 +12,18 @@
 <body>
     <div *ngIf="ponoviRezervacijuBool" class="blur" id="blur">
         <div class="popup">
+
           <p class="popuptext" *ngIf="isSmjestaj==false">
             Odaberite datum i vrijeme nove rezervacije
           </p>
+
           <p class="popuptext" *ngIf="isSmjestaj">
             Odaberite datum useljenja i datum iseljenja nove rezervacije
           </p>
+
           <div class="datumRez" *ngIf="isSmjestaj==false">
             <label for="datumRezervacije" >Datum termina:</label>
             <input [(ngModel)]="odabraniDatum" [min]="minDate" (change)="onDatumChange()" type="date" id="datumRezP" name="datumRezervacije" />
-          </div>
-
-          <div class="datumRez" *ngIf="isSmjestaj==true">
-            <label for="datumRezervacije" >Datum useljenja:</label>
-            <input [(ngModel)]="datumPocetka" (ngModelChange)="onDatumPocetkaChange()" type="date" id="datumRezP" name="datumPocetkaRezervacije" [min]="minDate"/>
-          </div>
-
-          <div class="datumRez" *ngIf="isSmjestaj==true">
-            <label for="datumRezervacije" >Datum iseljenja:</label>
-            <input [(ngModel)]="datumKraja" type="date" id="datumRezP" name="datumKrajaRezervacije" [min]="datumPocetka" [disabled]="!datumPocetka"/>
           </div>
 
           <div class="datumRez" *ngIf="isSmjestaj==false">
@@ -40,6 +33,57 @@
               <option *ngFor="let termin of dostupniTermini" [ngValue]="termin">{{termin}}</option>
             </select>
           </div>
+
+          <div *ngIf="isSmjestaj == true" class="dates-container">
+            <!-- Godina, mjesec i dan useljenja -->
+            <div class="move-in-row">
+              <div class="date-select">
+                <label for="godina">Godina useljenja:</label>
+                <select id="godina" [(ngModel)]="selectedGodina" (change)="onGodinaChange()" [disabled]="!odabranaRezervacija">
+                  <option *ngFor="let godina of godine" [value]="godina">{{ godina }}</option>
+                </select>
+              </div>
+  
+              <div class="date-select">
+                <label for="mjesec">Mjesec useljenja:</label>
+                <select id="mjesec" [(ngModel)]="selectedMjesec" (change)="onMjesecChange()" [disabled]="!odabranaRezervacija">
+                  <option *ngFor="let mjesec of mjeseci" [value]="mjesec">{{ mjesec }}</option>
+                </select>
+              </div>
+  
+              <div class="date-select">
+                <label for="dan">Dan useljenja:</label>
+                <select id="dan" [(ngModel)]="selectedDan" [disabled]="!odabranaRezervacija">
+                  <option *ngFor="let dan of dani" [value]="dan">{{ dan }}</option>
+                </select>
+              </div>
+            </div>
+  
+            <!-- Godina, mjesec i dan iseljenja -->
+            <div class="move-out-row">
+              <div class="date-select">
+                <label for="godinaIseljenja">Godina iseljenja:</label>
+                <select id="godinaIseljenja" [(ngModel)]="selectedGodinaIseljenja" [disabled]="!odabranaRezervacija" (change)="onGodinaIseljenjaChange()">
+                  <option *ngFor="let godina of godineIseljenja" [value]="godina">{{ godina }}</option>
+                </select>
+              </div>
+  
+              <div class="date-select">
+                <label for="mjesecIseljenja">Mjesec iseljenja:</label>
+                <select id="mjesecIseljenja" [(ngModel)]="selectedMjesecIseljenja" [disabled]="!odabranaRezervacija" (change)="onMjesecIseljenjaChange()">
+                  <option *ngFor="let mjesec of mjeseciIseljenja" [value]="mjesec">{{ mjesec }}</option>
+                </select>
+              </div>
+  
+              <div class="date-select">
+                <label for="danIseljenja">Dan iseljenja:</label>
+                <select id="danIseljenja" [(ngModel)]="selectedDanIseljenja" [disabled]="!odabranaRezervacija">
+                  <option *ngFor="let dan of daniIseljenja" [value]="dan">{{ dan }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
           <button *ngIf="isSmjestaj==false" (click)="rezervisiTermin()" class="btnok">Rezerviraj</button>
           <button *ngIf="isSmjestaj==true" (click)="rezervisiTerminSmjestaja()" class="btnok">Rezerviraj</button>
           <button (click)="ugasiPopup()" class="btnok">Odustani</button>

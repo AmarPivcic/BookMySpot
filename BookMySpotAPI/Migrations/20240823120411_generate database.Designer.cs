@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookMySpotAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240822110642_generate database")]
+    [Migration("20240823120411_generate database")]
     partial class generatedatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

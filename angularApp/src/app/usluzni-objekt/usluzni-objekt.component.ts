@@ -71,65 +71,6 @@ export class UsluzniObjektComponent implements OnInit {
     }
   }
 
-  loadGodineIseljenja() {
-    this.httpKlijent.get<number[]>('https://localhost:7058/Rezervacija/GetGodine').subscribe(godineIseljenja => {
-      this.godineIseljenja = godineIseljenja;
-      this.onGodinaIseljenjaChange();
-    });
-  }
-
-  loadGodine() {
-    this.httpKlijent.get<number[]>('https://localhost:7058/Rezervacija/GetGodine').subscribe(godine => {
-      this.godine = godine;
-      this.godineIseljenja = godine;
-      this.onGodinaChange();
-      this.onGodinaIseljenjaChange();
-    });
-  }
-
-  onGodinaChange() {
-    if (this.selectedGodina !== undefined) {
-      this.httpKlijent.get<number[]>(`https://localhost:7058/Rezervacija/GetMjeseci?godina=${this.selectedGodina}`).subscribe(mjeseci => {
-        this.mjeseci = mjeseci;
-        this.selectedMjesec = mjeseci[0];
-        this.onMjesecChange();
-      });
-    }
-  }
-
-  onMjesecChange() {
-    if (this.selectedGodina !== undefined && this.selectedMjesec !== undefined) {
-      this.httpKlijent.get<number[]>(`https://localhost:7058/Rezervacija/GetDani?godina=${this.selectedGodina}&mjesec=${this.selectedMjesec}&uslugaId=${this.odabranaUsluga?.uslugaID}`).subscribe(dani => {
-        this.dani = dani;
-        this.selectedDan = dani[0];
-      });
-    }
-  }
-
-  onGodinaIseljenjaChange() {
-    if (this.selectedGodinaIseljenja !== undefined) {
-      this.httpKlijent.get<number[]>(`https://localhost:7058/Rezervacija/GetMjeseci?godina=${this.selectedGodinaIseljenja}`).subscribe(mjeseciIseljenja => {
-        this.mjeseciIseljenja = mjeseciIseljenja;
-        this.selectedMjesecIseljenja = mjeseciIseljenja.length > 0 ? mjeseciIseljenja[0] : undefined;
-        this.onMjesecIseljenjaChange();
-      });
-    }
-  }
-
-
-  onMjesecIseljenjaChange() {
-    if (this.selectedGodinaIseljenja !== undefined && this.selectedMjesecIseljenja !== undefined) {
-      this.httpKlijent.get<number[]>(`https://localhost:7058/Rezervacija/GetDani?godina=${this.selectedGodinaIseljenja}&mjesec=${this.selectedMjesecIseljenja}&uslugaId=${this.odabranaUsluga?.uslugaID}`).subscribe(daniIseljenja => {
-        this.daniIseljenja = daniIseljenja;
-        console.log('Dani iseljenja:', daniIseljenja);
-        this.selectedDanIseljenja = daniIseljenja.length > 0 ? daniIseljenja[0] : undefined;
-      });
-    }
-  }
-
-
-
-
   getStars(): number[] {
     const totalStars = 5;
     return Array(totalStars).fill(0);
@@ -235,24 +176,79 @@ export class UsluzniObjektComponent implements OnInit {
     }
   }
 
+  loadGodineIseljenja() {
+    this.terminFunkcije.loadGodineIseljenja().subscribe(godineIseljenja => {
+      this.godineIseljenja = godineIseljenja;
+      this.onGodinaIseljenjaChange();
+    });
+
+  }
+
+  loadGodine() {
+    this.terminFunkcije.loadGodine().subscribe(godine => {
+      this.godine = godine;
+      this.godineIseljenja = godine;
+      this.onGodinaChange();
+      this.onGodinaIseljenjaChange();
+    });
+  }
+
+  onGodinaChange() {
+    if (this.selectedGodina !== undefined) {
+      this.terminFunkcije.onGodinaChange(this.selectedGodina).subscribe(mjeseci => {
+        this.mjeseci = mjeseci;
+        this.selectedMjesec = mjeseci[0];
+        this.onMjesecChange();
+      });
+    }
+  }
+
+  onMjesecChange() {
+    if (this.selectedGodina !== undefined && this.selectedMjesec !== undefined && this.odabranaUsluga) {
+      this.terminFunkcije.onMjesecChange(this.selectedGodina, this.selectedMjesec, this.odabranaUsluga?.uslugaID).subscribe(dani => {
+        this.dani = dani;
+        this.selectedDan = dani[0];
+      });
+    }
+  }
+
+  onGodinaIseljenjaChange() {
+    if (this.selectedGodinaIseljenja !== undefined) {
+      this.terminFunkcije.onGodinaIseljenjaChange(this.selectedGodinaIseljenja).subscribe(mjeseciIseljenja => {
+        this.mjeseciIseljenja = mjeseciIseljenja;
+        this.selectedMjesecIseljenja = mjeseciIseljenja.length > 0 ? mjeseciIseljenja[0] : undefined;
+        this.onMjesecIseljenjaChange();
+      });
+    }
+  }
+
+  onMjesecIseljenjaChange() {
+    if (this.selectedGodinaIseljenja !== undefined && this.selectedMjesecIseljenja !== undefined && this.odabranaUsluga) {
+      this.terminFunkcije.onMjesecIseljenjaChange(this.selectedGodinaIseljenja, this.selectedMjesecIseljenja, this.odabranaUsluga?.uslugaID).subscribe(daniIseljenja => {
+        this.daniIseljenja = daniIseljenja;
+        console.log('Dani iseljenja:', daniIseljenja);
+        this.selectedDanIseljenja = daniIseljenja.length > 0 ? daniIseljenja[0] : undefined;
+      });
+    }
+  }
+
+  loadDani() {
+    if (this.selectedGodina !== undefined && this.selectedMjesec !== undefined && this.odabranaUsluga) {
+      this.terminFunkcije.loadDani(this.selectedGodina, this.selectedMjesec, this.odabranaUsluga?.uslugaID).subscribe({
+        next: (dani: number[]) => {
+          this.dani = dani;
+        },
+        error: (error) => {
+          console.error("Greška pri dohvaćanju dana:", error);
+        }
+      });
+    }
+  }
+
   onSmjestajUsluga() {
     this.loadGodine();
     this.loadGodineIseljenja();
     this.loadDani();
-  }
-
-  loadDani() {
-    if (this.selectedGodina !== undefined && this.selectedMjesec !== undefined) {
-      this.httpKlijent.get<number[]>(`https://localhost:7058/Rezervacija/GetDani?godina=${this.selectedGodina}&mjesec=${this.selectedMjesec}&uslugaId=${this.odabranaUsluga?.uslugaID}`)
-        .subscribe({
-          next: (dani: number[]) => {
-            this.dani = dani;
-          },
-          error: (error) => {
-            console.error("Greška pri dohvaćanju dana:", error);
-          }
-        });
-    }
   }
 
   rezervisiTerminSmjestaja() {
@@ -260,33 +256,18 @@ export class UsluzniObjektComponent implements OnInit {
       this.selectedGodina && this.selectedMjesec && this.selectedDan &&
       this.selectedGodinaIseljenja && this.selectedMjesecIseljenja && this.selectedDanIseljenja) {
 
-      for (let i = Number(this.selectedDan!) + 1; i <= Number(this.selectedDanIseljenja!); i++) {
-        console.log("Provjeravam dan: " , i);
-        if (!this.dani.includes(Number(i))) {
-          console.log("Nedostaje dan:", i);
-          alert("Dani između odabranog intervala su već rezervisani. Molimo izaberite drugi period.");
-          return;
-        }
-      }
-
-      const datumPocetka = `${this.selectedGodina}/${this.selectedMjesec.toString().padStart(2, '0')}/${this.selectedDan.toString().padStart(2, '0')}`;
-      const datumKraja = `${this.selectedGodinaIseljenja}/${this.selectedMjesecIseljenja.toString().padStart(2, '0')}/${this.selectedDanIseljenja.toString().padStart(2, '0')}`;
-
-      const datumPocetkaDate = new Date(this.selectedGodina, this.selectedMjesec - 1, this.selectedDan);
-      const datumKrajaDate = new Date(this.selectedGodinaIseljenja, this.selectedMjesecIseljenja - 1, this.selectedDanIseljenja);
-
-      if (datumKrajaDate < datumPocetkaDate) {
-        alert("Datum iseljenja ne može biti raniji od datuma useljenja.");
-        return;
-      }
-
-      this.obaviRezervaciju(
-        datumPocetka,
-        datumKraja,
+      this.terminFunkcije.rezervisiTerminSmjestaja(
+        this.selectedDan,
+        this.selectedMjesec,
+        this.selectedGodina,
+        this.selectedDanIseljenja,
+        this.selectedMjesecIseljenja,
+        this.selectedGodinaIseljenja,
+        this.dani,
         this.logiraniKorisnik.osobaID,
         this.odabranaUsluga,
         this.karticnoPlacanje
-      );
+      )
 
       this.odabranaUsluga = null;
       this.selectedGodina = undefined;
@@ -296,40 +277,9 @@ export class UsluzniObjektComponent implements OnInit {
       this.selectedMjesecIseljenja = undefined;
       this.selectedDanIseljenja = undefined;
       this.karticnoPlacanje = false;
-    } else {
+    } 
+    else {
       alert("Molimo unesite sve potrebne podatke za rezervaciju.");
     }
   }
-
-  obaviRezervaciju(
-    datumPocetka: string,
-    datumKraja: string,
-    osoba: any,
-    usluga: Usluga,
-    karticno: boolean
-  ) {
-    let rezervacijaPodaci: any = {
-      rezervacijaPocetak: datumPocetka,
-      rezervacijaKraj: datumKraja,
-      osobaID: osoba,
-      uslugaID: usluga.uslugaID,
-      usluzniObjektID: usluga.usluzniObjekt.usluzniObjektID,
-      karticnoPlacanje: karticno
-    };
-
-    this.httpKlijent.post(MojConfig.adresa_servera + "/Rezervacija/RezervisiSmjestaj", rezervacijaPodaci, MojConfig.http_opcije()).subscribe({
-      next: (response) => {
-        alert("Uspješna rezervacija!");
-        console.log(response);
-        if (rezervacijaPodaci.karticnoPlacanje) {
-          window.location.href = 'https://www.paypal.com/signin';
-        }
-      },
-      error: (error) => {
-        alert("Greška pri pravljenju rezervacije!");
-        console.log(error);
-      }
-    });
-  }
-
 }

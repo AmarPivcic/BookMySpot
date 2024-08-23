@@ -29,6 +29,21 @@ export class HistorijaRezervacijaComponent implements OnInit{
   datumKraja: string | null = null;
   isSmjestaj: boolean = false;
 
+  godine: number[] = [];
+  mjeseci: number[] = [];
+  dani: number[] = [];
+  godineIseljenja: number[] = [];
+  mjeseciIseljenja: number[] = [];
+  daniIseljenja: number[] = [];
+
+  selectedGodina?: number;
+  selectedMjesec?: number;
+  selectedDan?: number;
+
+  selectedGodinaIseljenja?: number;
+  selectedMjesecIseljenja?: number;
+  selectedDanIseljenja?: number;
+
   constructor(private httpKlijent: HttpClient, private router: Router, private terminFunkcije: TerminFunckijeService) 
   {}
 
@@ -142,19 +157,115 @@ export class HistorijaRezervacijaComponent implements OnInit{
     }
   }
 
-  rezervisiTerminSmjestaja()
-  {
-    if(this.datumPocetka && this.datumKraja)
-    {
-      //@ts-ignore
-      this.terminFunkcije.rezervisiTerminSmjestaja(this.datumPocetka, this.datumKraja, this.loginInfo().autentifikacijaToken?.osobaID, this.odabranaRezervacija?.usluga, this.karticnoPlacanje);
-      this.ugasiPopup();
-    }
-    else
-    {
-      alert("Morate odabrati datum početka i datum kraja rezervacije!");
+  loadGodineIseljenja() {
+    this.terminFunkcije.loadGodineIseljenja().subscribe(godineIseljenja => {
+      this.godineIseljenja = godineIseljenja;
+      this.onGodinaIseljenjaChange();
+    });
+
+  }
+
+  loadGodine() {
+    this.terminFunkcije.loadGodine().subscribe(godine => {
+      this.godine = godine;
+      this.godineIseljenja = godine;
+      this.onGodinaChange();
+      this.onGodinaIseljenjaChange();
+    });
+  }
+
+  onGodinaChange() {
+    if (this.selectedGodina !== undefined) {
+      this.terminFunkcije.onGodinaChange(this.selectedGodina).subscribe(mjeseci => {
+        this.mjeseci = mjeseci;
+        this.selectedMjesec = mjeseci[0];
+        this.onMjesecChange();
+      });
     }
   }
+
+  onMjesecChange() {
+    if (this.selectedGodina !== undefined && this.selectedMjesec !== undefined && this.odabranaRezervacija) {
+      this.terminFunkcije.onMjesecChange(this.selectedGodina, this.selectedMjesec, this.odabranaRezervacija.usluga?.uslugaID).subscribe(dani => {
+        this.dani = dani;
+        this.selectedDan = dani[0];
+      });
+    }
+  }
+
+  onGodinaIseljenjaChange() {
+    if (this.selectedGodinaIseljenja !== undefined) {
+      this.terminFunkcije.onGodinaIseljenjaChange(this.selectedGodinaIseljenja).subscribe(mjeseciIseljenja => {
+        this.mjeseciIseljenja = mjeseciIseljenja;
+        this.selectedMjesecIseljenja = mjeseciIseljenja.length > 0 ? mjeseciIseljenja[0] : undefined;
+        this.onMjesecIseljenjaChange();
+      });
+    }
+  }
+
+  onMjesecIseljenjaChange() {
+    if (this.selectedGodinaIseljenja !== undefined && this.selectedMjesecIseljenja !== undefined && this.odabranaRezervacija) {
+      this.terminFunkcije.onMjesecIseljenjaChange(this.selectedGodinaIseljenja, this.selectedMjesecIseljenja, this.odabranaRezervacija.usluga?.uslugaID).subscribe(daniIseljenja => {
+        this.daniIseljenja = daniIseljenja;
+        console.log('Dani iseljenja:', daniIseljenja);
+        this.selectedDanIseljenja = daniIseljenja.length > 0 ? daniIseljenja[0] : undefined;
+      });
+    }
+  }
+
+  loadDani() {
+    if (this.selectedGodina !== undefined && this.selectedMjesec !== undefined && this.odabranaRezervacija) {
+      this.terminFunkcije.loadDani(this.selectedGodina, this.selectedMjesec, this.odabranaRezervacija?.usluga.uslugaID).subscribe({
+        next: (dani: number[]) => {
+          this.dani = dani;
+        },
+        error: (error) => {
+          console.error("Greška pri dohvaćanju dana:", error);
+        }
+      });
+    }
+  }
+
+  onSmjestajUsluga() {
+    this.loadGodine();
+    this.loadGodineIseljenja();
+    this.loadDani();
+  }
+
+  rezervisiTerminSmjestaja() {
+    if (this.odabranaRezervacija &&
+      this.selectedGodina && this.selectedMjesec && this.selectedDan &&
+      this.selectedGodinaIseljenja && this.selectedMjesecIseljenja && this.selectedDanIseljenja) {
+
+      this.terminFunkcije.rezervisiTerminSmjestaja(
+        this.selectedDan,
+        this.selectedMjesec,
+        this.selectedGodina,
+        this.selectedDanIseljenja,
+        this.selectedMjesecIseljenja,
+        this.selectedGodinaIseljenja,
+        this.dani,
+        this.logiraniKorisnik.osobaID,
+        this.odabranaRezervacija?.usluga,
+        this.karticnoPlacanje
+      )
+
+
+      this.selectedGodina = undefined;
+      this.selectedMjesec = undefined;
+      this.selectedDan = undefined;
+      this.selectedGodinaIseljenja = undefined;
+      this.selectedMjesecIseljenja = undefined;
+      this.selectedDanIseljenja = undefined;
+      this.karticnoPlacanje = false;
+      this.ugasiPopup();
+    } 
+    else {
+      alert("Molimo unesite sve potrebne podatke za rezervaciju.");
+    }
+  }
+
+  
 
   ponoviRezervaciju(rezervacija: Rezervacija)
   {
@@ -165,23 +276,9 @@ export class HistorijaRezervacijaComponent implements OnInit{
 
     if(rezervacija.usluzniObjekt.isSmjestaj)
     {
-      this.isSmjestaj = true;
-      this.terminFunkcije.getNajdaljiDatum(rezervacija.usluga).subscribe({
-        next: (response: Date) => {
-          if (response) {
-            let najdaljiDatum = new Date(response);
-            najdaljiDatum.setDate(najdaljiDatum.getDate() + 2);
-            this.minDate = najdaljiDatum.toISOString().split('T')[0];
-          } else {
-            this.minDate = new Date().toISOString().split('T')[0];
-          }
-        },
-        error: (error) => {
-          console.error("Greška pri dohvaćanju najudaljenijeg datuma:", error);
-          this.minDate = new Date().toISOString().split('T')[0];
-        }
-      });
-    }
+         this.isSmjestaj = true;
+         this.onSmjestajUsluga();
+     }
   }
 
   ugasiPopup()
@@ -193,6 +290,12 @@ export class HistorijaRezervacijaComponent implements OnInit{
     this.isSmjestaj=false;
     this.datumKraja=null;
     this.datumPocetka=null;
+    this.selectedGodina = undefined;
+    this.selectedMjesec = undefined;
+    this.selectedDan = undefined;
+    this.selectedGodinaIseljenja = undefined;
+    this.selectedMjesecIseljenja = undefined;
+    this.selectedDanIseljenja = undefined;
   }
 
   formatirajDatum(datum: any) {
