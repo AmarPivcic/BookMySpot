@@ -97,18 +97,5 @@ namespace BookMySpotAPI.Modul.Controllers
 
             return Ok(izBaze);  
         }
-        [HttpGet]
-        public IActionResult GetGoogleMapsApiKey()
-        {
-            var apiKey = configuration["GoogleMaps:ApiKey"];
-
-            if (string.IsNullOrEmpty(apiKey))
-            {
-                return NotFound("API ključ nije pronađen.");
-            }
-
-            return Ok(apiKey);
-        }
-
     }
 }

@@ -60,7 +60,7 @@ export class UsluzniObjektComponent implements OnInit {
   @Input() longitude: number = 12;
 
   center!: google.maps.LatLngLiteral;
-  zoom = 15;
+  zoom = 14;
   markerOptions: google.maps.marker.AdvancedMarkerElementOptions = {
     collisionBehavior: google.maps.CollisionBehavior.REQUIRED,
   };

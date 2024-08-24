@@ -24,7 +24,7 @@ namespace BookMySpotAPI.Modul.Models
         [NotMapped]
         public double? prosjecnaOcjena { get; set;}
         public bool isSmjestaj { get; set; } = false;
-        public double? latitude { get; set; } = 43.3438;
-        public double? longitude { get; set; } = 17.8078;
+        public double? latitude { get; set; } = 0;
+        public double? longitude { get; set; } = 0;
     }
 }

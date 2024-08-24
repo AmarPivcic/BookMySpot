@@ -188,15 +188,20 @@
             <button class="buttonPosalji" (click)="posaljiRecenziju()">Pošalji</button>
           </div>
         </div>
+      </div>
+
+    <div class="rezervacijaSmjestaja">
       <div class="comment">
+        <h3 *ngIf="usluzniObjekt?.longitude !== 0 && usluzniObjekt?.latitude !== 0">Lokacija objekta na mapi</h3>
+        <h3 *ngIf="usluzniObjekt?.longitude == 0 && usluzniObjekt?.latitude == 0">Menadžer nije unio lokaciju objekta na mapi</h3>
         <google-map height="400px" width="100%" [center]="center" [zoom]="zoom" (mapClick)="onMapClick($event)" mapId="7e0b3d96efce35ea">
-          <map-advanced-marker
-            [position]="center"
-            [options]="markerOptions"
+          <map-advanced-marker *ngIf="usluzniObjekt?.longitude !== 0 && usluzniObjekt?.latitude !== 0"
+                               [position]="center"
+                               [options]="markerOptions"
           ></map-advanced-marker>
         </google-map>
       </div>
-      </div>
+    </div>
 
 </body>
 </html>
