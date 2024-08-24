@@ -12,10 +12,12 @@ namespace BookMySpotAPI.Modul.Controllers
     public class UsluzniObjektController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IConfiguration configuration;
 
-        public UsluzniObjektController(ApplicationDbContext dbContext)
+        public UsluzniObjektController(ApplicationDbContext dbContext, IConfiguration configuration)
         {
             _dbContext = dbContext;
+            this.configuration = configuration;
         }
 
         [HttpGet]
@@ -95,7 +97,18 @@ namespace BookMySpotAPI.Modul.Controllers
 
             return Ok(izBaze);  
         }
+        [HttpGet]
+        public IActionResult GetGoogleMapsApiKey()
+        {
+            var apiKey = configuration["GoogleMaps:ApiKey"];
 
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                return NotFound("API ključ nije pronađen.");
+            }
+
+            return Ok(apiKey);
+        }
 
     }
 }
