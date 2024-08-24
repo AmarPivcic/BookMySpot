@@ -13,4 +13,6 @@ export interface UsluzniObjekt{
     prosjecnaOcjena: number;
     grad: Grad;
     isSmjestaj: boolean;
+    latitude: number;
+    longitude: number;
   }

@@ -227,7 +227,9 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 gradID = 1,
                 radnoVrijemePocetak = "08:00",
                 radnoVrijemeKraj = "00:00",
-                isSmjestaj = true
+                isSmjestaj = true,
+               latitude = 43.35432,
+               longitude = 17.81242
             };
 
             var managerSmjestajUsluzniObjekt = new ManagerUsluzniObjekt
@@ -340,6 +342,23 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             };
 
             await _dbContext.Recenzije.AddAsync(recenzija3);
+            await _dbContext.SaveChangesAsync();
+
+
+            var admin = new Administrator
+            {
+                ime = "AdminIme",
+                prezime = "AdminPrezime",
+                email = "admin@gmail.com",
+                telefon = "+38763135135",
+                korisnickoIme = "admin",
+                PIN = "123"
+            };
+
+            var adminPassword = _passwordHasher.HashPassword(admin, "admin");
+            admin.lozinka = adminPassword;
+
+            _dbContext.Administratori.Add(admin);
             await _dbContext.SaveChangesAsync();
 
             return Ok();

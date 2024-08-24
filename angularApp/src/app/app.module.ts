@@ -21,6 +21,7 @@ import {MojRacunEditComponent} from "./moj-racun-edit/moj-racun-edit.component";
 import {EditLozinkaComponent} from "./edit-lozinka/edit-lozinka.component";
 import {RacunBrisanjeComponent} from "./racun-brisanje/racun-brisanje.component";
 import { HistorijaRezervacijaComponent } from './historija-rezervacija/historija-rezervacija.component';
+import {GoogleMapsModule} from "@angular/google-maps";
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { HistorijaRezervacijaComponent } from './historija-rezervacija/historija
             { path: 'historijaRezervacija', component: HistorijaRezervacijaComponent}
         ]),
       BrowserAnimationsModule,
-      FormsModule
+      FormsModule,
+      GoogleMapsModule
     ],
   providers: [provideHttpClient(withInterceptorsFromDi())] })
 

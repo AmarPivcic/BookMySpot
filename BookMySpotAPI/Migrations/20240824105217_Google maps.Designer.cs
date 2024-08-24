@@ -4,6 +4,7 @@ using BookMySpotAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookMySpotAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240824105217_Google maps")]
+    partial class Googlemaps
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -338,11 +340,11 @@ namespace BookMySpotAPI.Migrations
                     b.Property<int>("kategorijaID")
                         .HasColumnType("int");
 
-                    b.Property<double?>("latitude")
-                        .HasColumnType("float");
+                    b.Property<float>("latitude")
+                        .HasColumnType("real");
 
-                    b.Property<double?>("longitude")
-                        .HasColumnType("float");
+                    b.Property<float>("longitude")
+                        .HasColumnType("real");
 
                     b.Property<string>("nazivObjekta")
                         .HasColumnType("nvarchar(max)");

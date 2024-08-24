@@ -1,5 +1,7 @@
 ﻿using BookMySpotAPI.Data;
 using BookMySpotAPI.Modul.Models;
+using BookMySpotAPI.Modul.ViewModels;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,7 +40,9 @@ namespace BookMySpotAPI.Modul.Controllers
                 gradID = u.gradID,
                 grad = u.grad,
                 prosjecnaOcjena = _dbContext.Recenzije.Where(r => r.usluzniObjektID == u.usluzniObjektID).Average(r => (double?)r.recenzijaOcjena),
-                isSmjestaj = u.isSmjestaj
+                isSmjestaj = u.isSmjestaj,
+                latitude = u.latitude,
+                longitude = u.longitude,
           
             }).FirstOrDefaultAsync();
 
@@ -66,10 +70,32 @@ namespace BookMySpotAPI.Modul.Controllers
                 gradID = u.gradID,
                 grad = u.grad,
                 prosjecnaOcjena = _dbContext.Recenzije.Where(r => r.usluzniObjektID == u.usluzniObjektID).Average(r => (double?)r.recenzijaOcjena),
-                isSmjestaj = u.isSmjestaj
+                isSmjestaj = u.isSmjestaj,
+                latitude = u.latitude,
+                longitude = u.longitude,
             }).ToListAsync();
 
             return Ok(listaObjekata);
         }
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult<List<UsluzniObjekt>>> EditKoordinateObjekta([FromRoute] int id, [FromBody] EditKoordinateObjektaVM request)
+        {
+            var izBaze = await _dbContext.UsluzniObjekti.FirstOrDefaultAsync(u => u.usluzniObjektID == id);
+
+            if(izBaze == null)
+            {
+                return NotFound();
+            }
+
+            izBaze.latitude = request.latitude;
+            izBaze.longitude = request.longitude;
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(izBaze);  
+        }
+
+
     }
 }

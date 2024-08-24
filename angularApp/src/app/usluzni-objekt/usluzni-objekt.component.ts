@@ -1,5 +1,5 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {Component, Input, OnInit} from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router';
 import { UsluzniObjekt } from '../models/usluzniObjekt.model';
 import { MojConfig } from '../moj-config';
@@ -10,6 +10,7 @@ import { HeaderComponent } from '../shared/header/header.component';
 import { Recenzija } from '../models/recenzija.model';
 import { TerminFunckijeService } from '../shared/termin-manager/termin-funckije.service';
 import {compareSegments} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker";
+import {EditKoordinate} from "../models/editKoordinate.model";
 
 @Component({
   selector: 'app-usluzni-objekt',
@@ -53,6 +54,16 @@ export class UsluzniObjektComponent implements OnInit {
   selectedMjesecIseljenja?: number;
   selectedDanIseljenja?: number;
 
+
+  //Mape
+  @Input() latitude: number = 24;
+  @Input() longitude: number = 12;
+
+  center!: google.maps.LatLngLiteral;
+  zoom = 15;
+  markerOptions: google.maps.marker.AdvancedMarkerElementOptions = {
+    collisionBehavior: google.maps.CollisionBehavior.REQUIRED,
+  };
   constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, private router: Router, private menu: HeaderComponent, private terminFunkcije: TerminFunckijeService)
 {
 }
@@ -97,6 +108,13 @@ export class UsluzniObjektComponent implements OnInit {
     this.httpKlijent.get<UsluzniObjekt>(MojConfig.adresa_servera + "/UsluzniObjekt/Get?id="+id, MojConfig.http_opcije()).subscribe(x=>{
       this.usluzniObjekt=x;
       this.prosjecnaOcjena=x.prosjecnaOcjena;
+
+      if(this.usluzniObjekt){
+      this.center = {
+        lat: this.usluzniObjekt!.latitude,
+        lng: this.usluzniObjekt!.longitude
+        };
+      }
     })
   }
 
@@ -277,9 +295,54 @@ export class UsluzniObjektComponent implements OnInit {
       this.selectedMjesecIseljenja = undefined;
       this.selectedDanIseljenja = undefined;
       this.karticnoPlacanje = false;
-    } 
+    }
     else {
       alert("Molimo unesite sve potrebne podatke za rezervaciju.");
     }
+  }
+
+  onMapClick(event: google.maps.MapMouseEvent) {
+    if (!this.loginInfo().isLogiran) {
+      return;
+    }
+
+    const position = event.latLng;
+
+    if (position) {
+      if (this.loginInfo().autentifikacijaToken?.korisnickiNalog.isManager) {
+        const requestBody = {
+          osobaID: this.loginInfo().autentifikacijaToken?.korisnickiNalog.osobaID,
+          usluzniObjektID: this.usluzniObjektID
+        };
+
+        this.httpKlijent.post(`${MojConfig.adresa_servera}/ManagerUsluzniObjekt/ProvjeriManagera`, requestBody)
+          .subscribe({
+            next: (response) => {
+              this.updateCoordinates(position.lat(), position.lng());
+            },
+            error: (error: HttpErrorResponse) => {
+              if (error.status === 404) {
+                alert("Nemate permisiju editovanja koordinata nad ovim uslužnim objektom!\nNiste menadžer ovog objekta!");
+              } else {
+                console.error('Greška pri pozivanju API-a:', error);
+              }
+            }
+          });
+      } else if (this.loginInfo().autentifikacijaToken?.korisnickiNalog.isAdministrator) {
+        this.updateCoordinates(position.lat(), position.lng());
+      }
+    }
+  }
+  updateCoordinates(latitude: number, longitude: number) {
+    const requestBody: EditKoordinate = { latitude, longitude };
+    this.httpKlijent.put<UsluzniObjekt>(`${MojConfig.adresa_servera}/UsluzniObjekt/EditKoordinateObjekta/${this.usluzniObjektID}`, requestBody, MojConfig.http_opcije())
+      .subscribe({
+        next: (response) => {
+          this.getUsluzniObjekt(this.usluzniObjektID);
+        },
+        error: (error) => {
+          console.error('Greška pri ažuriranju koordinata:', error);
+        }
+      });
   }
 }

@@ -188,6 +188,15 @@
             <button class="buttonPosalji" (click)="posaljiRecenziju()">Pošalji</button>
           </div>
         </div>
+      <div class="comment">
+        <google-map height="400px" width="100%" [center]="center" [zoom]="zoom" (mapClick)="onMapClick($event)" mapId="7e0b3d96efce35ea">
+          <map-advanced-marker
+            [position]="center"
+            [options]="markerOptions"
+          ></map-advanced-marker>
+        </google-map>
       </div>
+      </div>
+
 </body>
 </html>
