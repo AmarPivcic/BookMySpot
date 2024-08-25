@@ -1,0 +1,190 @@
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 150px;
+}
+
+.dugmici{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.pagination{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.paginationDugme{
+  height: 30px;
+  width: 80px;
+
+  background-color: #ebe3d5;
+  border-radius: 5px;
+  border: none;
+  font-size: 15px;
+  font-weight: bolder;
+}
+
+.paginationTekst{
+  color: white;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.comment {
+  background-color: #776b5d;
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+.adminNaslov {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 70px;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  color: #ebe3d5;
+}
+
+.dugmic {
+  height: 40px;
+  width: 100%;
+  background-color: #776b5d;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.dugmic2 {
+  height: 30px;
+  width: 45%;
+  background-color: #ebe3d5;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: red;
+  font-weight: bolder;
+  margin-top: 10px;
+}
+
+a {
+  width: 100%;
+}
+
+.accountsContainer {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}
+
+.role {
+  width: 155px;
+  padding: 5px;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bolder;
+}
+
+.userButton {
+  background-color: rgb(8, 160, 8);
+}
+
+.managerButton {
+  background-color: rgb(165, 54, 54);
+}
+
+.userButton1 {
+  background-color: rgb(165, 54, 54);
+}
+
+.managerButton2 {
+  background-color: rgb(8, 160, 8);
+}
+
+.dugmadi {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.komentarOsobe {
+  margin-top: 10px;
+}
+
+.profilePicAndName {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+
+
+
+/* Stil za overlay koji prekriva ostatak stranice */
+.popup-overlay {
+  display: none; /* Sakrij popup prozor po defaultu */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Stil za popup prozor */
+.popup-content {
+  background: #ebe3d5;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  text-align: center;
+}
+
+.input-days {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.popup-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.popup-button.suspend {
+  background-color: #776b5d;
+  color: white;
+}
+
+.popup-button.cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+

@@ -28,23 +28,34 @@ export class LoginComponent implements OnInit{
   }
 
   prijava() {
-     let saljemo: any = {
+    let saljemo: any = {
       korisnickoIme: this.txtKorisnickoIme,
       lozinka: this.txtLozinka
     };
 
-    this.httpKlijent.post<LoginInformacije>(MojConfig.adresa_servera+ "/Autentifikacija/Login", saljemo).subscribe((x:LoginInformacije)=> {
-      if(x.isLogiran) {
-        AutentifikacijaHelper.setLoginInfo(x);
-        this.menu.NavigirajIZatvori("/");
-      }
-      else
-      {
-        AutentifikacijaHelper.setLoginInfo(null);
-        alert("Neispravan login!");
-      }
-    })
+    this.httpKlijent.post<LoginInformacije>(MojConfig.adresa_servera + "/Autentifikacija/Login", saljemo)
+      .subscribe({
+        next: (x: LoginInformacije) => {
+          if (x.isLogiran) {
+            AutentifikacijaHelper.setLoginInfo(x);
+            this.menu.NavigirajIZatvori("/");
+          } else {
+            AutentifikacijaHelper.setLoginInfo(null);
+            alert("Neispravan login!");
+          }
+        },
+        error: (error) => {
+          if (error.status === 410) {
+            alert("Korisnički nalog je obrisan.");
+          } else if (error.status === 403) {
+            alert(error.error);
+          } else {
+            alert("Došlo je do greške. Pokušajte ponovo.");
+          }
+        }
+      });
   }
+
 
   registracija() {
     let saljemo = {

@@ -29,13 +29,30 @@ namespace BookMySpotAPI.Autentifikacija.Controllers
         public ActionResult<LoginInformacije> Login([FromBody] LoginVM x)
         {
             KorisnickiNalog logiranaOsoba = _dbContext.KorisnickiNalog
-            .FirstOrDefault(k => k.korisnickoIme != null && k.korisnickoIme == x.korisnickoIme && k.obrisan == false);
+            .FirstOrDefault(k => k.korisnickoIme != null && k.korisnickoIme == x.korisnickoIme);
 
             if (logiranaOsoba == null ||
                 _passwordHasher.VerifyHashedPassword(logiranaOsoba, logiranaOsoba.lozinka, x.lozinka) != PasswordVerificationResult.Success)
             {
                 return new LoginInformacije(null);
             }
+
+            if(logiranaOsoba.obrisan)
+            {
+                return StatusCode(410, "Korisnički nalog je obrisan.");
+            }
+
+            if (logiranaOsoba.suspendovan)
+            {
+                if(logiranaOsoba.datumSuspenzijeDo > DateTime.Now)
+                {
+                    return StatusCode(403, $"Korisnički nalog je suspendovan do dana {logiranaOsoba.datumSuspenzijeDo:dd.MM.yyyy}.\nRazlog suspenzije: {logiranaOsoba.razlogSuspenzije}");
+                }
+                logiranaOsoba.suspendovan = false;
+                logiranaOsoba.datumSuspenzijeDo = null;
+                _dbContext.SaveChanges();
+            }
+
 
             string randomString = TokenGenerator.Generate(10);
 

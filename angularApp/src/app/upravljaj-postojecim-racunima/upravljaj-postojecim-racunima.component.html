@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+</head>
+<body>
+<p class="adminNaslov">Postojeći računi</p>
+<div class="accountsContainer">
+  <div *ngFor="let racun of nizPostojecihRacuna" class="comment" style="padding-left: 20px; padding-right: 20px; padding-top: 10px">
+    <div class="profilePicAndName">
+      <img
+        [src]="racun.slika ? racun.slika : './assets/user.png'"
+        alt=""
+        width="40px"
+        height="40px"
+        style="margin-right: 10px"
+      />
+      <p>{{racun.korisnickoIme}}</p>
+    </div>
+    <p class="komentarOsobe">ID: {{racun.osobaID}}</p>
+    <p class="komentarOsobe">Ime: {{racun.ime}}</p>
+    <p class="komentarOsobe">Prezime: {{racun.prezime}}</p>
+    <p class="komentarOsobe">Email: {{racun.email}}</p>
+    <p class="komentarOsobe">Telefon: {{racun.telefon}}</p>
+    <p class="komentarOsobe">Nivo permisije:
+      <b *ngIf="racun.isKorisnik">Korisnik</b>
+      <b *ngIf="racun.isAdministrator">Administrator</b>
+      <b *ngIf="racun.isManager">Manager</b>
+    </p>
+    <div class="dugmici">
+      <button *ngIf="!racun.isAdministrator" (click)="otvoritePopup(racun.osobaID)" class="dugmic2">Suspenduj</button>
+      <button *ngIf="!racun.isAdministrator" (click)="ObrisiKorisnika(racun.osobaID)" class="dugmic2">Obriši</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="totalRecords > pageSize" class="pagination">
+  <button class="paginationDugme" (click)="onPageChange(pageNumber - 1)" [disabled]="pageNumber === 1">Prethodna</button>
+  <span class="paginationTekst">Stranica {{pageNumber}} od {{Math.ceil(totalRecords / pageSize)}}</span>
+  <button class="paginationDugme" (click)="onPageChange(pageNumber + 1)" [disabled]="pageNumber >= totalRecords / pageSize">Sljedeća</button>
+</div>
+
+
+<!-- Popup prozor za suspendovanje korisnika -->
+<div id="suspendPopup" class="popup-overlay">
+  <div class="popup-content">
+    <h3>Na koliko dana želite suspendovati odabranog korisnika?</h3>
+    <input type="number" [(ngModel)]="brojDana" min="1" placeholder="Broj dana" class="input-days" />
+    <h3>Navedite razlog suspenzije:</h3>
+    <input type="text" [(ngModel)]="razlogSuspenzije" placeholder="Razlog suspenzije" class="input-days" />
+    <div class="popup-buttons">
+      <button (click)="suspendujKorisnika()" class="popup-button suspend">Suspenduj</button>
+      <button (click)="odustani()" class="popup-button cancel">Odustani</button>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>
+

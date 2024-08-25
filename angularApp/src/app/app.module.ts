@@ -22,6 +22,16 @@ import {EditLozinkaComponent} from "./edit-lozinka/edit-lozinka.component";
 import {RacunBrisanjeComponent} from "./racun-brisanje/racun-brisanje.component";
 import { HistorijaRezervacijaComponent } from './historija-rezervacija/historija-rezervacija.component';
 import {GoogleMapsModule} from "@angular/google-maps";
+import {UpravljajRacunimaComponent} from "./upravljaj-racunima/upravljaj-racunima.component";
+import {
+  UpravljajPostojecimRacunimaComponent
+} from "./upravljaj-postojecim-racunima/upravljaj-postojecim-racunima.component";
+import {
+  UpravljajBanovanimRacunimaComponent
+} from "./upravljaj-banovanim-racunima/upravljaj-banovanim-racunima.component";
+import {
+  UpravljajObrisanimRacunimaComponent
+} from "./upravljaj-obrisanim-racunima/upravljaj-obrisanim-racunima.component";
 
 @NgModule({
   declarations: [
@@ -52,7 +62,11 @@ import {GoogleMapsModule} from "@angular/google-maps";
             { path: 'mojRacun/mojRacunEdit', component: MojRacunEditComponent },
             { path: 'mojRacun/mojRacunEdit/editLozinka', component: EditLozinkaComponent },
             { path: 'mojRacun/racunBrisanje', component: RacunBrisanjeComponent },
-            { path: 'historijaRezervacija', component: HistorijaRezervacijaComponent}
+            { path: 'historijaRezervacija', component: HistorijaRezervacijaComponent},
+            { path: 'upravljajRacunima', component: UpravljajRacunimaComponent},
+            { path: 'upravljajRacunima/upravljajPostojecimRacunima', component: UpravljajPostojecimRacunimaComponent},
+            { path: 'upravljajRacunima/upravljajBanovanimRacunima', component: UpravljajBanovanimRacunimaComponent},
+            { path: 'upravljajRacunima/upravljajObrisanimRacunima', component: UpravljajObrisanimRacunimaComponent}
         ]),
       BrowserAnimationsModule,
       FormsModule,

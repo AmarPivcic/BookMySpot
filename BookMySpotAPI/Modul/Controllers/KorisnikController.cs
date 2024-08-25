@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using static BookMySpotAPI.Autentifikacija.Helper.MyAuthTokenExtension;
 using BookMySpotAPI.Autentifikacija.Controllers;
 using BookMySpotAPI.Autentifikacija.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 namespace BookMySpotAPI.Modul.Controllers
 {
     [ApiController]
@@ -48,6 +49,48 @@ namespace BookMySpotAPI.Modul.Controllers
             {
                 return NotFound();
             }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetKorisnickeRacune(int pageNumber = 1, int pageSize = 10, bool obrisan = false, bool suspendovan = false)
+        {
+            var totalRecords = await _dbContext.KorisnickiNalog
+                .CountAsync(k => k.obrisan == obrisan && k.suspendovan == suspendovan);
+
+            var korisniciIzBaze = await _dbContext.KorisnickiNalog
+                .Where(k => k.obrisan == obrisan && k.suspendovan == suspendovan)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var listaKorisnikaResponse = new List<PostojeciRacuniResponseVM>();
+
+            foreach (var korisnik in korisniciIzBaze)
+            {
+                listaKorisnikaResponse.Add(new PostojeciRacuniResponseVM
+                {
+                    osobaID = korisnik.osobaID,
+                    ime = korisnik.ime,
+                    prezime = korisnik.prezime,
+                    slika = korisnik.slika,
+                    korisnickoIme = korisnik.korisnickoIme,
+                    email = korisnik.email,
+                    telefon = korisnik.telefon,
+                    isKorisnik = korisnik.isKorisnik,
+                    isAdministrator = korisnik.isAdministrator,
+                    isManager = korisnik.isManager
+                });
+            }
+
+            var response = new
+            {
+                TotalRecords = totalRecords,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Data = listaKorisnikaResponse
+            };
+
+            return Ok(response);
         }
 
         [HttpPut]
@@ -134,6 +177,82 @@ namespace BookMySpotAPI.Modul.Controllers
             }
 
             logiranaOsoba.obrisan = true;
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> ObrisiKorisnickiRacunAdmin([FromRoute] int id)
+        {
+            var korisnik = await _dbContext.KorisnickiNalog
+                .FirstOrDefaultAsync(k => k.osobaID == id);
+
+            if (korisnik == null)
+            {
+                return NotFound("Korisnik nije pronađen.");
+            }
+
+            korisnik.obrisan = true;
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> SuspendujKorisnickiRacun([FromRoute] int id, [FromQuery] int brojDana, [FromQuery] string razlogSuspenzije)
+        {
+            var korisnik = await _dbContext.KorisnickiNalog
+                .FirstOrDefaultAsync(k => k.osobaID == id);
+
+            if (korisnik == null)
+            {
+                return NotFound("Korisnik nije pronađen.");
+            }
+
+            korisnik.suspendovan = true;
+            korisnik.datumSuspenzijeDo = DateTime.Now.AddDays(brojDana); 
+            korisnik.razlogSuspenzije = razlogSuspenzije; 
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> AktivirajObrisanRacun([FromRoute] int id)
+        {
+            var korisnik = await _dbContext.KorisnickiNalog
+                .FirstOrDefaultAsync(k => k.osobaID == id);
+
+            if (korisnik == null)
+            {
+                return NotFound("Korisnik nije pronađen.");
+            }
+
+            korisnik.obrisan = false;
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> AktivirajSuspendovanRacun([FromRoute] int id)
+        {
+            var korisnik = await _dbContext.KorisnickiNalog
+                .FirstOrDefaultAsync(k => k.osobaID == id);
+
+            if (korisnik == null)
+            {
+                return NotFound("Korisnik nije pronađen.");
+            }
+
+            korisnik.suspendovan = false;
+            korisnik.datumSuspenzijeDo = null;
+            korisnik.razlogSuspenzije = null;
             await _dbContext.SaveChangesAsync();
 
             return Ok();

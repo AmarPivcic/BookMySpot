@@ -28,5 +28,7 @@ namespace BookMySpotAPI.Modul.Models
         public bool isManager => manager != null;
         public bool obrisan { get; set; } = false;
         public bool suspendovan { get; set; } = false;
+        public DateTime? datumSuspenzijeDo { get; set; }
+        public string? razlogSuspenzije { get; set; }
     }
 }
