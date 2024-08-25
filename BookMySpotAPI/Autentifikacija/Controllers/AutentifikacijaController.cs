@@ -50,6 +50,7 @@ namespace BookMySpotAPI.Autentifikacija.Controllers
                 }
                 logiranaOsoba.suspendovan = false;
                 logiranaOsoba.datumSuspenzijeDo = null;
+                logiranaOsoba.razlogSuspenzije = null;
                 _dbContext.SaveChanges();
             }
 
