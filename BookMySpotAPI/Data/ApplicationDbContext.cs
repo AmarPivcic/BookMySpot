@@ -21,6 +21,7 @@ namespace BookMySpotAPI.Data
         public DbSet<ONamaSadrzaj> SadrzajiONama { get; set; }
         public DbSet<PitanjeOdgovor> PitanjaOdgovori { get; set; }
         public DbSet<Recenzija> Recenzije { get; set; }
+        public DbSet<Favorit> Favoriti { get; set; }
 
         public ApplicationDbContext(
             DbContextOptions options) : base(options)

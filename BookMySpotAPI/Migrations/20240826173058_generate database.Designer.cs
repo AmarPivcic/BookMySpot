@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookMySpotAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240825194603_Suspenzije 4")]
-    partial class Suspenzije4
+    [Migration("20240826173058_generate database")]
+    partial class generatedatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,6 +51,29 @@ namespace BookMySpotAPI.Migrations
                     b.HasIndex("OsobaID");
 
                     b.ToTable("AutentifikacijaToken");
+                });
+
+            modelBuilder.Entity("BookMySpotAPI.Modul.Models.Favorit", b =>
+                {
+                    b.Property<int>("favoritID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("favoritID"), 1L, 1);
+
+                    b.Property<int>("KorisnickiNalogId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("usluzniObjektID")
+                        .HasColumnType("int");
+
+                    b.HasKey("favoritID");
+
+                    b.HasIndex("KorisnickiNalogId");
+
+                    b.HasIndex("usluzniObjektID");
+
+                    b.ToTable("Favorit");
                 });
 
             modelBuilder.Entity("BookMySpotAPI.Modul.Models.Grad", b =>
@@ -418,6 +441,25 @@ namespace BookMySpotAPI.Migrations
                     b.Navigation("KorisnickiNalog");
                 });
 
+            modelBuilder.Entity("BookMySpotAPI.Modul.Models.Favorit", b =>
+                {
+                    b.HasOne("BookMySpotAPI.Modul.Models.KorisnickiNalog", "korisnickiNalog")
+                        .WithMany()
+                        .HasForeignKey("KorisnickiNalogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookMySpotAPI.Modul.Models.UsluzniObjekt", "usluzniObjekt")
+                        .WithMany()
+                        .HasForeignKey("usluzniObjektID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("korisnickiNalog");
+
+                    b.Navigation("usluzniObjekt");
+                });
+
             modelBuilder.Entity("BookMySpotAPI.Modul.Models.KreditnaKartica", b =>
                 {
                     b.HasOne("BookMySpotAPI.Modul.Models.Korisnik", "korisnik")
@@ -480,7 +522,7 @@ namespace BookMySpotAPI.Migrations
 
             modelBuilder.Entity("BookMySpotAPI.Modul.Models.Rezervacija", b =>
                 {
-                    b.HasOne("BookMySpotAPI.Modul.Models.KorisnickiNalog", "korisnik")
+                    b.HasOne("BookMySpotAPI.Modul.Models.Korisnik", "korisnik")
                         .WithMany()
                         .HasForeignKey("korisnikID")
                         .OnDelete(DeleteBehavior.Cascade)

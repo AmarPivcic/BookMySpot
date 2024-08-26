@@ -385,3 +385,24 @@
       padding: 5px;
       font-size: 1.2rem;
   }
+
+  .buttonBox
+  {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .favoritBtn
+  {
+    height: 35px;
+    width: 170px;
+    background-color: #776b5d;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
+    cursor:pointer;
+  }

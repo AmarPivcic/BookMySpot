@@ -104,6 +104,22 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             await _dbContext.Gradovi.AddAsync(mostar);
             await _dbContext.SaveChangesAsync();
 
+            var livno = new Grad
+            {
+                naziv = "Livno"
+            };
+
+            await _dbContext.Gradovi.AddAsync(livno);
+            await _dbContext.SaveChangesAsync();
+
+            var sarajevo = new Grad
+            {
+                naziv = "Sarajevo"
+            };
+
+            await _dbContext.Gradovi.AddAsync(sarajevo);
+            await _dbContext.SaveChangesAsync();
+
             var manager = new Manager
             {
                 ime = "ManagerIme",
@@ -181,28 +197,8 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 usluzniObjektID = 1
             };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            await _dbContext.Usluge.AddAsync(usluga4);
+            await _dbContext.SaveChangesAsync();
 
             var managerSmjestaja = new Manager
             {
@@ -283,32 +279,13 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             await _dbContext.Usluge.AddAsync(uslugaSmjestaja4);
             await _dbContext.SaveChangesAsync();
 
+            var favorit = new Favorit
+            {
+                KorisnickiNalogId = korisnik.osobaID,
+                usluzniObjektID = krecho.usluzniObjektID
+            };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            await _dbContext.Usluge.AddAsync(usluga4);
+            await _dbContext.Favoriti.AddAsync(favorit);
             await _dbContext.SaveChangesAsync();
 
             var recenzija = new Recenzija

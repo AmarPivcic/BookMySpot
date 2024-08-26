@@ -50,7 +50,9 @@ namespace BookMySpotAPI.Migrations
                     slika = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     lozinka = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     obrisan = table.Column<bool>(type: "bit", nullable: false),
-                    suspendovan = table.Column<bool>(type: "bit", nullable: false)
+                    suspendovan = table.Column<bool>(type: "bit", nullable: false),
+                    datumSuspenzijeDo = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    razlogSuspenzije = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -84,7 +86,9 @@ namespace BookMySpotAPI.Migrations
                     slika = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     kategorijaID = table.Column<int>(type: "int", nullable: false),
                     gradID = table.Column<int>(type: "int", nullable: false),
-                    isSmjestaj = table.Column<bool>(type: "bit", nullable: false)
+                    isSmjestaj = table.Column<bool>(type: "bit", nullable: false),
+                    latitude = table.Column<double>(type: "float", nullable: true),
+                    longitude = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -193,6 +197,32 @@ namespace BookMySpotAPI.Migrations
                         column: x => x.KorisnickiNalogId,
                         principalTable: "KorisnickiNalog",
                         principalColumn: "osobaID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Favorit",
+                columns: table => new
+                {
+                    favoritID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    KorisnickiNalogId = table.Column<int>(type: "int", nullable: false),
+                    usluzniObjektID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Favorit", x => x.favoritID);
+                    table.ForeignKey(
+                        name: "FK_Favorit_KorisnickiNalog_KorisnickiNalogId",
+                        column: x => x.KorisnickiNalogId,
+                        principalTable: "KorisnickiNalog",
+                        principalColumn: "osobaID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Favorit_UsluzniObjekt_usluzniObjektID",
+                        column: x => x.usluzniObjektID,
+                        principalTable: "UsluzniObjekt",
+                        principalColumn: "usluzniObjektID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -310,9 +340,9 @@ namespace BookMySpotAPI.Migrations
                 {
                     table.PrimaryKey("PK_Rezervacija", x => x.rezervacijaID);
                     table.ForeignKey(
-                        name: "FK_Rezervacija_KorisnickiNalog_korisnikID",
+                        name: "FK_Rezervacija_Korisnik_korisnikID",
                         column: x => x.korisnikID,
-                        principalTable: "KorisnickiNalog",
+                        principalTable: "Korisnik",
                         principalColumn: "osobaID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -332,6 +362,16 @@ namespace BookMySpotAPI.Migrations
                 name: "IX_AutentifikacijaToken_OsobaID",
                 table: "AutentifikacijaToken",
                 column: "OsobaID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Favorit_KorisnickiNalogId",
+                table: "Favorit",
+                column: "KorisnickiNalogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Favorit_usluzniObjektID",
+                table: "Favorit",
+                column: "usluzniObjektID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_KreditneKartice_korisnikID",
@@ -398,6 +438,9 @@ namespace BookMySpotAPI.Migrations
                 name: "AutentifikacijaToken");
 
             migrationBuilder.DropTable(
+                name: "Favorit");
+
+            migrationBuilder.DropTable(
                 name: "KreditneKartice");
 
             migrationBuilder.DropTable(
@@ -416,10 +459,10 @@ namespace BookMySpotAPI.Migrations
                 name: "SadrzajiONama");
 
             migrationBuilder.DropTable(
-                name: "Korisnik");
+                name: "Manager");
 
             migrationBuilder.DropTable(
-                name: "Manager");
+                name: "Korisnik");
 
             migrationBuilder.DropTable(
                 name: "Usluga");

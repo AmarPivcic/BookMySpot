@@ -265,8 +265,6 @@ export class HistorijaRezervacijaComponent implements OnInit{
     }
   }
 
-  
-
   ponoviRezervaciju(rezervacija: Rezervacija)
   {
     this.ponoviRezervacijuBool=true;

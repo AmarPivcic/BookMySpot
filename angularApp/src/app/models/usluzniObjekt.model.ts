@@ -15,4 +15,5 @@ export interface UsluzniObjekt{
     isSmjestaj: boolean;
     latitude: number;
     longitude: number;
+    isFavorit: boolean;
   }

@@ -34,5 +34,11 @@ namespace BookMySpotAPI.Modul.Controllers
             return await Get(newGrad.gradID);
         }
 
+        [HttpGet]
+        public async Task <ActionResult<List<Grad>>> GetListaGradova()
+        {
+            var lista = await _dbContext.Gradovi.ToListAsync();
+            return Ok(lista);
+        }
     }
 }

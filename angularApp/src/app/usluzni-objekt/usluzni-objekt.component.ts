@@ -11,6 +11,7 @@ import { Recenzija } from '../models/recenzija.model';
 import { TerminFunckijeService } from '../shared/termin-manager/termin-funckije.service';
 import {compareSegments} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker";
 import {EditKoordinate} from "../models/editKoordinate.model";
+import { dodajFavorit } from '../models/dodajFavorit.model';
 
 @Component({
   selector: 'app-usluzni-objekt',
@@ -36,6 +37,7 @@ export class UsluzniObjektComponent implements OnInit {
   datumPocetka: string | null = null;
   datumKraja: string | null = null;
   karticnoPlacanje: boolean = false;
+
 
 
   //Nova logika
@@ -104,8 +106,15 @@ export class UsluzniObjektComponent implements OnInit {
     this.logiraniKorisnik=this.loginInfo().autentifikacijaToken?.korisnickiNalog;
   }
 
-  getUsluzniObjekt(id: number) {
-    this.httpKlijent.get<UsluzniObjekt>(MojConfig.adresa_servera + "/UsluzniObjekt/Get?id="+id, MojConfig.http_opcije()).subscribe(x=>{
+  getUsluzniObjekt(usluzniObjektID: number) {
+
+    const korisnikID = this.loginInfo().autentifikacijaToken?.osobaID;
+    
+    const url = korisnikID !== null && korisnikID !== undefined
+    ? `${MojConfig.adresa_servera}/UsluzniObjekt/Get?usluzniObjektID=${usluzniObjektID}&korisnikID=${korisnikID}`
+    : `${MojConfig.adresa_servera}/UsluzniObjekt/Get?usluzniObjektID=${usluzniObjektID}`;
+
+    this.httpKlijent.get<UsluzniObjekt>(url, MojConfig.http_opcije()).subscribe(x=>{
       this.usluzniObjekt=x;
       this.prosjecnaOcjena=x.prosjecnaOcjena;
 
@@ -116,6 +125,7 @@ export class UsluzniObjektComponent implements OnInit {
         };
       }
     })
+    
   }
 
   getListaUsluga(id:number)
@@ -344,5 +354,44 @@ export class UsluzniObjektComponent implements OnInit {
           console.error('Greška pri ažuriranju koordinata:', error);
         }
       });
+  }
+
+  dodajFavorit()
+  {
+    const requestBody: dodajFavorit =
+    {
+      korisnickiNalogId: this.logiraniKorisnik.osobaID,
+      usluzniObjektID: this.usluzniObjektID
+    }
+    this.httpKlijent.post(MojConfig.adresa_servera + "/Favorit/Add", requestBody, MojConfig.http_opcije()).subscribe({
+      next: (response) => {
+        alert("Uspješno dodano u favorite.");
+        this.getUsluzniObjekt(this.usluzniObjektID);
+      },
+      error: (error) => {
+        alert("Greška pri dodavanju u favorite!");
+        console.log(error);
+      }
+    })
+  }
+
+  ukloniFavorit()
+  {
+    const requestBody: dodajFavorit =
+    {
+      korisnickiNalogId: this.logiraniKorisnik.osobaID,
+      usluzniObjektID: this.usluzniObjektID
+    }
+
+    this.httpKlijent.delete(MojConfig.adresa_servera+"/Favorit/Remove", {body: requestBody, headers: MojConfig.http_opcije().headers}).subscribe({
+      next: (response) => {
+        alert("Uspješno uklonjeno iz favorita.");
+        this.getUsluzniObjekt(this.usluzniObjektID);
+      },
+      error: (error)=>{
+        alert("Greška pri uklanjanju iz favorita!");
+        console.log(error);
+      }
+    })
   }
 }

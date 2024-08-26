@@ -15,7 +15,7 @@ namespace BookMySpotAPI.Modul.Models
         public bool zavrseno { get; set; } = false;
         [ForeignKey(nameof(Korisnik))]
         public int korisnikID { get; set; }
-        public KorisnickiNalog korisnik { get; set; }
+        public Korisnik korisnik { get; set; }
         [ForeignKey(nameof(Usluga))]
         public int uslugaID { get; set;}
         public Usluga usluga { get; set; }

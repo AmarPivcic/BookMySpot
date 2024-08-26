@@ -26,5 +26,7 @@ namespace BookMySpotAPI.Modul.Models
         public bool isSmjestaj { get; set; } = false;
         public double? latitude { get; set; } = 0;
         public double? longitude { get; set; } = 0;
+        [NotMapped]
+        public bool isFavorit { get; set; } = false;
     }
 }

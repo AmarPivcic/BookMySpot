@@ -32,6 +32,10 @@
           <img [src]="usluzniObjekt?.slika" style="width: 100%; border-radius: 5px;" />
         </div>
     </div>
+    <div class="buttonBox">
+      <button *ngIf="usluzniObjekt?.isFavorit==false && loginInfo().isLogiran" (click)="dodajFavorit()" class="favoritBtn">Dodaj u favorite</button>
+      <button *ngIf="usluzniObjekt?.isFavorit==true && loginInfo().isLogiran" (click)="ukloniFavorit()" class="favoritBtn">Ukloni iz favorita</button>
+    </div>
 
     <div class="Cjenovnik">
       <div class="SezonskeCijene">
@@ -168,7 +172,7 @@
           <p class="komentarOsobe">{{recenzija.recenzijaTekst}}</p>
         </div>
 
-        <div *ngIf="loginInfo().isLogiran == true" class="comment">
+        <div *ngIf="loginInfo().isLogiran == true && loginInfo().autentifikacijaToken?.korisnickiNalog?.isKorisnik == true" class="comment">
           <div class="profilePicAndName">
             <img [src]="getImagePath(logiraniKorisnik.slika)" alt="" width="40px" height="40px" style="margin-right: 10px" />
             <p>{{logiraniKorisnik.ime}} {{logiraniKorisnik.prezime}}</p>
