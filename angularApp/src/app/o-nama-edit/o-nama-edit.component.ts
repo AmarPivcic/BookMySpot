@@ -28,7 +28,6 @@ export class ONamaEditComponent implements OnInit{
   ngOnInit(): void {
     this.httpClient.get<ONamaSadrzaj>(this.url + '/api/ONama').subscribe({
       next: (response) => {
-        console.log("Uspjesno dobavljen tekst");
         this.tekst = response.tekst;
       },
       error: (error) => {
@@ -47,7 +46,6 @@ export class ONamaEditComponent implements OnInit{
         }
       }).subscribe({
         next: (response) => {
-          console.log("Uspješno poslano");
           this.router.navigate(['/oNama']);
         },
         error: (error) => {

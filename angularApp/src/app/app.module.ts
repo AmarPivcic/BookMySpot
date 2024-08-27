@@ -32,6 +32,7 @@ import {
 import {
   UpravljajObrisanimRacunimaComponent
 } from "./upravljaj-obrisanim-racunima/upravljaj-obrisanim-racunima.component";
+import {EditKategorijeComponent} from "./edit-kategorije/edit-kategorije.component";
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import {
             { path: 'upravljajRacunima', component: UpravljajRacunimaComponent},
             { path: 'upravljajRacunima/upravljajPostojecimRacunima', component: UpravljajPostojecimRacunimaComponent},
             { path: 'upravljajRacunima/upravljajBanovanimRacunima', component: UpravljajBanovanimRacunimaComponent},
-            { path: 'upravljajRacunima/upravljajObrisanimRacunima', component: UpravljajObrisanimRacunimaComponent}
+            { path: 'upravljajRacunima/upravljajObrisanimRacunima', component: UpravljajObrisanimRacunimaComponent},
+            { path: 'editKategorija/:kategorijaId', component: EditKategorijeComponent}
         ]),
       BrowserAnimationsModule,
       FormsModule,

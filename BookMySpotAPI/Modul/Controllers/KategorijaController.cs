@@ -48,6 +48,30 @@ namespace BookMySpotAPI.Modul.Controllers
             return Ok(newKategorija);
         }
 
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<ActionResult> EditKategorija([FromRoute] int id, [FromForm] KategorijaEditRequestVM request)
+        {
+            var izBaze = await _dbContext.Kategorije.FirstOrDefaultAsync(k => k.kategorijaID == id);
+
+            if(izBaze == null)
+            {
+                return NotFound();
+            }
+
+            if (request.slika != null)
+            {
+                var slike = new Slike(_webHostEnvironment);
+                var slika = slike.dodajSliku(request.slika);
+                izBaze.slika = slika;
+            }
+
+            izBaze.naziv = request.naziv;
+
+            await _dbContext.SaveChangesAsync();
+            return Ok(izBaze);
+        }
+
         [HttpDelete]
         public async Task <ActionResult> Delete(int id)
         {

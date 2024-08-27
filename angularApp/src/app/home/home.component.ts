@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MojConfig } from '../moj-config';
 import { Kategorija } from '../models/kategorija.model';
+import {LoginInformacije} from "../_helpers/login-informacije";
+import {AutentifikacijaHelper} from "../_helpers/autentifikacija-helper";
 
 
 
@@ -34,7 +36,7 @@ export class HomeComponent implements OnInit{
   onFileUploadChange(event: any) {
     this.selectedFile = event.target.files[0];
   }
-  
+
   onSubmit() {
     if (this.selectedFile && this.imeKategorije !== '') {
 
@@ -66,6 +68,11 @@ export class HomeComponent implements OnInit{
     slider.style.width="0px"
     this.router.navigate(['/kategorija', kategorijaID]);
     window.scrollTo(0,0);
+  }
+
+  loginInfo():LoginInformacije
+  {
+    return AutentifikacijaHelper.getLoginInfo();
   }
 
 }

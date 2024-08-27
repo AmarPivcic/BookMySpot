@@ -18,8 +18,8 @@
     <div>
 
       <button [routerLink]="['/pitanjaOdgovori']">Odgovorena pitanja</button>
-      <button [routerLink]="['/pitanjaOdgovori/neodgovorenaPitanja']">Pristigla pitanja <span class="brojUDugmetu" *ngIf="brojPristiglihPitanja !== 0">{{brojPristiglihPitanja}}</span></button>
-      <button [routerLink]="['/pitanjaOdgovori/pitanjaAdminLista']">Sva pitanja</button>
+      <button *ngIf="loginInfo().isLogiran && (loginInfo().autentifikacijaToken?.korisnickiNalog?.isManager || loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator)" [routerLink]="['/pitanjaOdgovori/neodgovorenaPitanja']">Pristigla pitanja <span class="brojUDugmetu" *ngIf="brojPristiglihPitanja !== 0">{{brojPristiglihPitanja}}</span></button>
+      <button *ngIf="loginInfo().isLogiran && loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator" [routerLink]="['/pitanjaOdgovori/pitanjaAdminLista']">Sva pitanja</button>
     </div>
 
     <table>

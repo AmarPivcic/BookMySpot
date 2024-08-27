@@ -24,7 +24,7 @@
         </div>
         Uredi račun
       </button>
-    <button class="userButton">
+    <button class="userButton" (click)="redirectToPayPal()">
       <div class="userSvgIcon">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="bi bi-paypal"
           viewBox="0 0 16 16">
@@ -34,7 +34,7 @@
       </div>
       PayPal
     </button>
-     <button class="userButton signOut" (click)="Odjava()">
+     <button class="userButton signOut" [ngClass]="{'lastBtn': loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator}"  (click)="Odjava()">
         <div class="userSvgIcon">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="bi bi-box-arrow-left"
             viewBox="0 0 16 16">
@@ -46,7 +46,7 @@
         </div>
         Odjavite se
       </button>
-    <button [routerLink]="['/mojRacun/racunBrisanje']" class="userButton lastBtn">
+    <button *ngIf="!loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator" [routerLink]="['/mojRacun/racunBrisanje']" class="userButton lastBtn">
       <div class="userSvgIcon">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="bi bi-trash"
           viewBox="0 0 16 16">

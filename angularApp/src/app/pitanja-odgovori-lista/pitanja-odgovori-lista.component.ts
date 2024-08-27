@@ -9,6 +9,8 @@ import {NovoPitanje} from "../models/novoPitanje.model";
 import {AutentifikacijaHelper} from "../_helpers/autentifikacija-helper";
 import {FormsModule} from "@angular/forms";
 import {RouterLink} from "@angular/router";
+import {HomeComponent} from "../home/home.component";
+import {HeaderComponent} from "../shared/header/header.component";
 
 @Component({
   selector: 'app-pitanja-odgovori-lista',
@@ -32,7 +34,7 @@ export class PitanjaOdgovoriListaComponent implements OnInit{
   novoPitanje = "";
   brojPristiglihPitanja = 0;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private headerMenu: HeaderComponent) {
     this.pitanjeZaBazu = {
       korisnickiNalogId: 0,
       pitanje: ''
@@ -56,6 +58,7 @@ export class PitanjaOdgovoriListaComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.headerMenu.zatvoriSlajder();
     this.getBrojNeodgovorenihPitanja();
 
     this.httpClient.get<OdgovorenoPitanje[]>(this.url + '/PitanjeOdgovor/VratiOdgovorenaPitanja').subscribe({
@@ -88,9 +91,9 @@ export class PitanjaOdgovoriListaComponent implements OnInit{
 
     this.httpClient.post(this.url + '/PitanjeOdgovor/PostaviPitanje', this.pitanjeZaBazu).subscribe({
       next: (response) => {
-        console.log("Uspješno poslano pitanje!");
         this.novoPitanje = "";
         this.ngOnInit();
+        alert("Vaše pitanje je poslano na obradu!\n\nKada pitanje bude odgovoreno od strane osoblja, Vaše pitanje će biti prisutno na listi.")
       },
       error: (error) => {
         console.log("Neuspješno poslano pitanje!", error);

@@ -6,6 +6,9 @@ import {HttpClient} from "@angular/common/http";
 import {MojConfig} from "../moj-config";
 import {SvaPitanjaAdmin} from "../models/svaPitanjaAdmin.model";
 import {ParPitanjeOdgovor} from "../models/parPitanjeOdgovor.model";
+import {LoginInformacije} from "../_helpers/login-informacije";
+import {AutentifikacijaHelper} from "../_helpers/autentifikacija-helper";
+import {HeaderComponent} from "../shared/header/header.component";
 
 @Component({
   selector: 'app-pitanja-admin-lista',
@@ -30,9 +33,10 @@ export class PitanjaAdminListaComponent implements OnInit{
   parPitanjeOdgovor: ParPitanjeOdgovor | null = null;
   isModalVisible = false;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private headerMenu: HeaderComponent) {}
 
   ngOnInit(): void {
+    this.headerMenu.zatvoriSlajder();
     this.getBrojNeodgovorenihPitanja();
     this.getPitanja(this.currentPage, this.pageSize);
   }
@@ -119,6 +123,10 @@ export class PitanjaAdminListaComponent implements OnInit{
         console.log("Neuspjesno azurirano!");
       }
     })
+  }
+
+  loginInfo(): LoginInformacije{
+    return AutentifikacijaHelper.getLoginInfo();
   }
 }
 

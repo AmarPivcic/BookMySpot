@@ -16,12 +16,14 @@
   <p style="margin-top: 70px" class="AboutUs">Pitanja i odgovori</p>
   <div class="aboutText">
 
-    <div>
+    <div class="contentCijeli">
+      <div class="dugmici">
       <button (click)="expandAll()">Proširi sve</button>
       <button (click)="unexpandAll()">Zatvori sve</button>
       <button [routerLink]="['/pitanjaOdgovori']">Odgovorena pitanja</button>
-      <button [routerLink]="['/neodgovorenaPitanja']">Pristigla pitanja <span class="brojUDugmetu" *ngIf="brojPristiglihPitanja !== 0">{{brojPristiglihPitanja}}</span></button>
-      <button [routerLink]="['/pitanjaOdgovori/pitanjaAdminLista']">Sva pitanja</button>
+      <button *ngIf="loginInfo().isLogiran && (loginInfo().autentifikacijaToken?.korisnickiNalog?.isManager || loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator)" [routerLink]="['/neodgovorenaPitanja']">Pristigla pitanja <span class="brojUDugmetu" *ngIf="brojPristiglihPitanja !== 0">{{brojPristiglihPitanja}}</span></button>
+      <button *ngIf="loginInfo().isLogiran && loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator" [routerLink]="['/pitanjaOdgovori/pitanjaAdminLista']">Sva pitanja</button>
+      </div>
 
       <div *ngFor="let item of faqItems" class="containerGlavni">
         <div class="question" [ngClass]="{'expanded': item.isExpanded}" (click)="toggle(item)">
@@ -32,7 +34,7 @@
         </div>
         <div class="answer" *ngIf="item.isExpanded">
           <label for="odgovorNaPitanje">Odgovor: </label>
-          <input style="color: black" [(ngModel)]="item.odgovor" id="odgovorNaPitanje" name="odgovorNaPitanje" type="text">
+          <textarea style="color: black; width: 100%" [(ngModel)]="item.odgovor" id="odgovorNaPitanje" name="odgovorNaPitanje" type="text"></textarea>
           <button (click)="PosaljiOdgovor(item.id, item.odgovor)" style="background-color: white; color: black">Pošalji</button>
           <button (click)="ObrisiPitanje(item.id)" style="background-color: red; color: white; margin-left: auto; float: right;">Obriši Pitanje</button>
         </div>

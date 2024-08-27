@@ -12,18 +12,24 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
-export class HeaderComponent implements OnInit { 
+export class HeaderComponent implements OnInit {
 
   constructor(private router: Router){}
 
   ngOnInit(): void {
-    
+
+  }
+
+  zatvoriSlajder(){
+    const slider = document.querySelector("#slider");
+    // @ts-ignore
+    slider.style.width="0px";
   }
 
   loginInfo():LoginInformacije {
     return AutentifikacijaHelper.getLoginInfo();
   }
-  
+
   OtvoriMenu() {
     const burgerMenu = document.querySelector(".burger-menu");
     // @ts-ignore

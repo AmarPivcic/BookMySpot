@@ -6,6 +6,9 @@ import {MojConfig} from "../moj-config";
 import {HttpClient} from "@angular/common/http";
 import {formatDistanceToNow} from "date-fns";
 import {RouterLink} from "@angular/router";
+import {LoginInformacije} from "../_helpers/login-informacije";
+import {AutentifikacijaHelper} from "../_helpers/autentifikacija-helper";
+import {HeaderComponent} from "../shared/header/header.component";
 
 @Component({
   selector: 'app-neodgovorena-pitanja-lista',
@@ -27,7 +30,7 @@ export class NeodgovorenaPitanjaListaComponent implements OnInit{
   brojPristiglihPitanja = 0;
   odgovorNaPitanje = "";
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private headerMenu: HeaderComponent) {}
   toggle(item: any) {
     item.isExpanded = !item.isExpanded;
   }
@@ -40,6 +43,7 @@ export class NeodgovorenaPitanjaListaComponent implements OnInit{
     this.faqItems.forEach(item => item.isExpanded = false);
   }
   ngOnInit(): void {
+    this.headerMenu.zatvoriSlajder();
     this.getBrojNeodgovorenihPitanja();
     this.loadNeodgovorenaPitanja();
   }
@@ -100,6 +104,10 @@ export class NeodgovorenaPitanjaListaComponent implements OnInit{
         console.log("Neuspjesno obrisano", error);
       }
     });
+  }
+
+  loginInfo(): LoginInformacije{
+    return AutentifikacijaHelper.getLoginInfo();
   }
 }
 

@@ -59,4 +59,7 @@ Odjava() {
     this.menu.NavigirajIZatvori("/");
 }
 
+  redirectToPayPal() {
+    window.open('https://www.paypal.com/signin', '_self');
+  }
 }

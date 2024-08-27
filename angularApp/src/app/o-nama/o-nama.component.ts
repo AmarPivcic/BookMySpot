@@ -5,6 +5,9 @@ import {RouterLink} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {MojConfig} from "../moj-config";
 import {ONamaSadrzaj} from "../models/ONamaSadrzaj.model";
+import {NgIf} from "@angular/common";
+import {LoginInformacije} from "../_helpers/login-informacije";
+import {AutentifikacijaHelper} from "../_helpers/autentifikacija-helper";
 
 @Component({
   selector: 'app-o-nama',
@@ -12,7 +15,8 @@ import {ONamaSadrzaj} from "../models/ONamaSadrzaj.model";
   imports: [
     MarkdownComponent,
     FormsModule,
-    RouterLink
+    RouterLink,
+    NgIf
   ],
   templateUrl: './o-nama.component.html',
   styleUrl: './o-nama.component.css'
@@ -32,12 +36,16 @@ export class ONamaComponent implements OnInit{
   loadData(){
     this.httpClient.get<ONamaSadrzaj>(this.url + '/api/ONama').subscribe({
       next: (response) => {
-        console.log("Uspjesno dobavljen tekst");
         this.tekst = response.tekst;
       },
       error: (error) => {
         console.log("Neuspjesno dobavljen tekst", error);
       }
     })
+  }
+
+  loginInfo():LoginInformacije
+  {
+    return AutentifikacijaHelper.getLoginInfo();
   }
 }

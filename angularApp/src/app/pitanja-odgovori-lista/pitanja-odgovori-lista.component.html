@@ -16,16 +16,17 @@
   <p style="margin-top: 70px" class="AboutUs">Pitanja i odgovori</p>
   <div class="aboutText">
 
-    <div>
+    <div class="pitanjaOdgovoriContainer">
       <div>
         <button (click)="expandAll()">Proširi sve</button>
         <button (click)="unexpandAll()">Zatvori sve</button>
         <button [routerLink]="['/pitanjaOdgovori']">Odgovorena pitanja</button>
-        <button [routerLink]="['/pitanjaOdgovori/neodgovorenaPitanja']">Pristigla pitanja <span class="brojUDugmetu" *ngIf="brojPristiglihPitanja !== 0">{{brojPristiglihPitanja}}</span></button>
-        <button [routerLink]="['/pitanjaOdgovori/pitanjaAdminLista']">Sva pitanja</button>
+        <button *ngIf="loginInfo().isLogiran && (loginInfo().autentifikacijaToken?.korisnickiNalog?.isManager || loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator)" [routerLink]="['/pitanjaOdgovori/neodgovorenaPitanja']">Pristigla pitanja <span class="brojUDugmetu" *ngIf="brojPristiglihPitanja !== 0">{{brojPristiglihPitanja}}</span></button>
+        <button *ngIf="loginInfo().isLogiran && loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator" [routerLink]="['/pitanjaOdgovori/pitanjaAdminLista']">Sva pitanja</button>
       </div>
 
-      <input style="color: black" (input)="Pretraga($event)">
+      <p>Pretraži:</p>
+      <input style="color: black; width: 100%" (input)="Pretraga($event)">
 
       <div *ngFor="let item of faqItems" class="containerGlavni">
         <div class="question" [ngClass]="{'expanded': item.isExpanded}" (click)="toggle(item)">
@@ -39,10 +40,10 @@
         </div>
       </div>
 
-      <div *ngIf="loginInfo().isLogiran == true">
+      <div class="postaviPitanjeKontejnercic" *ngIf="loginInfo().isLogiran == true">
         <label style="color: black" for="postaviPitanje">Postavi pitanje: </label>
-        <input style="color: black" [(ngModel)]="novoPitanje" id="postaviPitanje" type="text">
-        <button (click)="PostaviPitanje()">Pošalji</button>
+        <textarea style="color: black; width: 100%" [(ngModel)]="novoPitanje" id="postaviPitanje" type="text"></textarea>
+        <button style="width: 300px" (click)="PostaviPitanje()">Pošalji</button>
       </div>
     </div>
 

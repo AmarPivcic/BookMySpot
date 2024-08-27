@@ -20,7 +20,7 @@
 
     </markdown>
 
-    <button class="btnOk" [routerLink]="['/oNama/oNamaEdit']">Uredi</button>
+    <button class="btnOk" *ngIf="loginInfo().isLogiran && loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator" [routerLink]="['/oNama/oNamaEdit']">Uredi</button>
 
   </div>
 </div>

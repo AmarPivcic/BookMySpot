@@ -11,11 +11,14 @@
 
 <body>
 <div class="container">
-    <div class="containercard" *ngFor="let kategorija of kategorijeLista" (click)="onCategoryClick(kategorija.kategorijaID)">
-      <p class="cardtitle">{{kategorija.naziv}}</p>
-      <p class="cardsubtitle">Dostupne opcije: {{kategorija.brojOpcija}}</p>
-      <img class="cardimg" [src]="kategorija.slika">
+  <div class="containercard" *ngFor="let kategorija of kategorijeLista" (click)="onCategoryClick(kategorija.kategorijaID)" style="position: relative;">
+    <div *ngIf="loginInfo().isLogiran && loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator" style="position: absolute; top: 20px; right: 20px; z-index: 10;">
+      <button class="btnOk" [routerLink]="['/editKategorija/' + kategorija.kategorijaID]">Edit</button>
     </div>
+    <p class="cardtitle">{{kategorija.naziv}}</p>
+    <p class="cardsubtitle">Dostupne opcije: {{kategorija.brojOpcija}}</p>
+    <img class="cardimg" [src]="kategorija.slika">
+  </div>
 </div>
 
 <input type="file" (change)="onFileUploadChange($event)">
