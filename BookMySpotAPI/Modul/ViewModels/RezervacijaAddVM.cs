@@ -8,5 +8,6 @@
         public int osobaID { get; set; }
         public int uslugaID { get; set; }
         public int usluzniObjektID { get; set; }
+        public int managerID { get; set; }
     }
 }

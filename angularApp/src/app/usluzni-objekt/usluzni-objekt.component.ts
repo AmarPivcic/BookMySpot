@@ -12,6 +12,7 @@ import { TerminFunckijeService } from '../shared/termin-manager/termin-funckije.
 import {compareSegments} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker";
 import {EditKoordinate} from "../models/editKoordinate.model";
 import { dodajFavorit } from '../models/dodajFavorit.model';
+import { Manager } from '../models/manager.model';
 
 @Component({
   selector: 'app-usluzni-objekt',
@@ -37,7 +38,8 @@ export class UsluzniObjektComponent implements OnInit {
   datumPocetka: string | null = null;
   datumKraja: string | null = null;
   karticnoPlacanje: boolean = false;
-
+  listaManagera: Manager[] | null = null;
+  odabraniManager: Manager | null = null;
 
 
   //Nova logika
@@ -76,6 +78,7 @@ export class UsluzniObjektComponent implements OnInit {
     this.getListaUsluga(this.usluzniObjektID);
     this.getListaRecenzija(this.usluzniObjektID);
     this.getPodaci();
+    this.getListaManagera();
     const danas = new Date();
     this.minDate = danas.toISOString().split('T')[0];
 
@@ -104,6 +107,13 @@ export class UsluzniObjektComponent implements OnInit {
   getPodaci()
   {
     this.logiraniKorisnik=this.loginInfo().autentifikacijaToken?.korisnickiNalog;
+  }
+
+  getListaManagera()
+  {
+    this.httpKlijent.get<Manager[]>(MojConfig.adresa_servera + "/Manager/GetListaManager?usluzniObjektID="+this.usluzniObjektID, MojConfig.http_opcije()).subscribe(x=>{
+      this.listaManagera=x;
+    });
   }
 
   getUsluzniObjekt(usluzniObjektID: number) {
@@ -149,9 +159,9 @@ export class UsluzniObjektComponent implements OnInit {
 
   onDatumUslugaChange()
   {
-    if(this.odabraniDatum && this.odabranaUsluga)
+    if(this.odabraniDatum && this.odabranaUsluga && this.odabraniManager)
     {
-       this.terminFunkcije.getListaDostupnihTermina(this.usluzniObjektID,this.odabraniDatum, this.odabranaUsluga.trajanje).subscribe(x=>{
+       this.terminFunkcije.getListaDostupnihTermina(this.usluzniObjektID,this.odabraniDatum, this.odabranaUsluga.trajanje, this.odabraniManager.osobaID).subscribe(x=>{
         this.dostupniTermini=x;
        });
     }
@@ -160,16 +170,17 @@ export class UsluzniObjektComponent implements OnInit {
   rezervisiTermin() {
     console.log(this.karticnoPlacanje);
 
-    if(this.odabraniDatum && this.odabranaUsluga && this.odabranoVrijeme)
+    if(this.odabraniDatum && this.odabranaUsluga && this.odabranoVrijeme && this.odabraniManager)
     {
-      this.terminFunkcije.rezervisiTermin(this.odabraniDatum, this.odabranoVrijeme, this.odabranaUsluga, this.karticnoPlacanje, this.logiraniKorisnik.osobaID);
+      this.terminFunkcije.rezervisiTermin(this.odabraniDatum, this.odabranoVrijeme, this.odabranaUsluga, this.karticnoPlacanje, this.logiraniKorisnik.osobaID, this.odabraniManager?.osobaID);
       this.odabraniDatum=null;
       this.odabranoVrijeme=null;
       this.odabranaUsluga=null;
+      this.odabraniManager=null;
     }
 
     else{
-      alert("Morate odabrati datum rezervacije, uslugu i početno vrijeme rezervacije!");
+      alert("Morate odabrati radnika, datum rezervacije, uslugu i početno vrijeme rezervacije!");
     }
   }
 
@@ -282,7 +293,7 @@ export class UsluzniObjektComponent implements OnInit {
   rezervisiTerminSmjestaja() {
     if (this.odabranaUsluga &&
       this.selectedGodina && this.selectedMjesec && this.selectedDan &&
-      this.selectedGodinaIseljenja && this.selectedMjesecIseljenja && this.selectedDanIseljenja) {
+      this.selectedGodinaIseljenja && this.selectedMjesecIseljenja && this.selectedDanIseljenja && this.listaManagera) {
 
       this.terminFunkcije.rezervisiTerminSmjestaja(
         this.selectedDan,
@@ -294,7 +305,8 @@ export class UsluzniObjektComponent implements OnInit {
         this.dani,
         this.logiraniKorisnik.osobaID,
         this.odabranaUsluga,
-        this.karticnoPlacanje
+        this.karticnoPlacanje,
+        this.listaManagera[0].osobaID
       )
 
       this.odabranaUsluga = null;

@@ -130,7 +130,7 @@ export class HistorijaRezervacijaComponent implements OnInit{
       {
         this.terminFunkcije
         //@ts-ignore
-        .getListaDostupnihTermina(this.odabranaRezervacija?.usluzniObjekt.usluzniObjektID, this.odabraniDatum, this.odabranaRezervacija?.usluga.trajanje).subscribe(x=>{
+        .getListaDostupnihTermina(this.odabranaRezervacija?.usluzniObjekt.usluzniObjektID, this.odabraniDatum, this.odabranaRezervacija?.usluga.trajanje, this.odabranaRezervacija?.manager.osobaID).subscribe(x=>{
           this.dostupniTermini=x;
         });
       }
@@ -149,7 +149,7 @@ export class HistorijaRezervacijaComponent implements OnInit{
     if(this.odabraniDatum && this.odabranoVrijeme)
     {
       //@ts-ignore
-      this.terminFunkcije.rezervisiTermin(this.odabraniDatum, this.odabranoVrijeme, this.odabranaRezervacija?.usluga, this.karticnoPlacanje, this.loginInfo().autentifikacijaToken?.osobaID);
+      this.terminFunkcije.rezervisiTermin(this.odabraniDatum, this.odabranoVrijeme, this.odabranaRezervacija?.usluga, this.karticnoPlacanje, this.loginInfo().autentifikacijaToken?.osobaID, this.odabranaRezervacija?.manager.osobaID);
       this.ugasiPopup();
     }
     else{
@@ -247,7 +247,8 @@ export class HistorijaRezervacijaComponent implements OnInit{
         this.dani,
         this.logiraniKorisnik.osobaID,
         this.odabranaRezervacija?.usluga,
-        this.karticnoPlacanje
+        this.karticnoPlacanje,
+        this.odabranaRezervacija.manager.osobaID
       )
 
 

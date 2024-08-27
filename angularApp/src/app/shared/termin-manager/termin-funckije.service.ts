@@ -13,17 +13,18 @@ export class TerminFunckijeService {
 
   constructor(private httpKlijent: HttpClient) { }
 
-  getListaDostupnihTermina(objektID: number,datum: string, trajanje: number)
+  getListaDostupnihTermina(objektID: number,datum: string, trajanje: number, managerID: number)
   {
     let params = new HttpParams()
       .set('usluzniObjektID', objektID)
       .set('odabraniDatum', datum)
-      .set('trajanje', trajanje);
+      .set('trajanje', trajanje)
+      .set('managerID', managerID);
 
     return this.httpKlijent.get<string[]>(MojConfig.adresa_servera+"/Rezervacija/GetListaSlobodnihTermina", {params});
   }
 
-  rezervisiTermin(datum:string, pocetak: string, usluga:Usluga, karticno: boolean, osoba: any)
+  rezervisiTermin(datum:string, pocetak: string, usluga:Usluga, karticno: boolean, osoba: any, managerID: number)
   {
     let parametri: any = {
       datumRezervacije: datum,
@@ -32,7 +33,8 @@ export class TerminFunckijeService {
       osobaID: osoba,
       uslugaID: usluga.uslugaID,
       usluzniObjektID: usluga.usluzniObjekt.usluzniObjektID,
-      karticnoPlacanje: karticno
+      karticnoPlacanje: karticno,
+      managerID: managerID
     };
 
     this.httpKlijent.post(MojConfig.adresa_servera+"/Rezervacija/Add", parametri, MojConfig.http_opcije()).subscribe({
@@ -47,7 +49,7 @@ export class TerminFunckijeService {
     });
   }
 
-  obaviRezervaciju(datumPocetka:string, datumKraja: string, osoba:any, usluga: Usluga, karticno: boolean,)
+  obaviRezervaciju(datumPocetka:string, datumKraja: string, osoba:any, usluga: Usluga, karticno: boolean, managerID: number)
   {
     let rezervacijaPodaci: any = {
       rezervacijaPocetak: datumPocetka,
@@ -55,7 +57,8 @@ export class TerminFunckijeService {
       osobaID: osoba,
       uslugaID: usluga.uslugaID,
       usluzniObjektID: usluga.usluzniObjekt.usluzniObjektID,
-      karticnoPlacanje: karticno
+      karticnoPlacanje: karticno,
+      managerID
     };
 
     this.httpKlijent.post(MojConfig.adresa_servera + "/Rezervacija/RezervisiSmjestaj", rezervacijaPodaci, MojConfig.http_opcije()).subscribe({
@@ -116,7 +119,8 @@ export class TerminFunckijeService {
     dani: number[],
     osobaID: number,
     odabranaUsluga: Usluga,
-    karticnoPlacanje: boolean
+    karticnoPlacanje: boolean,
+    managerID: number
     ) {
 
       if(selectedMjesec == selectedMjesecIseljenja)
@@ -170,7 +174,8 @@ export class TerminFunckijeService {
         datumKraja,
         osobaID,
         odabranaUsluga,
-        karticnoPlacanje);
+        karticnoPlacanje,
+        managerID);
   }
 }
 

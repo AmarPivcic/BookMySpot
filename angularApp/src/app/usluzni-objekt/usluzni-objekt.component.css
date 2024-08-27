@@ -237,6 +237,15 @@
     border-radius: 5px;
   }
 
+  .date-select select {
+    background-color: #776b5d;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    font-size: 1.2rem;
+  }
+
   .datumRez {
     width: 100%;
     display: flex;
@@ -254,7 +263,7 @@
 .date-select {
   display: flex;
   flex: 1;
-  width: 200px;
+  width: 250px;
 }
 
   #datumRezP {
@@ -406,3 +415,10 @@
     font-size: 1.2rem;
     cursor:pointer;
   }
+
+  .karticnoBox
+  {
+    display: flex;
+    flex-direction: row;
+  }
+

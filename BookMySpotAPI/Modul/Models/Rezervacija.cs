@@ -22,6 +22,9 @@ namespace BookMySpotAPI.Modul.Models
         [ForeignKey(nameof(UsluzniObjekt))]
         public int usluzniObjektID { get; set; }
         public UsluzniObjekt usluzniObjekt { get; set; }
+        [ForeignKey(nameof(Manager))]
+        public int managerID { get; set; }
+        public Manager manager { get; set; }
         public bool karticnoPlacanje { get; set; } = false;
 
     }

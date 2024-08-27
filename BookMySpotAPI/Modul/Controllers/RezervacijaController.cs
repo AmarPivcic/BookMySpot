@@ -1,4 +1,5 @@
 ﻿using BookMySpotAPI.Data;
+using BookMySpotAPI.Helper;
 using BookMySpotAPI.Modul.Models;
 using BookMySpotAPI.Modul.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -12,15 +13,18 @@ namespace BookMySpotAPI.Modul.Controllers
     public class RezervacijaController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
-        public RezervacijaController(ApplicationDbContext dbContext) 
+        private readonly EmailService _emailService;
+
+        public RezervacijaController(ApplicationDbContext dbContext, EmailService emailService) 
         {
             _dbContext = dbContext;
+            _emailService = emailService;
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetListaSlobodnihTermina(int usluzniObjektID, DateTime odabraniDatum, int trajanje)
+        public async Task<ActionResult> GetListaSlobodnihTermina(int usluzniObjektID, DateTime odabraniDatum, int managerID, int trajanje)
         {
-            var trenutneRezervacije = await _dbContext.Rezervacije.Where(r => r.usluzniObjektID == usluzniObjektID && r.datumRezervacije == odabraniDatum && r.otkazano == false).ToListAsync();
+            var trenutneRezervacije = await _dbContext.Rezervacije.Where(r => r.usluzniObjektID == usluzniObjektID && r.datumRezervacije == odabraniDatum && r.managerID == managerID && r.otkazano == false).ToListAsync();
             UsluzniObjekt usluzniObjekt = await _dbContext.UsluzniObjekti.FirstOrDefaultAsync(u => u.usluzniObjektID == usluzniObjektID);
             TimeSpan radnoVrijemePocetak = TimeSpan.Parse(usluzniObjekt.radnoVrijemePocetak);
             TimeSpan radnoVrijemeKraj = TimeSpan.Parse(usluzniObjekt.radnoVrijemeKraj);
@@ -90,13 +94,24 @@ namespace BookMySpotAPI.Modul.Controllers
                 rezervacijaKraj = rezervacijaKrajCalc,
                 korisnikID = x.osobaID,
                 uslugaID = x.uslugaID,
-                usluzniObjektID = x.usluzniObjektID
+                usluzniObjektID = x.usluzniObjektID,
+                managerID = x.managerID
             };
 
             korisnik.brojRezervacija++;
             _dbContext.Korisnici.Update(korisnik);
             await _dbContext.Rezervacije.AddAsync(novaRezervacija);
             await _dbContext.SaveChangesAsync();
+
+            var loadedRezervacija = await _dbContext.Rezervacije
+                .Include(r => r.korisnik)
+                .Include(r => r.usluga)
+                .Include(r => r.usluzniObjekt)
+                .Include(r => r.manager)
+                .FirstOrDefaultAsync(r => r.rezervacijaID == novaRezervacija.rezervacijaID);
+
+            var email = new EmailTemplates(_emailService);
+            await email.RezervacijaMail(loadedRezervacija);
 
             return Ok(novaRezervacija);
         }
@@ -114,12 +129,24 @@ namespace BookMySpotAPI.Modul.Controllers
                 korisnikID = request.osobaID,
                 uslugaID = request.uslugaID,
                 usluzniObjektID = request.usluzniObjektID,
-                karticnoPlacanje = request.karticnoPlacanje
+                karticnoPlacanje = request.karticnoPlacanje,
+                managerID = request.managerID
             };
             korisnik.brojRezervacija++;
             _dbContext.Korisnici.Update(korisnik);
             await _dbContext.Rezervacije.AddAsync(novaRezervacija);
             await _dbContext.SaveChangesAsync();
+
+            var loadedRezervacija = await _dbContext.Rezervacije
+                .Include(r => r.korisnik)
+                .Include(r => r.usluga)
+                .Include(r => r.usluzniObjekt)
+                .Include(r => r.manager)
+                .FirstOrDefaultAsync(r => r.rezervacijaID == novaRezervacija.rezervacijaID);
+
+            var email = new EmailTemplates(_emailService);
+            await email.RezervacijaSmjestajMail(loadedRezervacija);
+
             return Ok(novaRezervacija);
         }
 
@@ -246,7 +273,7 @@ namespace BookMySpotAPI.Modul.Controllers
             }
 
             var listaRezervacija = await _dbContext.Rezervacije.Where( r => r.korisnikID == korisnik.osobaID && r.otkazano==false && r.zavrseno==false)
-                .Include(r => r.usluzniObjekt).Include(r => r.usluga).OrderBy(r => r.datumRezervacije).ThenBy(r => r.rezervacijaPocetak).ToListAsync();
+                .Include(r => r.usluzniObjekt).Include(r => r.usluga).Include(r => r.manager).OrderBy(r => r.datumRezervacije).ThenBy(r => r.rezervacijaPocetak).ToListAsync();
             return Ok(listaRezervacija);
         }
 
@@ -258,7 +285,7 @@ namespace BookMySpotAPI.Modul.Controllers
                 return NotFound("Korisnik nije pronađen!");
 
             var listaRezervacija = await _dbContext.Rezervacije.Where(r => r.korisnikID == korisnik.osobaID && (r.otkazano==true || r.zavrseno==true))
-                .Include(r => r.usluzniObjekt).Include(r => r.usluga).OrderByDescending(r => r.datumRezervacije).ThenByDescending(r => r.rezervacijaPocetak).ToListAsync();
+                .Include(r => r.usluzniObjekt).Include(r => r.usluga).Include(r => r.manager).OrderByDescending(r => r.datumRezervacije).ThenByDescending(r => r.rezervacijaPocetak).ToListAsync();
             return Ok(listaRezervacija);
         }
 

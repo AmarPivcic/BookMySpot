@@ -334,6 +334,7 @@ namespace BookMySpotAPI.Migrations
                     korisnikID = table.Column<int>(type: "int", nullable: false),
                     uslugaID = table.Column<int>(type: "int", nullable: false),
                     usluzniObjektID = table.Column<int>(type: "int", nullable: false),
+                    managerID = table.Column<int>(type: "int", nullable: false),
                     karticnoPlacanje = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -343,6 +344,12 @@ namespace BookMySpotAPI.Migrations
                         name: "FK_Rezervacija_Korisnik_korisnikID",
                         column: x => x.korisnikID,
                         principalTable: "Korisnik",
+                        principalColumn: "osobaID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Rezervacija_Manager_managerID",
+                        column: x => x.managerID,
+                        principalTable: "Manager",
                         principalColumn: "osobaID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -404,6 +411,11 @@ namespace BookMySpotAPI.Migrations
                 column: "korisnikID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Rezervacija_managerID",
+                table: "Rezervacija",
+                column: "managerID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Rezervacija_uslugaID",
                 table: "Rezervacija",
                 column: "uslugaID");
@@ -459,10 +471,10 @@ namespace BookMySpotAPI.Migrations
                 name: "SadrzajiONama");
 
             migrationBuilder.DropTable(
-                name: "Manager");
+                name: "Korisnik");
 
             migrationBuilder.DropTable(
-                name: "Korisnik");
+                name: "Manager");
 
             migrationBuilder.DropTable(
                 name: "Usluga");

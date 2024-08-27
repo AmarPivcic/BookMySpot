@@ -19,10 +19,12 @@ namespace BookMySpotAPI.Autentifikacija.Controllers
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly PasswordHasher _passwordHasher;
-        public AutentifikacijaController(ApplicationDbContext dbContext)
+        private readonly EmailService _emailService;
+        public AutentifikacijaController(ApplicationDbContext dbContext, EmailService emailService)
         {
             _dbContext = dbContext;
             _passwordHasher = new PasswordHasher();
+            _emailService = emailService;
         }
 
         [HttpPost]
@@ -73,7 +75,7 @@ namespace BookMySpotAPI.Autentifikacija.Controllers
         }
 
         [HttpPost]
-        public ActionResult<LoginInformacije> Registracija([FromBody] RegistracijaVM x)
+        public async Task<ActionResult<LoginInformacije>> Registracija([FromBody] RegistracijaVM x)
         {
             var newKorisnickiNalog = new Korisnik
             {
@@ -95,6 +97,9 @@ namespace BookMySpotAPI.Autentifikacija.Controllers
                 korisnickoIme = x.korisnickoIme,
                 lozinka = x.lozinka
             };
+
+            var mail = new EmailTemplates(_emailService);
+            await mail.RegistracijaMail(newKorisnickiNalog);
 
             return Login(login);
         }

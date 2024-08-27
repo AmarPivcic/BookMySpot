@@ -133,6 +133,19 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             var managerPassword = _passwordHasher.HashPassword(manager, "manager");
             manager.lozinka = managerPassword;
 
+            var manager2 = new Manager
+            {
+                ime = "KrecoRadnik",
+                prezime = "KrecoRadnikPrezime",
+                email = "krecoradnik@gmail.com",
+                telefon = "+38763135135",
+                korisnickoIme = "krecoradnik",
+                pozicija = "Radnik"
+            };
+
+            var manager2Password = _passwordHasher.HashPassword(manager, "krecoradnik");
+            manager.lozinka = managerPassword;
+
             var krecho = new UsluzniObjekt
             {
                 nazivObjekta = "Barbershop Krecho",
@@ -151,9 +164,17 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 usluzniObjekt = krecho
             };
 
+            var managerUsluzniObjekt2 = new ManagerUsluzniObjekt
+            {
+                manager = manager2,
+                usluzniObjekt = krecho
+            };
+
             await _dbContext.Manageri.AddAsync(manager);
+            await _dbContext.Manageri.AddAsync(manager2);
             await _dbContext.UsluzniObjekti.AddAsync(krecho);
             await _dbContext.ManagerUsluzniObjekti.AddAsync(managerUsluzniObjekt);
+            await _dbContext.ManagerUsluzniObjekti.AddAsync(managerUsluzniObjekt2);
             await _dbContext.SaveChangesAsync();
 
             var usluga1 = new Usluga

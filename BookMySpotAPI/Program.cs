@@ -23,7 +23,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(config.GetConnectionString("db1")));
 
 builder.Services.AddScoped<Slike>();
-
+builder.Services.AddSingleton<EmailService>();
 
 var app = builder.Build();
 

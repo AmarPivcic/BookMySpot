@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookMySpotAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240826173058_generate database")]
+    [Migration("20240827190226_generate database")]
     partial class generatedatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -290,6 +290,9 @@ namespace BookMySpotAPI.Migrations
                     b.Property<int>("korisnikID")
                         .HasColumnType("int");
 
+                    b.Property<int>("managerID")
+                        .HasColumnType("int");
+
                     b.Property<bool>("otkazano")
                         .HasColumnType("bit");
 
@@ -313,6 +316,8 @@ namespace BookMySpotAPI.Migrations
                     b.HasKey("rezervacijaID");
 
                     b.HasIndex("korisnikID");
+
+                    b.HasIndex("managerID");
 
                     b.HasIndex("uslugaID");
 
@@ -528,6 +533,12 @@ namespace BookMySpotAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BookMySpotAPI.Modul.Models.Manager", "manager")
+                        .WithMany()
+                        .HasForeignKey("managerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BookMySpotAPI.Modul.Models.Usluga", "usluga")
                         .WithMany()
                         .HasForeignKey("uslugaID")
@@ -541,6 +552,8 @@ namespace BookMySpotAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("korisnik");
+
+                    b.Navigation("manager");
 
                     b.Navigation("usluga");
 

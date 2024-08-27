@@ -1,4 +1,5 @@
 import { Korisnik } from "./korisnik.model";
+import { Manager } from "./manager.model";
 import { Usluga } from "./usluga.model";
 import { UsluzniObjekt } from "./usluzniObjekt.model";
 
@@ -12,4 +13,5 @@ export interface Rezervacija{
     korisnik: Korisnik;
     usluga: Usluga;
     usluzniObjekt: UsluzniObjekt;
+    manager: Manager;
   }

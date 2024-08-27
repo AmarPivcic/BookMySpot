@@ -61,6 +61,11 @@
       <div class="rezervacijaSmjestaja">
         <h3>Rezervacija</h3>
 
+        <select *ngIf="usluzniObjekt?.isSmjestaj == false" [(ngModel)]="odabraniManager" (change)="onDatumUslugaChange()" required class="datumRezV" style="width: 100%;">
+          <option [ngValue]="null" disabled>Odaberi radnika</option>
+          <option *ngFor="let manager of listaManagera" [ngValue]="manager">{{manager.ime}} {{manager.prezime}} ({{manager.pozicija}})</option>
+        </select>
+
         <select *ngIf="usluzniObjekt?.isSmjestaj == false" [(ngModel)]="odabranaUsluga" (change)="onDatumUslugaChange()" required class="datumRezV" style="width: 100%;">
           <option [ngValue]="null" disabled>Odaberi uslugu</option>
           <option *ngFor="let usluga of listaUsluga" [ngValue]="usluga">{{usluga.naziv}} ({{usluga.trajanje}} min)</option>
@@ -126,7 +131,7 @@
           </div>
         </div>
 
-        <div *ngIf="usluzniObjekt?.isSmjestaj == true" class="datumRez">
+        <div *ngIf="usluzniObjekt?.isSmjestaj == true" class="karticnoBox">
           <label for="karticnoPlacanjeCheckbox">Kartično plaćanje:</label>
           <input [(ngModel)]="karticnoPlacanje" type="checkbox" id="karticnoPlacanjeCheckbox" name="karticnoPlacanjeCheckbox">
         </div>
