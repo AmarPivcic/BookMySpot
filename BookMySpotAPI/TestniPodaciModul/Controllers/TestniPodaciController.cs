@@ -359,6 +359,62 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             _dbContext.Administratori.Add(admin);
             await _dbContext.SaveChangesAsync();
 
+
+            var pitanjeOdgvor1 = new PitanjeOdgovor
+            {
+                DatumKreiranja = DateTime.Now.AddDays(-78),
+                KorisnickiNalogId = 1,
+                Pitanje = "Kako rezervisati smještaj putem aplikacije?",
+                Odgovor = "Nakon odabira željenog smještaja, pritisnite opciju \"Rezerviši\". Slijedite upute za unos datuma, broja gostiju i eventualnih dodatnih zahtjeva. Na kraju postupka, potvrdite rezervaciju."
+            };
+
+            _dbContext.PitanjaOdgovori.Add(pitanjeOdgvor1);
+            await _dbContext.SaveChangesAsync();
+
+            var pitanjeOdgvor2 = new PitanjeOdgovor
+            {
+                DatumKreiranja = DateTime.Now.AddDays(-55),
+                KorisnickiNalogId = 2,
+                Pitanje = "Koje mjere sigurnosti poduzimate kako biste osigurali sigurnost podataka korisnika?",
+                Odgovor = "Aplikacija koristi napredne sigurnosne mjere kako bi zaštitila osobne podatke korisnika. Sva komunikacija i transakcije enkriptirane su radi sigurnosti korisnika."
+            };
+
+            _dbContext.PitanjaOdgovori.Add(pitanjeOdgvor2);
+            await _dbContext.SaveChangesAsync();
+
+            var pitanjeOdgvor3 = new PitanjeOdgovor
+            {
+                DatumKreiranja = DateTime.Now.AddDays(-47),
+                KorisnickiNalogId = 3,
+                Pitanje = "Kako ocjenjujete kvalitetu smještaja i usluga salona ljepote na aplikaciji?",
+                Odgovor = "Korisnici mogu ocjenjivati i ostavljati recenzije nakon svake rezervacije. Ove ocjene i recenzije pomažu drugim korisnicima u donošenju informirane odluke."
+            };
+
+            _dbContext.PitanjaOdgovori.Add(pitanjeOdgvor3);
+            await _dbContext.SaveChangesAsync();
+
+            var pitanjeOdgvor4 = new PitanjeOdgovor
+            {
+                DatumKreiranja = DateTime.Now.AddDays(-20),
+                KorisnickiNalogId = 1,
+                Pitanje = "Kako mogu pratiti svoje prethodne rezervacije i buduće termine u aplikaciji?",
+                Odgovor = "Sve vaše rezervacije dostupne su u sekciji \"Historija\". Ovdje možete pregledati prethodne rezervacije, buduće rezervacije i pratiti eventualne promjene."
+            };
+
+            _dbContext.PitanjaOdgovori.Add(pitanjeOdgvor4);
+            await _dbContext.SaveChangesAsync();
+
+            var pitanjeOdgvor5 = new PitanjeOdgovor
+            {
+                DatumKreiranja = DateTime.Now.AddDays(-3),
+                KorisnickiNalogId = 4,
+                Pitanje = "Mogu li pogledati fotografiju smještaja ili salona ljepote prije rezervacije?",
+                Odgovor = "Da, aplikacija pruža pregled fotografije smještaja ili salona ljepote."
+            };
+
+            _dbContext.PitanjaOdgovori.Add(pitanjeOdgvor5);
+            await _dbContext.SaveChangesAsync();
+
             return Ok();
         }
     }

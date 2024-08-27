@@ -95,7 +95,7 @@ namespace BookMySpotAPI.Modul.Controllers
                 korisnikID = x.osobaID,
                 uslugaID = x.uslugaID,
                 usluzniObjektID = x.usluzniObjektID,
-                managerID = x.managerID
+                managerID = x.managerID,
             };
 
             korisnik.brojRezervacija++;

@@ -93,6 +93,14 @@ export class PitanjaAdminListaComponent implements OnInit{
 
   toggleModal() {
     this.isModalVisible = !this.isModalVisible;
+
+    if (this.isModalVisible) {
+      document.body.classList.add('modal-open');
+      document.querySelector('body')?.classList.add('blur-background');
+    } else {
+      document.body.classList.remove('modal-open');
+      document.querySelector('body')?.classList.remove('blur-background');
+    }
   }
 
   editPitanje(id: number) {
@@ -128,5 +136,6 @@ export class PitanjaAdminListaComponent implements OnInit{
   loginInfo(): LoginInformacije{
     return AutentifikacijaHelper.getLoginInfo();
   }
+
 }
 

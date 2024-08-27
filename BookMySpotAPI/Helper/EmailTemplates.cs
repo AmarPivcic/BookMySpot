@@ -1,4 +1,5 @@
-﻿using BookMySpotAPI.Modul.Models;
+﻿using BookMySpotAPI.Modul.Controllers;
+using BookMySpotAPI.Modul.Models;
 using Microsoft.AspNetCore.Mvc;
 using SendGrid.Helpers.Mail.Model;
 
@@ -131,6 +132,51 @@ namespace BookMySpotAPI.Helper
 
             return;
         }
+        public async Task PostavljenoPitanjeEmail(PitanjeOdgovor y, KorisnickiNalog x)
+        {
+            string toEmail = x.email;
+            string subject = "BookMySpot - Potvrda o postavljenom pitanju";
+            string plainTextContent = $"Poštovani/a {x.ime + " " + x.prezime},\n\n" +
+            $"Zahvaljujemo se što ste nam postavili pitanje putem naše aplikacije.\n\n" +
+            $"Ovim e-mailom potvrđujemo da smo zaprimili Vaše pitanje.\n" +
+            $"Pitanje ste postavili dana: {y.DatumKreiranja.ToString("dd.MM.yyyy")}\n" +
+            $"Vaše pitanje glasi: {y.Pitanje}\n\n" +
+            $"Vaše pitanje je trenutno na čekanju i naše osoblje će Vam odgovoriti u najkraćem mogućem roku. Kada odgovor bude spreman, bit ćete obaviješteni putem e-maila.\n" +
+            $"Nakon što Vam odgovorimo, Vaše pitanje i naš odgovor bit će javno dostupni svim korisnicima unutar sekcije za pitanja.\n\n" +
+            $"Napominjemo da neprikladan govor ili sadržaj u postavljenim pitanjima može dovesti do sankcionisanja, uključujući privremeno suspendovanje ili trajno brisanje Vašeg naloga.\n\n" +
+            $"Ako imate bilo kakva dodatna pitanja ili trebate više informacija, slobodno nas kontaktirajte putem našeg korisničkog servisa koji je dostupan u gornjem desnom ćošku aplikacije.\n\n" +
+            $"Hvala Vam još jednom na korištenju naše aplikacije!\n\n" +
+            $"S poštovanjem, BookMySpot Team.";
 
+            string htmlContent = "";
+
+
+            await _emailService.SendEmailAsync(toEmail, subject, plainTextContent, htmlContent);
+
+            return;
+        }
+        public async Task PostavljeniOdgovorNaPitanjeEmail(PitanjeOdgovor y, KorisnickiNalog x)
+        {
+            string toEmail = x.email;
+            string subject = "BookMySpot - Obavještenje o postavljenom odgovoru na pitanje";
+            string plainTextContent = $"Poštovani/a {x.ime + " " + x.prezime},\n\n" +
+            $"Zahvaljujemo se što ste nam postavili pitanje putem naše aplikacije.\n\n" +
+            $"Ovim e-mailom Vas obaviještavamo da je osoblje dalo odgovor na Vaše pitanje.\n" +
+            $"Pitanje ste postavili dana: {y.DatumKreiranja.ToString("dd.MM.yyyy")}\n" +
+            $"Pitanje glasi: {y.Pitanje}\n" +
+            $"Odgovor glasi: {y.Odgovor}\n\n" +
+            $"Vaš odgovor je sada dostupan javno unutar sekcije za pitanja, gdje svi korisnici mogu pregledati pitanja i odgovore.\n\n" +
+            $"Ako imate bilo kakva dodatna pitanja ili trebate više informacija, slobodno nas kontaktirajte putem našeg korisničkog servisa koji je dostupan u gornjem desnom ćošku aplikacije.\n\n" +
+            $"Napominjemo da je Vaše korisničko iskustvo za nas veoma važno. Ukoliko imate povratne informacije o našem servisu, slobodno ih podijelite s nama.\n\n" +
+            $"Hvala Vam još jednom na korištenju naše aplikacije!\n\n" +
+            $"S poštovanjem, BookMySpot Team.";
+
+            string htmlContent = "";
+
+
+            await _emailService.SendEmailAsync(toEmail, subject, plainTextContent, htmlContent);
+
+            return;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BookMySpotAPI.Data;
+using BookMySpotAPI.Helper;
 using BookMySpotAPI.Modul.Models;
 using BookMySpotAPI.Modul.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -12,10 +13,12 @@ namespace BookMySpotAPI.Modul.Controllers
     public class PitanjeOdgovorController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly EmailService emailService;
 
-        public PitanjeOdgovorController(ApplicationDbContext dbContext)
+        public PitanjeOdgovorController(ApplicationDbContext dbContext, EmailService emailService)
         {
             this.dbContext = dbContext;
+            this.emailService = emailService;
         }
 
         [HttpPost]
@@ -35,6 +38,11 @@ namespace BookMySpotAPI.Modul.Controllers
 
             await dbContext.PitanjaOdgovori.AddAsync(zaBazu);
             await dbContext.SaveChangesAsync();
+
+            var korisnickiNalog = await dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.osobaID == zaBazu.KorisnickiNalogId);
+
+            var mail = new EmailTemplates(emailService);
+            await mail.PostavljenoPitanjeEmail(zaBazu, korisnickiNalog);
 
             return Ok(zaBazu);
         }
@@ -58,6 +66,11 @@ namespace BookMySpotAPI.Modul.Controllers
             pitanjeOdgovor.Odgovor = noviOdgovor.Odgovor;
 
             await dbContext.SaveChangesAsync();
+
+            var korisnickiNalog = await dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.osobaID == pitanjeOdgovor.KorisnickiNalogId);
+
+            var mail = new EmailTemplates(emailService);
+            await mail.PostavljeniOdgovorNaPitanjeEmail(pitanjeOdgovor, korisnickiNalog);
 
             return Ok(pitanjeOdgovor);
         }

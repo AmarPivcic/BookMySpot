@@ -59,18 +59,21 @@
       <button (click)="nextPage()" style="margin-left: 10px;">Sljedeća</button>
     </div>
 
-    <div class="containerGlavni" *ngIf="isModalVisible">
-      <button class="close-btn" (click)="toggleModal()">X</button>
-      <div style="color: black" class="question">
-        <input style="color: black" type="text" [(ngModel)]="parPitanjeOdgovor!.pitanje">
+    <div *ngIf="isModalVisible" class="overlay" (click)="toggleModal()"></div>
 
+    <div class="containerGlavni" *ngIf="isModalVisible">
+      <div style="color: black; width: 100%" class="question">
+        <textarea style="color: black; width: 100%" type="text" [(ngModel)]="parPitanjeOdgovor!.pitanje"></textarea>
       </div>
-      <div style="color: black" class="answer">
-        <input style="color: black" type="text" [(ngModel)]="parPitanjeOdgovor!.odgovor">
+      <div style="color: black; width: 100%" class="answer">
+        <textarea style="color: black; width: 100%" type="text" [(ngModel)]="parPitanjeOdgovor!.odgovor"></textarea>
       </div>
+      <div class="dugmici">
       <button (click)="UpdatePitanjeOdgovor(parPitanjeOdgovor?.id,
       parPitanjeOdgovor?.pitanje,
-      parPitanjeOdgovor?.odgovor)">Posalji</button>
+      parPitanjeOdgovor?.odgovor)">Pošalji</button>
+      <button  (click)="toggleModal()">Odustani</button>
+      </div>
     </div>
 
   </div>
