@@ -61,10 +61,10 @@ namespace BookMySpotAPI.Helper
             $"Uslužni objekt: {x.usluzniObjekt.nazivObjekta}\n" +
             $"Usluga: {x.usluga.naziv}\n" +
             $"Radnik: {x.manager.ime + " " +x.manager.prezime}\n" +
-            $"Cijena: {x.usluga.cijena}\nKM/dan" +
+            $"Cijena: {x.usluga.cijena}\n" +
             $"Trajanje: {x.usluga.trajanje} min\n" +
-            $"Vaša rezervacija je uspješno evidentrana i možete ju pregledati u historiji rezervacija. Također ju možete " +
-            $"otkazati u historiji rezervacija. Molimo Vas da otkazivanje vaših rezervacija ne činite tik pred početak iste. " +
+            $"Vaša rezervacija je uspješno evidentrana i možete ju pregledati u historiji rezervacija. Također ju možete \n" +
+            $"otkazati u historiji rezervacija. Molimo Vas da otkazivanje vaših rezervacija ne činite tik pred početak iste. \n" +
             $"Također, nemojte praviti rezervacije ako se nećete pojaviti. Ako imate bilo kakva pitanja ili trebate dodatne \n\n" +
             $"informacije, slobodno nas kontaktirajte putem našeg korisničkog servisa koji je stalno dostupan u gornjem desnom ćošku aplikacije.\n\n" +
             $"Hvala Vam još jednom na korištenju naše aplikacije!\n\n" +
@@ -96,17 +96,17 @@ namespace BookMySpotAPI.Helper
         {
             string toEmail = x.korisnik.email;
             string subject = "BookMySpot - Potvrda o rezervaciji";
-            string plainTextContent = $"Poštovani/a {x.korisnik.ime + " " + x.korisnik.prezime},\n\nHvala Vam što ste koristili našu " +
-            $"aplikaciju za rezervaciju smještaja.\n\n" +
+            string plainTextContent = $"Poštovani/a {x.korisnik.ime + " " + x.korisnik.prezime},\n\n" +
+            $"Hvala Vam što ste koristili našu aplikaciju za rezervaciju smještaja.\n\n" +
             $"Ovim e-mailom potvrđujemo detalje vaše rezervacije:\n" +
             $"Datum kreiranja rezervacije: {x.datumRezervacije.ToString("dd.mm.yyyy")}\n" +
             $"Početak rezervacije: {x.rezervacijaPocetak}\n" +
             $"Kraj rezervacije: {x.rezervacijaKraj}\n" +
             $"Uslužni objekt: {x.usluzniObjekt.nazivObjekta}\n" +
             $"Usluga: {x.usluga.naziv}\n" +
-            $"Cijena: {x.usluga.cijena}\nKM" +
-            $"Vaša rezervacija je uspješno evidentrana i možete ju pregledati u historiji rezervacija. Također ju možete " +
-            $"otkazati u historiji rezervacija. Molimo Vas da otkazivanje vaših rezervacija ne činite tik pred početak iste. " +
+            $"Cijena: {x.usluga.cijena}/dan\n" +
+            $"Vaša rezervacija je uspješno evidentrana i možete ju pregledati u historiji rezervacija. Također ju možete \n" +
+            $"otkazati u historiji rezervacija. Molimo Vas da otkazivanje vaših rezervacija ne činite tik pred početak iste.\n " +
             $"Također, nemojte praviti rezervacije ako se nećete pojaviti. Ako imate bilo kakva pitanja ili trebate \n\n" +
             $"dodatne informacije, slobodno nas kontaktirajte putem našeg korisničkog servisa koji je stalno dostupan u gornjem desnom ćošku aplikacije.\n\n" +
             $"Hvala Vam još jednom na korištenju naše aplikacije!\n\n" +
