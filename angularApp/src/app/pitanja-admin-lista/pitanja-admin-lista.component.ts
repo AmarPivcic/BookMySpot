@@ -29,7 +29,7 @@ export class PitanjaAdminListaComponent implements OnInit{
   url = MojConfig.adresa_servera;
   currentPage = 1;
   totalPages = 1;
-  pageSize = 5;
+  pageSize = 2;
   parPitanjeOdgovor: ParPitanjeOdgovor | null = null;
   isModalVisible = false;
 

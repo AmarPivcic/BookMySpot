@@ -365,7 +365,7 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 DatumKreiranja = DateTime.Now.AddDays(-78),
                 KorisnickiNalogId = 1,
                 Pitanje = "Kako rezervisati smještaj putem aplikacije?",
-                Odgovor = "Nakon odabira željenog smještaja, pritisnite opciju \"Rezerviši\". Slijedite upute za unos datuma, broja gostiju i eventualnih dodatnih zahtjeva. Na kraju postupka, potvrdite rezervaciju."
+                Odgovor = "Nakon odabira željenog smještaja, pritisnite opciju \"Rezerviši\". Slijedite upute za unos datuma useljenja, datuma iseljenja i eventualnih dodatnih zahtjeva. Na kraju postupka, potvrdite rezervaciju."
             };
 
             _dbContext.PitanjaOdgovori.Add(pitanjeOdgvor1);
@@ -398,7 +398,7 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 DatumKreiranja = DateTime.Now.AddDays(-20),
                 KorisnickiNalogId = 1,
                 Pitanje = "Kako mogu pratiti svoje prethodne rezervacije i buduće termine u aplikaciji?",
-                Odgovor = "Sve vaše rezervacije dostupne su u sekciji \"Historija\". Ovdje možete pregledati prethodne rezervacije, buduće rezervacije i pratiti eventualne promjene."
+                Odgovor = "Sve vaše rezervacije dostupne su u sekciji \"Historija\". Ovdje možete pregledati aktivne rezervacije, otkazane rezervacije, kao i mogućnost obnavljanja rezervacije."
             };
 
             _dbContext.PitanjaOdgovori.Add(pitanjeOdgvor4);

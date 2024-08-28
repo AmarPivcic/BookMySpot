@@ -16,42 +16,39 @@
   <p style="margin-top: 70px" class="AboutUs">Pitanja i odgovori</p>
   <div class="aboutText">
     <div>
-
       <button [routerLink]="['/pitanjaOdgovori']">Odgovorena pitanja</button>
       <button *ngIf="loginInfo().isLogiran && (loginInfo().autentifikacijaToken?.korisnickiNalog?.isManager || loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator)" [routerLink]="['/pitanjaOdgovori/neodgovorenaPitanja']">Pristigla pitanja <span class="brojUDugmetu" *ngIf="brojPristiglihPitanja !== 0">{{brojPristiglihPitanja}}</span></button>
       <button *ngIf="loginInfo().isLogiran && loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator" [routerLink]="['/pitanjaOdgovori/pitanjaAdminLista']">Sva pitanja</button>
     </div>
 
-    <table>
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Pitanje</th>
-        <th>Odgovor</th>
-        <th>Datum Kreiranja</th>
-        <th>Osoba Id</th>
-        <th>Ime</th>
-        <th>Prezime</th>
-        <th>Email</th>
-        <th>Uređivanje</th>
-        <th>Brisanje</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let item of pitanja">
-        <td>{{ item.id }}</td>
-        <td>{{ item.pitanje }}</td>
-        <td>{{ item.odgovor }}</td>
-        <td>{{ item.datumKreiranja | date:'dd.MM.yyyy, HH:mm'}}</td>
-        <td>{{ item.osobaID }}</td>
-        <td>{{ item.ime }}</td>
-        <td>{{ item.prezime }}</td>
-        <td>{{ item.email }}</td>
-        <td><button (click)="ObrisiPitanje(item.id)">Obriši</button></td>
-        <td><button (click)="editPitanje(item.id)">Edituj</button></td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="accountsContainer">
+      <div *ngFor="let item of pitanja" class="comment" style="padding-left: 20px; padding-right: 20px; padding-top: 10px">
+        <p class="komentarOsobe"><b class="boldirano">Pitanje ID:</b> {{item.id}}</p>
+        <p class="komentarOsobe"><b class="boldirano">Pitanje:</b> {{item.pitanje}}</p>
+        <p class="komentarOsobe"><b class="boldirano">Odgovor:</b> {{item.odgovor}}</p>
+        <p class="komentarOsobe"><b class="boldirano">Datum Kreiranja:</b> {{ item.datumKreiranja | date:'dd.MM.yyyy, HH:mm'}}</p>
+        <br>
+        <p class="komentarOsobe">Informacije o osobi koja je postavila pitanje:</p>
+        <br>
+        <p class="komentarOsobe"><b class="boldirano">Osoba Id:</b> {{item.osobaID}}</p>
+        <p class="komentarOsobe"><b class="boldirano">Ime:</b> {{item.ime}}</p>
+        <p class="komentarOsobe"><b class="boldirano">Prezime:</b> {{item.prezime}}</p>
+        <p class="komentarOsobe"><b class="boldirano">Osoba Id:</b> {{item.osobaID}}</p>
+        <p class="komentarOsobe"><b class="boldirano">Email:</b> {{item.email}}</p>
+        <div class="dugmici">
+          <button (click)="ObrisiPitanje(item.id)" class="dugmic2">Obriši</button>
+          <button (click)="editPitanje(item.id)" class="dugmic2">Edituj</button>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
 
     <div style="margin-top: 20px; text-align: center;">
       <button (click)="previousPage()" style="margin-right: 10px;">Prethodna</button>
