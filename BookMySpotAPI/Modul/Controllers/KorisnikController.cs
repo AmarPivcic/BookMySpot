@@ -17,12 +17,14 @@ namespace BookMySpotAPI.Modul.Controllers
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly EmailService emailService;
         private readonly PasswordHasher _passwordHasher;
 
-        public KorisnikController(ApplicationDbContext dbContext, IWebHostEnvironment webHostEnvironment)
+        public KorisnikController(ApplicationDbContext dbContext, IWebHostEnvironment webHostEnvironment, EmailService emailService)
         {
             _dbContext = dbContext;
             _webHostEnvironment = webHostEnvironment;
+            this.emailService = emailService;
             _passwordHasher = new PasswordHasher();
         }
 
@@ -197,6 +199,9 @@ namespace BookMySpotAPI.Modul.Controllers
             korisnik.obrisan = true;
             await _dbContext.SaveChangesAsync();
 
+            var mail = new EmailTemplates(emailService);
+            await mail.AdminBrisanjeKorisnickogNaloga(korisnik);
+
             return Ok();
         }
 
@@ -216,6 +221,9 @@ namespace BookMySpotAPI.Modul.Controllers
             korisnik.datumSuspenzijeDo = DateTime.Now.AddDays(brojDana); 
             korisnik.razlogSuspenzije = razlogSuspenzije; 
             await _dbContext.SaveChangesAsync();
+
+            var mail = new EmailTemplates(emailService);
+            await mail.SuspendovanjeRacunaMail(korisnik);
 
             return Ok();
         }
@@ -254,6 +262,9 @@ namespace BookMySpotAPI.Modul.Controllers
             korisnik.datumSuspenzijeDo = null;
             korisnik.razlogSuspenzije = null;
             await _dbContext.SaveChangesAsync();
+
+            var mail = new EmailTemplates(emailService);
+            await mail.AktiviranSuspendovanRacunMail(korisnik);
 
             return Ok();
         }

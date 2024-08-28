@@ -178,5 +178,67 @@ namespace BookMySpotAPI.Helper
 
             return;
         }
+        public async Task AdminBrisanjeKorisnickogNaloga(KorisnickiNalog k)
+        {
+            string toEmail = k.email;
+            string subject = "BookMySpot - Obavještenje o brisanju korisničkog naloga";
+            string plainTextContent = $"Poštovani/a {k.ime + " " + k.prezime},\n\n" +
+            $"Obavještavamo Vas da je Vaš korisnički nalog na BookMySpot aplikaciji obrisan od strane našeg osoblja zbog kršenja pravila koje nalaže naša aplikacija.\n\n" +
+            $"Razumijemo da ovakva situacija može biti neprijatna. Ukoliko smatrate da je došlo do greške ili imate dodatna pitanja, molimo Vas da nas kontaktirate na naš e-mail: bookmyspotapp@gmail.com.\n" +
+            $"Vaš slučaj ćemo razmotriti i ukoliko bude moguće, razmotriti vraćanje naloga.\n\n" +
+            $"Molimo Vas da se pridržavate pravila i uslova korištenja naše aplikacije kako bismo osigurali sigurno i prijatno iskustvo za sve korisnike.\n\n" +
+            $"Hvala na razumijevanju.\n\n" +
+            $"S poštovanjem,\n" +
+            $"BookMySpot Tim";
+
+            string htmlContent = "";
+
+
+            await _emailService.SendEmailAsync(toEmail, subject, plainTextContent, htmlContent);
+
+            return;
+        }
+        public async Task SuspendovanjeRacunaMail(KorisnickiNalog k)
+        {
+            string toEmail = k.email;
+            string subject = "BookMySpot - Obavještenje o suspenziji korisničkog naloga";
+            string plainTextContent = $"Poštovani/a {k.ime + " " + k.prezime},\n\n" +
+            $"Obavještavamo Vas da je Vaš korisnički nalog na BookMySpot aplikaciji suspendovan od strane našeg osoblja zbog kršenja pravila koja su propisana našom aplikacijom.\n\n" +
+            $"Razlog suspenzije: {k.razlogSuspenzije}\n\n" +
+            $"Vaš nalog će biti suspendovan do: {(k.datumSuspenzijeDo.HasValue ? k.datumSuspenzijeDo.Value.ToString("dd.MM.yyyy") : "N/A")}\n\n" +
+            $"Razumijemo da ova situacija može biti neprijatna. Ukoliko smatrate da je došlo do greške ili imate dodatna pitanja, molimo Vas da nas kontaktirate putem e-maila: bookmyspotapp@gmail.com.\n" +
+            $"Vaš slučaj će biti razmotren, i ukoliko bude moguće, razmotrićemo ponovno aktiviranje naloga.\n\n" +
+            $"Molimo Vas da se ubuduće pridržavate pravila i uslova korištenja naše aplikacije kako bismo osigurali sigurno i prijatno iskustvo za sve korisnike.\n\n" +
+            $"Hvala na razumijevanju.\n\n" +
+            $"S poštovanjem,\n" +
+            $"BookMySpot Tim";
+
+            string htmlContent = "";
+
+
+            await _emailService.SendEmailAsync(toEmail, subject, plainTextContent, htmlContent);
+
+            return;
+        }
+        public async Task AktiviranSuspendovanRacunMail(KorisnickiNalog k)
+        {
+            string toEmail = k.email;
+            string subject = "BookMySpot - Obavještenje o ukidanju suspenzije korisničkog naloga";
+            string plainTextContent = $"Poštovani/a {k.ime + " " + k.prezime},\n\n" +
+            $"Obavještavamo Vas da je suspenzija Vašeg korisničkog naloga na BookMySpot aplikaciji ukinuta.\n\n" +
+            $"Vaš nalog je sada ponovo aktivan, i možete nastaviti koristiti našu aplikaciju bez ograničenja.\n\n" +
+            $"Molimo Vas da se ubuduće pridržavate pravila i uslova korištenja naše aplikacije kako bismo osigurali sigurno i prijatno iskustvo za sve korisnike.\n\n" +
+            $"Ukoliko imate bilo kakva dodatna pitanja ili trebate dodatne informacije, slobodno nas kontaktirajte putem e-maila: bookmyspotapp@gmail.com.\n\n" +
+            $"Hvala Vam što ste ponovo dio naše zajednice.\n\n" +
+            $"S poštovanjem,\n" +
+            $"BookMySpot Tim";
+
+            string htmlContent = "";
+
+
+            await _emailService.SendEmailAsync(toEmail, subject, plainTextContent, htmlContent);
+
+            return;
+        }
     }
 }
