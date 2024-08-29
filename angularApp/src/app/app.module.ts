@@ -33,6 +33,7 @@ import {
   UpravljajObrisanimRacunimaComponent
 } from "./upravljaj-obrisanim-racunima/upravljaj-obrisanim-racunima.component";
 import {EditKategorijeComponent} from "./edit-kategorije/edit-kategorije.component";
+import { NovaKategorijaComponent } from './nova-kategorija/nova-kategorija.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import {EditKategorijeComponent} from "./edit-kategorije/edit-kategorije.compone
         MojRacunComponent,
         KategorijaComponent,
         UsluzniObjektComponent,
-        HistorijaRezervacijaComponent
+        HistorijaRezervacijaComponent,
+        NovaKategorijaComponent
     ],
     bootstrap: [AppComponent],
     imports: [
@@ -68,7 +70,8 @@ import {EditKategorijeComponent} from "./edit-kategorije/edit-kategorije.compone
             { path: 'upravljajRacunima/upravljajPostojecimRacunima', component: UpravljajPostojecimRacunimaComponent},
             { path: 'upravljajRacunima/upravljajBanovanimRacunima', component: UpravljajBanovanimRacunimaComponent},
             { path: 'upravljajRacunima/upravljajObrisanimRacunima', component: UpravljajObrisanimRacunimaComponent},
-            { path: 'editKategorija/:kategorijaId', component: EditKategorijeComponent}
+            { path: 'editKategorija/:kategorijaId', component: EditKategorijeComponent},
+            { path: 'novaKategorija', component: NovaKategorijaComponent}
         ]),
       BrowserAnimationsModule,
       FormsModule,

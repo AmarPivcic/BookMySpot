@@ -181,6 +181,9 @@ namespace BookMySpotAPI.Modul.Controllers
             logiranaOsoba.obrisan = true;
             await _dbContext.SaveChangesAsync();
 
+            var email = new EmailTemplates(emailService);
+            await email.ObrisiRacunMail(logiranaOsoba);
+
             return Ok();
         }
 

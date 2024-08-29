@@ -33,7 +33,9 @@ export class LoginComponent implements OnInit{
       lozinka: this.txtLozinka
     };
 
-    this.httpKlijent.post<LoginInformacije>(MojConfig.adresa_servera + "/Autentifikacija/Login", saljemo)
+    if(this.txtKorisnickoIme && this.txtLozinka)
+    {
+      this.httpKlijent.post<LoginInformacije>(MojConfig.adresa_servera + "/Autentifikacija/Login", saljemo)
       .subscribe({
         next: (x: LoginInformacije) => {
           if (x.isLogiran) {
@@ -54,6 +56,13 @@ export class LoginComponent implements OnInit{
           }
         }
       });
+    }
+
+    else
+    {
+      alert("Morate unijeti korisničko ime i lozinku!");
+    }
+
   }
 
 
@@ -66,10 +75,24 @@ export class LoginComponent implements OnInit{
       lozinka: this.txtLozinkaRegister
     };
 
-    this.httpKlijent.post<LoginInformacije>(MojConfig.adresa_servera+ "/Autentifikacija/Registracija", saljemo).subscribe((x:LoginInformacije)=>{
-        AutentifikacijaHelper.setLoginInfo(x);
-        this.menu.NavigirajIZatvori("/");
+    if(this.txtKorisnickoImeRegister && this.txtIme && this.txtPrezime && this.txtEmail && this.txtLozinka)
+    {
+      this.httpKlijent.post<LoginInformacije>(MojConfig.adresa_servera+ "/Autentifikacija/Registracija", saljemo).subscribe({
+        next: (x: LoginInformacije) => {
+          AutentifikacijaHelper.setLoginInfo(x);
+          this.menu.NavigirajIZatvori("/");
+        },
+
+        error: (error) => {
+          alert(error.error);
+        }
     })
+    }
+    
+    else
+    {
+      alert("Morate unijeti sve tražene podatke!");
+    }
   }
 
   switchTab(tabId: string, event: Event): void {

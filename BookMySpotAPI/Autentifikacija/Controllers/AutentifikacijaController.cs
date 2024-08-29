@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using static BookMySpotAPI.Autentifikacija.Helper.MyAuthTokenExtension;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookMySpotAPI.Autentifikacija.Controllers
 {
@@ -77,6 +78,20 @@ namespace BookMySpotAPI.Autentifikacija.Controllers
         [HttpPost]
         public async Task<ActionResult<LoginInformacije>> Registracija([FromBody] RegistracijaVM x)
         {
+            var korisnickoime = await _dbContext.KorisnickiNalog.AnyAsync(k => k.korisnickoIme == x.korisnickoIme);
+            
+            if(korisnickoime)
+            {
+                return Conflict("Korisničko ime već postoji!");
+            }
+
+            var email = await _dbContext.KorisnickiNalog.AnyAsync(k => k.email == x.email);
+
+            if (email)
+            {
+                return Conflict("Već postoji korisnički nalog sa ovim Emailom!");
+            }
+
             var newKorisnickiNalog = new Korisnik
             {
                 ime = x.ime,

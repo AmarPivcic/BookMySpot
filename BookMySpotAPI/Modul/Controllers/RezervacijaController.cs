@@ -24,7 +24,8 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpGet]
         public async Task<ActionResult> GetListaSlobodnihTermina(int usluzniObjektID, DateTime odabraniDatum, int managerID, int trajanje)
         {
-            var trenutneRezervacije = await _dbContext.Rezervacije.Where(r => r.usluzniObjektID == usluzniObjektID && r.datumRezervacije == odabraniDatum && r.managerID == managerID && r.otkazano == false).ToListAsync();
+            var trenutneRezervacije = await _dbContext.Rezervacije.Where(r => r.usluzniObjektID == usluzniObjektID && r.datumRezervacije == odabraniDatum
+            && r.managerID == managerID && r.otkazano == false && r.zavrseno == false).ToListAsync();
             UsluzniObjekt usluzniObjekt = await _dbContext.UsluzniObjekti.FirstOrDefaultAsync(u => u.usluzniObjektID == usluzniObjektID);
             TimeSpan radnoVrijemePocetak = TimeSpan.Parse(usluzniObjekt.radnoVrijemePocetak);
             TimeSpan radnoVrijemeKraj = TimeSpan.Parse(usluzniObjekt.radnoVrijemeKraj);
@@ -302,6 +303,9 @@ namespace BookMySpotAPI.Modul.Controllers
             rezervacija.otkazano=true;
             _dbContext.Update(rezervacija);
             await _dbContext.SaveChangesAsync();
+
+            var email = new EmailTemplates(_emailService);
+            await email.OtkaziRezervacijaMail(rezervacija);
 
             return Ok(rezervacija);
         }

@@ -5,6 +5,7 @@ import { MojConfig } from '../moj-config';
 import { Kategorija } from '../models/kategorija.model';
 import {LoginInformacije} from "../_helpers/login-informacije";
 import {AutentifikacijaHelper} from "../_helpers/autentifikacija-helper";
+import { HeaderComponent } from '../shared/header/header.component';
 
 
 
@@ -20,7 +21,7 @@ export class HomeComponent implements OnInit{
   imeKategorije: any;
   selectedFile?: File;
 
-  constructor(private httpKlijent: HttpClient, private router: Router) {
+  constructor(private httpKlijent: HttpClient, private router: Router, private menu: HeaderComponent) {
   }
 
   ngOnInit(): void {
@@ -31,31 +32,6 @@ export class HomeComponent implements OnInit{
     this.httpKlijent.get<Kategorija[]>(MojConfig.adresa_servera+ "/Kategorija/GetListaKategorija", MojConfig.http_opcije()).subscribe(x=>{
       this.kategorijeLista = x;
     })
-  }
-
-  onFileUploadChange(event: any) {
-    this.selectedFile = event.target.files[0];
-  }
-
-  onSubmit() {
-    if (this.selectedFile && this.imeKategorije !== '') {
-
-      const formData = new FormData();
-      formData.append('naziv', this.imeKategorije);
-      formData.append('slika', this.selectedFile);
-
-      this.httpKlijent.post(MojConfig.adresa_servera + '/Kategorija/Add', formData).subscribe({
-        next: (response) => {
-          console.log('Kategorija dodana uspješno', response);
-          this.GetKategorije();
-        },
-        error: (error) => {
-          console.error('Error pri dodavanju kategorije', error);
-        }
-      });
-    } else {
-      console.error('Please provide all required fields: file, imageName, and imageDescription');
-    }
   }
 
   onCategoryClick(kategorijaID: number)
@@ -73,6 +49,11 @@ export class HomeComponent implements OnInit{
   loginInfo():LoginInformacije
   {
     return AutentifikacijaHelper.getLoginInfo();
+  }
+
+  novaKategorija()
+  {
+    this.menu.NavigirajIZatvori("/novaKategorija")
   }
 
 }
