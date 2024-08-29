@@ -293,7 +293,12 @@ namespace BookMySpotAPI.Modul.Controllers
         [HttpPut]
         public async Task<ActionResult<Rezervacija>> OtkaziRezervaciju(int id)
         {
-            var rezervacija = await _dbContext.Rezervacije.FindAsync(id);
+            var rezervacija = await _dbContext.Rezervacije
+        .Include(r => r.korisnik)
+        .Include(r => r.manager)
+        .Include(r => r.usluzniObjekt)
+        .Include(r => r.usluga)
+        .SingleOrDefaultAsync(r => r.rezervacijaID == id);
 
             if (rezervacija == null)
             {
