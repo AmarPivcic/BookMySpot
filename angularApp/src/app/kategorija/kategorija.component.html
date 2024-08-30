@@ -32,6 +32,8 @@
         <option *ngFor="let grad of listaGradova" [ngValue]="grad">{{grad.naziv}}</option>
     </select>
 <div class="container">
+    <p *ngIf="listaUsluzniObjekt?.length===0 && !favoriti" class="statusText">Trentuno nema uslužnih objekata u ovoj kategoriji</p>
+    <p *ngIf="listaUsluzniObjekt?.length===0 && favoriti" class="statusText">Trentuno nemate dodanih favorita u ovoj kategoriji</p>
     <div class="itemcard" *ngFor="let usluzniObjekt of filtriranaListaUsluzniObjekt" (click)="onUsluzniObjektClick(usluzniObjekt.usluzniObjektID)">
       <p class="itemtitle">{{usluzniObjekt.nazivObjekta}}</p>
             <div class="itemimg" style="background-image: url({{usluzniObjekt.slika}})"></div>

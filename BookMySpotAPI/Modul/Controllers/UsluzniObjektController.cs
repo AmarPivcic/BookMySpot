@@ -116,7 +116,7 @@ namespace BookMySpotAPI.Modul.Controllers
                 isSmjestaj = u.isSmjestaj,
                 latitude = u.latitude,
                 longitude = u.longitude,
-            }).OrderBy(o => o.prosjecnaOcjena).ToListAsync();
+            }).OrderByDescending(o => o.prosjecnaOcjena).ToListAsync();
 
             return Ok(listaObjekata);
         }

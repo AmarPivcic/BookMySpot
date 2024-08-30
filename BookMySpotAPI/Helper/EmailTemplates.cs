@@ -255,8 +255,28 @@ namespace BookMySpotAPI.Helper
             string toEmail = k.email;
             string subject = "BookMySpot - Obavještenje o brisanju korisničkog naloga";
             string plainTextContent = $"Poštovani/a {k.ime + " " + k.prezime},\n\n" +
-            $"Obavještavamo Vas da je Vaš korisniči nalog na BookMySpot aplikaciji obrisan.\n\n" +
-            $"Vaš nalog je sada nepostojeći, te za ponovno pravljenje rezervacija na našoj aplikaciji morate napraviti novi.\n\n" +
+            $"Obavještavamo Vas da je Vaš korisniči nalog sa korisničkim imenom '{k.korisnickoIme}' na BookMySpot aplikaciji obrisan.\n\n" +
+            $"Za ponovno pravljenje rezervacija na našoj aplikaciji morate napraviti novi korisnički račun ili zatražiti oporavku starog računa putem e-maila: bookmyspotapp@gmail.com\n\n" +
+            $"Ukoliko imate bilo kakva dodatna pitanja ili trebate dodatne informacije, slobodno nas kontaktirajte putem e-maila: bookmyspotapp@gmail.com\n\n" +
+            $"Hvala Vam što ste koristili našu aplikaciju.\n\n" +
+            $"S poštovanjem,\n" +
+            $"BookMySpot Tim";
+
+            string htmlContent = "";
+
+
+            await _emailService.SendEmailAsync(toEmail, subject, plainTextContent, htmlContent);
+
+            return;
+        }
+
+        public async Task ReaktivirajRacunMail(KorisnickiNalog k)
+        {
+            string toEmail = k.email;
+            string subject = "BookMySpot - Obavještenje o aktivaciji korisničkog naloga";
+            string plainTextContent = $"Poštovani/a {k.ime + " " + k.prezime},\n\n" +
+            $"Obavještavamo Vas da je Vaš korisniči nalog sa korisničkim imenom '{k.korisnickoIme}' na BookMySpot aplikaciji ponovo aktiviran.\n\n" +
+            $"Vaš korisnički račun koji ste prethodno obrisali je ponovo aktiviran na vaš zahtjev i možete ga koristiti za sve funkcionalnosti naše aplikacije.\n\n" +
             $"Ukoliko imate bilo kakva dodatna pitanja ili trebate dodatne informacije, slobodno nas kontaktirajte putem e-maila: bookmyspotapp@gmail.com\n\n" +
             $"Hvala Vam što ste ponovo dio naše zajednice.\n\n" +
             $"S poštovanjem,\n" +
@@ -269,5 +289,7 @@ namespace BookMySpotAPI.Helper
 
             return;
         }
+
+
     }
 }

@@ -106,9 +106,8 @@
     </div>
 
     <div class="reservationList">
-        <h3 *ngIf="aktivne == true">Aktivne rezervacije</h3>
-        <h3 *ngIf="aktivne == false">Prethodne rezervacije</h3>
-
+        <h3 *ngIf="aktivne">Aktivne rezervacije</h3>
+        <h3 *ngIf="!aktivne">Prethodne rezervacije</h3>
         <div class="reservation" *ngFor="let rezervacija of listaRezervacija">
             <div class="profilePicAndName">
                 <img [src] = "rezervacija.usluzniObjekt.slika" alt="" width="50px" height="40px" style="margin-right: 10px" />
@@ -173,8 +172,9 @@
                 </div>
             </div>
         </div>
-
     </div>
+    <p *ngIf="listaRezervacija?.length===0 && aktivne" class="statusText">Trentuno nemate aktivnih rezervacija</p>
+    <p *ngIf="listaRezervacija?.length===0 && !aktivne" class="statusText">Trentuno nemate prethodnih rezervacija</p>
 
 </body>
 </html>

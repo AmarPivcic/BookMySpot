@@ -20,6 +20,7 @@ export class KategorijaComponent implements OnInit, AfterViewInit {
   logiraniKorisnik: any;
   odabraniGrad: Grad | null = null;
   listaGradova: Grad[] | null = null;
+  favoriti: boolean = false;
 
 
   @ViewChild('listaStandard') listaStandard: any;
@@ -62,6 +63,7 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
     this.httpKlijent.get<UsluzniObjekt[]>(MojConfig.adresa_servera + "/UsluzniObjekt/GetByKategorija?kategorijaID="+this.kategorijaID,MojConfig.http_opcije()).subscribe(x=>{
         this.listaUsluzniObjekt = x;
         this.filtriranaListaUsluzniObjekt=x;
+        this.favoriti=false;
       });
 
     this.odabraniGrad=null;
@@ -80,6 +82,7 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
     this.httpKlijent.get<UsluzniObjekt[]>(MojConfig.adresa_servera + "/UsluzniObjekt/GetByProsjecnaOcjena?kategorijaID="+this.kategorijaID, MojConfig.http_opcije()).subscribe(x=>{
         this.listaUsluzniObjekt = x;
         this.filtriranaListaUsluzniObjekt=x;
+        this.favoriti=false;
       });
     
     this.odabraniGrad=null;
@@ -97,6 +100,7 @@ constructor(private httpKlijent: HttpClient, private route: ActivatedRoute, priv
     this.httpKlijent.get<UsluzniObjekt[]>(MojConfig.adresa_servera + "/Favorit/GetListaFavorita?korisnikID="+this.logiraniKorisnik.osobaID + "&kategorijaID="+this.kategorijaID, MojConfig.http_opcije()).subscribe(x=>{
       this.listaUsluzniObjekt = x;
       this.filtriranaListaUsluzniObjekt=x;
+      this.favoriti = true;
     });
 
     this.odabraniGrad=null;

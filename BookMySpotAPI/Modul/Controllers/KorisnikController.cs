@@ -246,6 +246,9 @@ namespace BookMySpotAPI.Modul.Controllers
             korisnik.obrisan = false;
             await _dbContext.SaveChangesAsync();
 
+            var mail = new EmailTemplates(emailService);
+            await mail.ReaktivirajRacunMail(korisnik);
+
             return Ok();
         }
 
@@ -270,91 +273,6 @@ namespace BookMySpotAPI.Modul.Controllers
             await mail.AktiviranSuspendovanRacunMail(korisnik);
 
             return Ok();
-        }
-
-        [HttpPost]
-        public async Task <ActionResult> PromijeniIme([FromBody] KorisnickiNalogEditVM x)
-        {
-            KorisnickiNalog osoba = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.osobaID == x.OsobaID);
-
-            if(osoba == null)
-            {
-                return BadRequest("Pogrešan ID");
-            }
-            else
-            {
-                osoba.ime = x.novoIme;
-                await _dbContext.SaveChangesAsync();
-                return Ok();
-            }
-        }
-
-        [HttpPost]
-        public async Task <ActionResult> PromijenPrezime([FromBody] KorisnickiNalogEditVM x)
-        {
-            KorisnickiNalog osoba = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.osobaID == x.OsobaID);
-
-            if (osoba == null)
-            {
-                return BadRequest("Pogrešan ID");
-            }
-            else
-            {
-                osoba.prezime = x.novoPrezime;
-                await _dbContext.SaveChangesAsync();
-                return Ok();
-            }
-        }
-
-        [HttpPost]
-        public async Task <ActionResult> PromijeniEmail([FromBody] KorisnickiNalogEditVM x)
-        {
-            KorisnickiNalog osoba = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.osobaID == x.OsobaID);
-
-            if (osoba == null)
-            {
-                return BadRequest("Pogrešan ID");
-            }
-            else
-            {
-                osoba.email = x.noviEmail;
-                await _dbContext.SaveChangesAsync();
-                return Ok();
-            }
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> PromijeniTelefon([FromBody] KorisnickiNalogEditVM x)
-        {
-            KorisnickiNalog osoba =await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.osobaID == x.OsobaID);
-
-            if (osoba == null)
-            {
-                return BadRequest("Pogrešan ID");
-            }
-            else
-            {
-                osoba.telefon = x.noviTelefon;
-                await _dbContext.SaveChangesAsync();
-                return Ok();
-            }
-        }
-
-        [HttpPost]
-        public async  Task<ActionResult> PromijeniKorisnickoIme([FromBody] KorisnickiNalogEditVM x)
-        {
-            KorisnickiNalog osoba = await _dbContext.KorisnickiNalog.FirstOrDefaultAsync(k => k.osobaID == x.OsobaID);
-
-            if (osoba == null)
-            {
-                return BadRequest("Pogrešan ID");
-            }
-            else
-            {
-                osoba.korisnickoIme = x.novoKorisnickoIme;
-                await _dbContext.SaveChangesAsync();
-                return Ok();
-            }
         }
     }
 }

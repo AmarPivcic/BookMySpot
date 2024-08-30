@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit{
       lozinka: this.txtLozinkaRegister
     };
 
-    if(this.txtKorisnickoImeRegister && this.txtIme && this.txtPrezime && this.txtEmail && this.txtLozinka)
+    if(this.txtKorisnickoImeRegister && this.txtIme && this.txtPrezime && this.txtEmail && this.txtLozinkaRegister)
     {
       this.httpKlijent.post<LoginInformacije>(MojConfig.adresa_servera+ "/Autentifikacija/Registracija", saljemo).subscribe({
         next: (x: LoginInformacije) => {

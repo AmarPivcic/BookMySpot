@@ -12,6 +12,7 @@
 <body>
     <div class="titleIRatingHotel">
         <p class="titleHotel">{{usluzniObjekt?.nazivObjekta}}</p>
+        <p class="subtitleHotel">{{usluzniObjekt?.adresa}} - {{usluzniObjekt?.grad?.naziv}}</p>
         <div class="starRating" >
           <ng-container *ngFor="let star of getStars(); let i = index">
             <svg *ngIf="i < filledStars" xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" class="bi bi-star-fill"

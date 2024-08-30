@@ -143,8 +143,10 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 pozicija = "Radnik"
             };
 
-            var manager2Password = _passwordHasher.HashPassword(manager, "krecoradnik");
-            manager.lozinka = managerPassword;
+            var manager2Password = _passwordHasher.HashPassword(manager2, "krecoradnik");
+            manager.lozinka = manager2Password;
+
+ 
 
             var krecho = new UsluzniObjekt
             {
@@ -156,6 +158,33 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 gradID = 1,
                 radnoVrijemePocetak = "08:00",
                 radnoVrijemeKraj = "20:00",
+            };
+
+            var celeBrico = new Manager
+            {
+                ime = "Ćele",
+                prezime = "Brico",
+                email = "celebrico@gmail.com",
+                telefon = "+38763135135",
+                korisnickoIme = "cele",
+                pozicija = "Vlasnik"
+            };
+
+            var celePassword = _passwordHasher.HashPassword(celeBrico, "cele");
+            manager.lozinka = celePassword;
+
+            var celeSalon = new UsluzniObjekt
+            {
+                nazivObjekta = "Frizerski salon 'Ćele'",
+                adresa = "Obrtnička 3",
+                telefon = "+38734123123",
+                slika = "https://localhost:7058/Slike/celeBrico.jpg",
+                kategorijaID = 2,
+                gradID = 2,
+                radnoVrijemePocetak = "08:00",
+                radnoVrijemeKraj = "14:00",
+                latitude = 43.8272,
+                longitude = 17.0052
             };
 
             var managerUsluzniObjekt = new ManagerUsluzniObjekt
@@ -170,11 +199,20 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 usluzniObjekt = krecho
             };
 
+            var celeManagerSalon = new ManagerUsluzniObjekt
+            {
+                manager = celeBrico,
+                usluzniObjekt = celeSalon
+            };
+
             await _dbContext.Manageri.AddAsync(manager);
             await _dbContext.Manageri.AddAsync(manager2);
+            await _dbContext.Manageri.AddAsync(celeBrico);
             await _dbContext.UsluzniObjekti.AddAsync(krecho);
+            await _dbContext.UsluzniObjekti.AddAsync(celeSalon);
             await _dbContext.ManagerUsluzniObjekti.AddAsync(managerUsluzniObjekt);
             await _dbContext.ManagerUsluzniObjekti.AddAsync(managerUsluzniObjekt2);
+            await _dbContext.ManagerUsluzniObjekti.AddAsync(celeManagerSalon);
             await _dbContext.SaveChangesAsync();
 
             var usluga1 = new Usluga
@@ -182,7 +220,7 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 naziv = "Moderno šišanje (Fade)",
                 trajanje = 30,
                 cijena = "15KM",
-                usluzniObjektID = 1
+                usluzniObjektID = krecho.usluzniObjektID
             };
 
             await _dbContext.Usluge.AddAsync(usluga1);
@@ -193,7 +231,7 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 naziv = "Klasično šišanje",
                 trajanje = 30,
                 cijena = "10KM",
-                usluzniObjektID = 1
+                usluzniObjektID = krecho.usluzniObjektID
             };
 
             await _dbContext.Usluge.AddAsync(usluga2);
@@ -204,7 +242,7 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 naziv = "Uređivanje brade",
                 trajanje = 15,
                 cijena = "5KM",
-                usluzniObjektID = 1
+                usluzniObjektID = krecho.usluzniObjektID
             };
 
             await _dbContext.Usluge.AddAsync(usluga3);
@@ -215,10 +253,54 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 naziv = "Šišanje duge kose",
                 trajanje = 45,
                 cijena = "15KM",
-                usluzniObjektID = 1
+                usluzniObjektID = celeSalon.usluzniObjektID,
             };
 
             await _dbContext.Usluge.AddAsync(usluga4);
+            await _dbContext.SaveChangesAsync();
+
+            var celeusluga1 = new Usluga
+            {
+                naziv = "Moderno šišanje (Fade)",
+                trajanje = 30,
+                cijena = "15KM",
+                usluzniObjektID = celeSalon.usluzniObjektID,
+            };
+
+            await _dbContext.Usluge.AddAsync(celeusluga1);
+            await _dbContext.SaveChangesAsync();
+
+            var celeusluga2 = new Usluga
+            {
+                naziv = "Klasično šišanje",
+                trajanje = 30,
+                cijena = "10KM",
+                usluzniObjektID = celeSalon.usluzniObjektID
+            };
+
+            await _dbContext.Usluge.AddAsync(celeusluga2);
+            await _dbContext.SaveChangesAsync();
+
+            var celeusluga3 = new Usluga
+            {
+                naziv = "Uređivanje brade",
+                trajanje = 15,
+                cijena = "5KM",
+                usluzniObjektID = celeSalon.usluzniObjektID
+            };
+
+            await _dbContext.Usluge.AddAsync(celeusluga3);
+            await _dbContext.SaveChangesAsync();
+
+            var celeusluga4 = new Usluga
+            {
+                naziv = "Šišanje na nulu",
+                trajanje = 15,
+                cijena = "7KM",
+                usluzniObjektID = celeSalon.usluzniObjektID
+            };
+
+            await _dbContext.Usluge.AddAsync(celeusluga4);
             await _dbContext.SaveChangesAsync();
 
             var managerSmjestaja = new Manager
@@ -264,7 +346,7 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             {
                 naziv = "Apartman (veći)",
                 cijena = "35KM",
-                usluzniObjektID = 2
+                usluzniObjektID = vilaBojcic.usluzniObjektID
             };
 
             await _dbContext.Usluge.AddAsync(uslugaSmjestaja1);
@@ -274,7 +356,7 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             {
                 naziv = "Apartman (manji)",
                 cijena = "30KM",
-                usluzniObjektID = 2
+                usluzniObjektID = vilaBojcic.usluzniObjektID
             };
 
             await _dbContext.Usluge.AddAsync(uslugaSmjestaja2);
@@ -284,7 +366,7 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             {
                 naziv = "Dvokrevetna soba",
                 cijena = "25KM",
-                usluzniObjektID = 2
+                usluzniObjektID = vilaBojcic.usluzniObjektID
             };
 
             await _dbContext.Usluge.AddAsync(uslugaSmjestaja3);
@@ -294,10 +376,89 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             {
                 naziv = "Jednokrevetna soba",
                 cijena = "20KM",
-                usluzniObjektID = 2
+                usluzniObjektID = vilaBojcic.usluzniObjektID
             };
 
             await _dbContext.Usluge.AddAsync(uslugaSmjestaja4);
+            await _dbContext.SaveChangesAsync();
+
+            var novitasManager = new Manager
+            {
+                ime = "Novitas",
+                prezime = "Manager",
+                email = "novitasmanager@gmail.com",
+                telefon = "+38763135135",
+                korisnickoIme = "novitas",
+                pozicija = "Vlasnik"
+            };
+
+            var novitasManagerPW = _passwordHasher.HashPassword(manager, "novitas");
+            novitasManager.lozinka = novitasManagerPW;
+
+            var novitas = new UsluzniObjekt
+            {
+                nazivObjekta = "Hotel 'Novitas'",
+                adresa = "Industrijska zona - jug",
+                telefon = "+38734123123",
+                slika = "https://localhost:7058/Slike/novitas.jpg",
+                kategorijaID = 1,
+                gradID = 2,
+                radnoVrijemePocetak = "08:00",
+                radnoVrijemeKraj = "00:00",
+                isSmjestaj = true,
+                latitude = 43.8217,
+                longitude = 16.9964
+            };
+
+            var novitasUsluzniObjekt = new ManagerUsluzniObjekt
+            {
+                manager = novitasManager,
+                usluzniObjekt = novitas
+            };
+
+            await _dbContext.Manageri.AddAsync(novitasManager);
+            await _dbContext.UsluzniObjekti.AddAsync(novitas);
+            await _dbContext.ManagerUsluzniObjekti.AddAsync(novitasUsluzniObjekt);
+            await _dbContext.SaveChangesAsync();
+
+            var uslugaNovitas1 = new Usluga
+            {
+                naziv = "Apartman (veći)",
+                cijena = "180KM",
+                usluzniObjektID = novitas.usluzniObjektID
+            };
+
+            await _dbContext.Usluge.AddAsync(uslugaNovitas1);
+            await _dbContext.SaveChangesAsync();
+
+            var uslugaNovitas2 = new Usluga
+            {
+                naziv = "Apartman (manji)",
+                cijena = "140KM",
+                usluzniObjektID = novitas.usluzniObjektID
+            };
+
+            await _dbContext.Usluge.AddAsync(uslugaNovitas2);
+            await _dbContext.SaveChangesAsync();
+
+            var uslugaNovitas3 = new Usluga
+            {
+                naziv = "Dvokrevetna soba",
+                cijena = "100KM",
+                usluzniObjektID = novitas.usluzniObjektID
+            };
+
+            await _dbContext.Usluge.AddAsync(uslugaNovitas3);
+            await _dbContext.SaveChangesAsync();
+
+            var uslugaNovitas4 = new Usluga
+            {
+                naziv = "Jednokrevetna soba",
+                cijena = "75KM",
+                usluzniObjektID = novitas.usluzniObjektID
+            };
+
+            await _dbContext.Usluge.AddAsync(uslugaNovitas4);
             await _dbContext.SaveChangesAsync();
 
             var favorit = new Favorit
@@ -341,6 +502,96 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
 
             await _dbContext.Recenzije.AddAsync(recenzija3);
             await _dbContext.SaveChangesAsync();
+
+            var recenzijanovitas = new Recenzija
+            {
+                recenzijaOcjena = 5,
+                recenzijaTekst = "Ovo je recenzija 1",
+                usluzniObjektID = novitas.usluzniObjektID,
+                KorisnickiNalogId = korisnik.osobaID
+            };
+
+            await _dbContext.Recenzije.AddAsync(recenzijanovitas);
+            await _dbContext.SaveChangesAsync();
+
+            var recenzijanovitas2 = new Recenzija
+            {
+                recenzijaOcjena = 4,
+                recenzijaTekst = "Ovo je recenzija 2",
+                usluzniObjektID = novitas.usluzniObjektID,
+                KorisnickiNalogId = korisnik.osobaID
+            };
+
+            await _dbContext.Recenzije.AddAsync(recenzijanovitas2);
+            await _dbContext.SaveChangesAsync();
+
+            var recenzijanovitas3 = new Recenzija
+            {
+                recenzijaOcjena = 5,
+                recenzijaTekst = "Ovo je recenzija 3",
+                usluzniObjektID = novitas.usluzniObjektID,
+                KorisnickiNalogId = korisnik.osobaID
+            };
+
+            await _dbContext.Recenzije.AddAsync(recenzijanovitas3);
+            await _dbContext.SaveChangesAsync();
+
+            var recenzijanovitas4 = new Recenzija
+            {
+                recenzijaOcjena = 4,
+                recenzijaTekst = "Ovo je recenzija 4",
+                usluzniObjektID = novitas.usluzniObjektID,
+                KorisnickiNalogId = korisnik.osobaID
+            };
+
+            await _dbContext.Recenzije.AddAsync(recenzijanovitas4);
+            await _dbContext.SaveChangesAsync();
+
+            var recenzijanovitas5 = new Recenzija
+            {
+                recenzijaOcjena = 4,
+                recenzijaTekst = "Ovo je recenzija 5",
+                usluzniObjektID = novitas.usluzniObjektID,
+                KorisnickiNalogId = korisnik.osobaID
+            };
+
+            await _dbContext.Recenzije.AddAsync(recenzijanovitas5);
+            await _dbContext.SaveChangesAsync();
+
+
+            var recenzijacele = new Recenzija
+            {
+                recenzijaOcjena = 5,
+                recenzijaTekst = "Ovo je recenzija 1",
+                usluzniObjektID = celeSalon.usluzniObjektID,
+                KorisnickiNalogId = korisnik.osobaID
+            };
+
+            await _dbContext.Recenzije.AddAsync(recenzijacele);
+            await _dbContext.SaveChangesAsync();
+
+            var recenzijacele2 = new Recenzija
+            {
+                recenzijaOcjena = 4,
+                recenzijaTekst = "Ovo je recenzija 2",
+                usluzniObjektID = celeSalon.usluzniObjektID,
+                KorisnickiNalogId = korisnik.osobaID
+            };
+
+            await _dbContext.Recenzije.AddAsync(recenzijacele2);
+            await _dbContext.SaveChangesAsync();
+
+            var recenzijacele3 = new Recenzija
+            {
+                recenzijaOcjena = 4,
+                recenzijaTekst = "Ovo je recenzija 3",
+                usluzniObjektID = celeSalon.usluzniObjektID,
+                KorisnickiNalogId = korisnik.osobaID
+            };
+
+            await _dbContext.Recenzije.AddAsync(recenzijacele3);
+            await _dbContext.SaveChangesAsync();
+
 
 
             var admin = new Administrator
