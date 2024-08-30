@@ -79,7 +79,11 @@ export class NeodgovorenaPitanjaListaComponent implements OnInit{
     })
   }
   PosaljiOdgovor(id: string, odgovor: string) {
-    const body = { odgovor };  // Omotajte odgovor u objekat
+    if (!odgovor) {
+      alert("Odgovor ne može biti prazan!");
+      return;
+    }
+    const body = { odgovor };
 
     this.httpClient.put(`${this.url}/PitanjeOdgovor/PostaviOdgovor/${id}`, body, {
       headers: { 'Content-Type': 'application/json' }
