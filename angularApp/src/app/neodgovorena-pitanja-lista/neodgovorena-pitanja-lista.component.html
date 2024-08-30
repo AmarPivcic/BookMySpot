@@ -15,7 +15,6 @@
 <div class="about">
   <p style="margin-top: 70px" class="AboutUs">Pitanja i odgovori</p>
   <div class="aboutText">
-
     <div class="contentCijeli">
       <div class="dugmici">
       <button (click)="expandAll()">Proširi sve</button>
@@ -25,6 +24,7 @@
       <button *ngIf="loginInfo().isLogiran && loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator" [routerLink]="['/pitanjaOdgovori/pitanjaAdminLista']">Sva pitanja</button>
       </div>
 
+      <p *ngIf="faqItems?.length===0" class="statusText">Trentuno nema prisiglih pitanja</p>
       <div *ngFor="let item of faqItems" class="containerGlavni">
         <div class="question" [ngClass]="{'expanded': item.isExpanded}" (click)="toggle(item)">
           {{ item.pitanje }}

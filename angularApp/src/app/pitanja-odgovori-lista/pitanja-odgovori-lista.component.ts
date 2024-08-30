@@ -126,4 +126,9 @@ export class PitanjaOdgovoriListaComponent implements OnInit{
       })
     })
   }
+
+  prijava()
+  {
+    this.headerMenu.NavigirajIZatvori("/login");
+  }
 }

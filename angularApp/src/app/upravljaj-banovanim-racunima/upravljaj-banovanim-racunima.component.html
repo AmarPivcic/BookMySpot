@@ -11,6 +11,7 @@
 <body>
 <p class="adminNaslov">Suspendovani računi</p>
 <div class="accountsContainer">
+  <p *ngIf="nizBanovanihRacuna?.length===0" class="statusText">Trentuno nema suspendovanih korisničkih naloga</p>
   <div *ngFor="let racun of nizBanovanihRacuna" class="comment" style="padding-left: 20px; padding-right: 20px; padding-top: 10px">
     <div class="profilePicAndName">
       <img

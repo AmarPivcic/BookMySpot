@@ -150,7 +150,7 @@
           <button *ngIf="loginInfo().isLogiran == true && usluzniObjekt?.isSmjestaj == true && loginInfo().autentifikacijaToken?.korisnickiNalog?.isKorisnik" class="buttonRezervisi" (click)="rezervisiTerminSmjestaja()">Rezerviši</button>
           <p *ngIf="loginInfo().isLogiran == false" style="margin-bottom: 5px;">Morate biti prijavljeni kako bi ste izvršili rezervaciju.</p>
           <p *ngIf="loginInfo().isLogiran == true && (loginInfo().autentifikacijaToken?.korisnickiNalog?.isManager || loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator)" style="margin-bottom: 5px;">Vaše permisije ne dozvoljavaju izvršavanje rezervacije. Prijavite se kao User/Korisnik da biste izvršili rezervaciju!</p>
-          <button *ngIf="loginInfo().isLogiran == false || (loginInfo().autentifikacijaToken?.korisnickiNalog?.isManager || loginInfo().autentifikacijaToken?.korisnickiNalog?.isAdministrator)" class="buttonRezervisi" (click)="prijava()">Prijava</button>
+          <button *ngIf="loginInfo().isLogiran == false" class="buttonRezervisi" (click)="prijava()">Prijava</button>
         </div>
       </div>
 

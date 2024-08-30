@@ -103,3 +103,9 @@ a {
   margin-bottom: 10px;
 }
 
+.statusText{
+  color: #b0a695;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 50px;
+}

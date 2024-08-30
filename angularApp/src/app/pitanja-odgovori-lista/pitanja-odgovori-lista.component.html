@@ -40,6 +40,9 @@
         </div>
       </div>
 
+      <p *ngIf="loginInfo().isLogiran == false">Ukoliko želite postaviti pitanje, potrebno je da se prijavite!</p>
+      <button *ngIf="loginInfo().isLogiran == false" class="buttonRezervisi" (click)="prijava()">Prijava</button>
+
       <div class="postaviPitanjeKontejnercic" *ngIf="loginInfo().isLogiran == true">
         <label style="color: black" for="postaviPitanje">Postavi pitanje: </label>
         <textarea style="color: black; width: 100%" [(ngModel)]="novoPitanje" id="postaviPitanje" type="text"></textarea>
