@@ -146,8 +146,6 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             var manager2Password = _passwordHasher.HashPassword(manager2, "krecoradnik");
             manager2.lozinka = manager2Password;
 
- 
-
             var krecho = new UsluzniObjekt
             {
                 nazivObjekta = "Barbershop Krecho",
@@ -187,10 +185,6 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 longitude = 17.0052
             };
 
-
-
-
-
             var misterBrico = new Manager
             {
                 ime = "Mister",
@@ -217,12 +211,6 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
                 latitude = 43.84231,
                 longitude = 18.35352
             };
-
-
-
-
-
-
 
             var managerUsluzniObjekt = new ManagerUsluzniObjekt
             {
@@ -349,8 +337,6 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             await _dbContext.Usluge.AddAsync(celeusluga4);
             await _dbContext.SaveChangesAsync();
 
-
-
             var misterUluga1 = new Usluga
             {
                 naziv = "Moderno šišanje (Fade)",
@@ -405,8 +391,6 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
 
             await _dbContext.Usluge.AddAsync(misterUluga5);
             await _dbContext.SaveChangesAsync();
-
-
 
             var managerSmjestaja = new Manager
             {
@@ -487,21 +471,6 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             await _dbContext.Usluge.AddAsync(uslugaSmjestaja4);
             await _dbContext.SaveChangesAsync();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             var managerStana = new Manager
             {
                 ime = "ManagerStan",
@@ -550,24 +519,6 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
 
             await _dbContext.Usluge.AddAsync(uslugaStana);
             await _dbContext.SaveChangesAsync();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             var novitasManager = new Manager
             {
@@ -813,14 +764,6 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             await _dbContext.Recenzije.AddAsync(recenzijaMister3);
             await _dbContext.SaveChangesAsync();
 
-
-
-
-
-
-
-
-
             var recenzijaVila1 = new Recenzija
             {
                 recenzijaOcjena = 5,
@@ -854,13 +797,6 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
             await _dbContext.Recenzije.AddAsync(recenzijaVila3);
             await _dbContext.SaveChangesAsync();
 
-
-
-
-
-
-
-
             var recenzijaStan1 = new Recenzija
             {
                 recenzijaOcjena = 2,
@@ -893,19 +829,6 @@ namespace BookMySpotAPI.TestniPodaciModul.Controllers
 
             await _dbContext.Recenzije.AddAsync(recenzijaStan3);
             await _dbContext.SaveChangesAsync();
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             var admin = new Administrator
             {
