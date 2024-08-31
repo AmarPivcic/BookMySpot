@@ -43,7 +43,7 @@
         <h3>Cijene</h3>
         <table class="cijenovnikTabela">
           <thead>
-          <th>Usluga</th>
+          <th style="width: 30%;">Usluga</th>
           <th>Cijena</th>
           </thead>
           <tbody>
@@ -86,21 +86,21 @@
           <!-- Godina, mjesec i dan useljenja -->
           <div class="move-in-row">
             <div class="date-select">
-              <label for="godina">Godina useljenja:</label>
+              <label for="godina" class="godinaLabel">Godina useljenja:</label>
               <select id="godina" [(ngModel)]="selectedGodina" (change)="onGodinaChange()" [disabled]="!odabranaUsluga">
                 <option *ngFor="let godina of godine" [value]="godina">{{ godina }}</option>
               </select>
             </div>
 
             <div class="date-select">
-              <label for="mjesec">Mjesec useljenja:</label>
+              <label for="mjesec" class="mjesecLabel">Mjesec useljenja:</label>
               <select id="mjesec" [(ngModel)]="selectedMjesec" (change)="onMjesecChange()" [disabled]="!odabranaUsluga">
                 <option *ngFor="let mjesec of mjeseci" [value]="mjesec">{{ mjesec }}</option>
               </select>
             </div>
 
             <div class="date-select">
-              <label for="dan">Dan useljenja:</label>
+              <label for="dan" class="danLabel">Dan useljenja:</label>
               <select id="dan" [(ngModel)]="selectedDan" [disabled]="!odabranaUsluga">
                 <option *ngFor="let dan of dani" [value]="dan">{{ dan }}</option>
               </select>
@@ -110,21 +110,21 @@
           <!-- Godina, mjesec i dan iseljenja -->
           <div class="move-out-row">
             <div class="date-select">
-              <label for="godinaIseljenja">Godina iseljenja:</label>
+              <label class="godinaLabel" for="godinaIseljenja">Godina iseljenja:</label>
               <select id="godinaIseljenja" [(ngModel)]="selectedGodinaIseljenja" [disabled]="!odabranaUsluga" (change)="onGodinaIseljenjaChange()">
                 <option *ngFor="let godina of godineIseljenja" [value]="godina">{{ godina }}</option>
               </select>
             </div>
 
             <div class="date-select">
-              <label for="mjesecIseljenja">Mjesec iseljenja:</label>
+              <label class="mjesecLabel" for="mjesecIseljenja">Mjesec iseljenja:</label>
               <select id="mjesecIseljenja" [(ngModel)]="selectedMjesecIseljenja" [disabled]="!odabranaUsluga" (change)="onMjesecIseljenjaChange()">
                 <option *ngFor="let mjesec of mjeseciIseljenja" [value]="mjesec">{{ mjesec }}</option>
               </select>
             </div>
 
             <div class="date-select">
-              <label for="danIseljenja">Dan iseljenja:</label>
+              <label class="danLabel" for="danIseljenja">Dan iseljenja:</label>
               <select id="danIseljenja" [(ngModel)]="selectedDanIseljenja" [disabled]="!odabranaUsluga">
                 <option *ngFor="let dan of daniIseljenja" [value]="dan">{{ dan }}</option>
               </select>
@@ -134,7 +134,7 @@
 
         <div *ngIf="usluzniObjekt?.isSmjestaj == true" class="karticnoBox">
           <label for="karticnoPlacanjeCheckbox">Kartično plaćanje:</label>
-          <input [(ngModel)]="karticnoPlacanje" type="checkbox" id="karticnoPlacanjeCheckbox" name="karticnoPlacanjeCheckbox">
+          <input [(ngModel)]="karticnoPlacanje" class="checkboxClass" type="checkbox" id="karticnoPlacanjeCheckbox" name="karticnoPlacanjeCheckbox">
         </div>
 
         <div class="datumRez" *ngIf="usluzniObjekt?.isSmjestaj == false">

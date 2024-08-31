@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BookMySpotAPI.Migrations
 {
-    public partial class generatedatabase : Migration
+    public partial class Generatedatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
